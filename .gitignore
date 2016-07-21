@@ -33,3 +33,5 @@ node_modules
 
 #bash
 bumpBuildVersion.bash
+
+Images/
