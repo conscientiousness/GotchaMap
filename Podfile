@@ -5,5 +5,4 @@ target 'gotchamap' do
 
     pod 'RealmSwift'
     pod 'R.swift'
-    pod 'FBAnnotationClusteringSwift'
 end

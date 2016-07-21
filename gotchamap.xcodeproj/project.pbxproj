@@ -14,7 +14,19 @@
 		F4CA4A2C1D408A1100669B1F /* gotchamapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A2B1D408A1100669B1F /* gotchamapUITests.swift */; };
 		F4CA4A3A1D408A1A00669B1F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CA4A391D408A1A00669B1F /* MapKit.framework */; };
 		F4CA4A3C1D408AA400669B1F /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A3B1D408AA400669B1F /* MainVC.swift */; };
-		F4CA4A3E1D408B4800669B1F /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A3D1D408B4800669B1F /* UIView+Extension.swift */; };
+		F4CA4A3E1D408B4800669B1F /* UIView+Radius.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A3D1D408B4800669B1F /* UIView+Radius.swift */; };
+		F4CA4A401D412F1F00669B1F /* NotoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4CA4A3F1D412F1F00669B1F /* NotoSans-Regular.ttf */; };
+		F4CA4A421D412F3600669B1F /* NotoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4CA4A411D412F3600669B1F /* NotoSans-Bold.ttf */; };
+		F4CA4A451D4130FC00669B1F /* UIColor+Gotcha.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A441D4130FC00669B1F /* UIColor+Gotcha.swift */; };
+		F4CA4A471D41311900669B1F /* UIFont+Gotcha.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A461D41311900669B1F /* UIFont+Gotcha.swift */; };
+		F4CA4A491D41351D00669B1F /* UIColor+Hue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A481D41351D00669B1F /* UIColor+Hue.swift */; };
+		F4CA4A531D4137A400669B1F /* FBAnnotationClusterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A4C1D4137A400669B1F /* FBAnnotationClusterView.swift */; };
+		F4CA4A541D4137A400669B1F /* FBAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A4D1D4137A400669B1F /* FBAnnotation.swift */; };
+		F4CA4A551D4137A400669B1F /* FBAnnotationCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A4E1D4137A400669B1F /* FBAnnotationCluster.swift */; };
+		F4CA4A561D4137A400669B1F /* FBBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A4F1D4137A400669B1F /* FBBoundingBox.swift */; };
+		F4CA4A571D4137A400669B1F /* FBClusteringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A501D4137A400669B1F /* FBClusteringManager.swift */; };
+		F4CA4A581D4137A400669B1F /* FBQuadTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A511D4137A400669B1F /* FBQuadTree.swift */; };
+		F4CA4A591D4137A400669B1F /* FBQuadTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A521D4137A400669B1F /* FBQuadTreeNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,7 +62,19 @@
 		F4CA4A2D1D408A1100669B1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4CA4A391D408A1A00669B1F /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		F4CA4A3B1D408AA400669B1F /* MainVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
-		F4CA4A3D1D408B4800669B1F /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		F4CA4A3D1D408B4800669B1F /* UIView+Radius.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Radius.swift"; sourceTree = "<group>"; };
+		F4CA4A3F1D412F1F00669B1F /* NotoSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Regular.ttf"; sourceTree = "<group>"; };
+		F4CA4A411D412F3600669B1F /* NotoSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Bold.ttf"; sourceTree = "<group>"; };
+		F4CA4A441D4130FC00669B1F /* UIColor+Gotcha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Gotcha.swift"; sourceTree = "<group>"; };
+		F4CA4A461D41311900669B1F /* UIFont+Gotcha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Gotcha.swift"; sourceTree = "<group>"; };
+		F4CA4A481D41351D00669B1F /* UIColor+Hue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hue.swift"; sourceTree = "<group>"; };
+		F4CA4A4C1D4137A400669B1F /* FBAnnotationClusterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBAnnotationClusterView.swift; path = Lib/FBAnnotationClusteringSwift/FBAnnotationClusterView.swift; sourceTree = "<group>"; };
+		F4CA4A4D1D4137A400669B1F /* FBAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBAnnotation.swift; path = Lib/FBAnnotationClusteringSwift/FBAnnotation.swift; sourceTree = "<group>"; };
+		F4CA4A4E1D4137A400669B1F /* FBAnnotationCluster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBAnnotationCluster.swift; path = Lib/FBAnnotationClusteringSwift/FBAnnotationCluster.swift; sourceTree = "<group>"; };
+		F4CA4A4F1D4137A400669B1F /* FBBoundingBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBBoundingBox.swift; path = Lib/FBAnnotationClusteringSwift/FBBoundingBox.swift; sourceTree = "<group>"; };
+		F4CA4A501D4137A400669B1F /* FBClusteringManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBClusteringManager.swift; path = Lib/FBAnnotationClusteringSwift/FBClusteringManager.swift; sourceTree = "<group>"; };
+		F4CA4A511D4137A400669B1F /* FBQuadTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBQuadTree.swift; path = Lib/FBAnnotationClusteringSwift/FBQuadTree.swift; sourceTree = "<group>"; };
+		F4CA4A521D4137A400669B1F /* FBQuadTreeNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBQuadTreeNode.swift; path = Lib/FBAnnotationClusteringSwift/FBQuadTreeNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				F4CA4A0A1D408A1100669B1F /* gotchamap */,
+				F4CA4A5C1D413AEE00669B1F /* Supporting Files */,
 				F4CA4A1F1D408A1100669B1F /* gotchamapTests */,
 				F4CA4A2A1D408A1100669B1F /* gotchamapUITests */,
 				F4CA4A091D408A1100669B1F /* Products */,
@@ -123,11 +148,11 @@
 		F4CA4A0A1D408A1100669B1F /* gotchamap */ = {
 			isa = PBXGroup;
 			children = (
+				F4CA4A5B1D41381E00669B1F /* View */,
+				F4CA4A5A1D41381400669B1F /* Controller */,
+				F4CA4A431D412F6600669B1F /* Extension */,
+				F4CA4A4A1D41373B00669B1F /* Lib */,
 				F4CA4A0B1D408A1100669B1F /* AppDelegate.swift */,
-				F4CA4A3D1D408B4800669B1F /* UIView+Extension.swift */,
-				F4CA4A3B1D408AA400669B1F /* MainVC.swift */,
-				F4CA4A121D408A1100669B1F /* Assets.xcassets */,
-				F4CA4A171D408A1100669B1F /* Info.plist */,
 			);
 			path = gotchamap;
 			sourceTree = "<group>";
@@ -148,6 +173,66 @@
 				F4CA4A2D1D408A1100669B1F /* Info.plist */,
 			);
 			path = gotchamapUITests;
+			sourceTree = "<group>";
+		};
+		F4CA4A431D412F6600669B1F /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				F4CA4A441D4130FC00669B1F /* UIColor+Gotcha.swift */,
+				F4CA4A461D41311900669B1F /* UIFont+Gotcha.swift */,
+				F4CA4A481D41351D00669B1F /* UIColor+Hue.swift */,
+				F4CA4A3D1D408B4800669B1F /* UIView+Radius.swift */,
+			);
+			name = Extension;
+			sourceTree = "<group>";
+		};
+		F4CA4A4A1D41373B00669B1F /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				F4CA4A4B1D41375800669B1F /* FBAnnotationClusteringSwift */,
+			);
+			name = Lib;
+			sourceTree = "<group>";
+		};
+		F4CA4A4B1D41375800669B1F /* FBAnnotationClusteringSwift */ = {
+			isa = PBXGroup;
+			children = (
+				F4CA4A4C1D4137A400669B1F /* FBAnnotationClusterView.swift */,
+				F4CA4A4D1D4137A400669B1F /* FBAnnotation.swift */,
+				F4CA4A4E1D4137A400669B1F /* FBAnnotationCluster.swift */,
+				F4CA4A4F1D4137A400669B1F /* FBBoundingBox.swift */,
+				F4CA4A501D4137A400669B1F /* FBClusteringManager.swift */,
+				F4CA4A511D4137A400669B1F /* FBQuadTree.swift */,
+				F4CA4A521D4137A400669B1F /* FBQuadTreeNode.swift */,
+			);
+			name = FBAnnotationClusteringSwift;
+			sourceTree = "<group>";
+		};
+		F4CA4A5A1D41381400669B1F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F4CA4A3B1D408AA400669B1F /* MainVC.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		F4CA4A5B1D41381E00669B1F /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		F4CA4A5C1D413AEE00669B1F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F4CA4A171D408A1100669B1F /* Info.plist */,
+				F4CA4A121D408A1100669B1F /* Assets.xcassets */,
+				F4CA4A411D412F3600669B1F /* NotoSans-Bold.ttf */,
+				F4CA4A3F1D412F1F00669B1F /* NotoSans-Regular.ttf */,
+			);
+			name = "Supporting Files";
+			path = gotchamap;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -262,6 +347,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4CA4A421D412F3600669B1F /* NotoSans-Bold.ttf in Resources */,
+				F4CA4A401D412F1F00669B1F /* NotoSans-Regular.ttf in Resources */,
 				F4CA4A131D408A1100669B1F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -335,9 +422,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4CA4A3E1D408B4800669B1F /* UIView+Extension.swift in Sources */,
+				F4CA4A551D4137A400669B1F /* FBAnnotationCluster.swift in Sources */,
+				F4CA4A571D4137A400669B1F /* FBClusteringManager.swift in Sources */,
+				F4CA4A581D4137A400669B1F /* FBQuadTree.swift in Sources */,
+				F4CA4A541D4137A400669B1F /* FBAnnotation.swift in Sources */,
+				F4CA4A491D41351D00669B1F /* UIColor+Hue.swift in Sources */,
+				F4CA4A3E1D408B4800669B1F /* UIView+Radius.swift in Sources */,
+				F4CA4A451D4130FC00669B1F /* UIColor+Gotcha.swift in Sources */,
+				F4CA4A591D4137A400669B1F /* FBQuadTreeNode.swift in Sources */,
+				F4CA4A531D4137A400669B1F /* FBAnnotationClusterView.swift in Sources */,
 				F4CA4A0C1D408A1100669B1F /* AppDelegate.swift in Sources */,
 				F4CA4A3C1D408AA400669B1F /* MainVC.swift in Sources */,
+				F4CA4A471D41311900669B1F /* UIFont+Gotcha.swift in Sources */,
+				F4CA4A561D4137A400669B1F /* FBBoundingBox.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

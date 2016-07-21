@@ -62,25 +62,3 @@ extension UIView {
     }
     
 }
-
-//
-// View for UILabel Accessory
-//
-
-extension UIView {
-    
-    func rightValidAccessoryView() -> UIView {
-        let imgView = UIImageView(image: UIImage(named: "check_valid"))
-        imgView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
-        imgView.backgroundColor = UIColor.clearColor()
-        return imgView
-    }
-    
-    func rightInValidAccessoryView() -> UIView {
-        let imgView = UIImageView(image: UIImage(named: "check_invalid"))
-        imgView.frame = CGRect(x: self.cornerRadius, y: self.cornerRadius, width: 20, height: 20)
-        imgView.backgroundColor = UIColor.clearColor()
-        return imgView
-    }
-    
-}

@@ -9,7 +9,6 @@
 import UIKit
 import MapKit
 import RealmSwift
-import FBAnnotationClusteringSwift
 
 class MainVC: UIViewController {
 
