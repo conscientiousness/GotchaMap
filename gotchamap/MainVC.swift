@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 import RealmSwift
 
 class MainVC: UIViewController {
@@ -15,34 +16,74 @@ class MainVC: UIViewController {
     let mapView = MKMapView()
     let numberOfLocations = 1000
     let clusteringManager = FBClusteringManager()
+    let locationMananger = CLLocationManager()
     var currentScaleRate: Double?
-
+    var currentLocation: CLLocation?
+    var isFirstLocationReceived = false
+    
+    private(set) lazy var backHomeBtn: UIButton = {
+        let _backHomeBtn = UIButton()
+        _backHomeBtn.setTitle("點我回家", forState: .Normal)
+        _backHomeBtn.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+        _backHomeBtn.backgroundColor = UIColor.whiteColor()
+        _backHomeBtn.addTarget(self, action: .backHomeSelector, forControlEvents: .TouchUpInside)
+        return _backHomeBtn
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupSubviews()
-        mapView.delegate = self
-        clusteringManager.delegate = self;
+        setUpLocationMananger()
         
+        clusteringManager.delegate = self;
         let array:[MKAnnotation] = randomLocationsWithCount(numberOfLocations)
         clusteringManager.addAnnotations(array)
         mapView.centerCoordinate = CLLocationCoordinate2DMake(0, 0);
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     private func setupSubviews() {
         self.view.backgroundColor = UIColor.blackColor()
         
         self.view.addSubview(mapView)
+        self.view.addSubview(backHomeBtn)
+        
         mapView.cornerRadius = 6
+        mapView.delegate = self
+        mapView.setUserTrackingMode(.Follow, animated: true)
         
         mapView.translatesAutoresizingMaskIntoConstraints = false
-        let views = ["mapView": mapView]
+        backHomeBtn.translatesAutoresizingMaskIntoConstraints = false
+        
+        let views = ["mapView": mapView, "backHomeBtn": backHomeBtn]
+        
         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[mapView]|", options: [], metrics: nil, views: views))
         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[mapView]|", options: [], metrics: nil, views: views))
+        
+        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[backHomeBtn]-8-|", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-8-[backHomeBtn]", options: [], metrics: nil, views: views))
+    }
+    
+    private func setUpLocationMananger() {
+        locationMananger.requestWhenInUseAuthorization()
+        locationMananger.desiredAccuracy = kCLLocationAccuracyBest
+        locationMananger.delegate = self
+        locationMananger.startUpdatingLocation()
     }
     
     // MARK: - Utility
+    
+    private func zoomInUserCurrentLocation(coordinate: CLLocationCoordinate2D) {
+        var region = mapView.region;
+        region.center = coordinate;
+        region.span.latitudeDelta=0.01;
+        region.span.longitudeDelta=0.01;
+        mapView.setRegion(region, animated: true)
+    }
     
     func randomLocationsWithCount(count:Int) -> [FBAnnotation] {
         var array:[FBAnnotation] = []
@@ -53,18 +94,39 @@ class MainVC: UIViewController {
         }
         return array
     }
+    
+    // MARK: - Button Action Method
+    
+    @objc private func backHomeBtnPressed(sender: UIButton) {
+        zoomInUserCurrentLocation(mapView.userLocation.coordinate)
+    }
 }
 
-extension MainVC : FBClusteringManagerDelegate {
+private extension Selector {
+    static let backHomeSelector = #selector(MainVC.backHomeBtnPressed(_:))
+}
+
+extension MainVC: CLLocationManagerDelegate {
+    
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        currentLocation = locations.last
+        
+        // get user location and zoom in to current location
+        if let currentLocation = currentLocation where !isFirstLocationReceived {
+            zoomInUserCurrentLocation(currentLocation.coordinate)
+            isFirstLocationReceived = true;
+        }
+    }
+}
+
+extension MainVC: FBClusteringManagerDelegate {
     
     func cellSizeFactorForCoordinator(coordinator:FBClusteringManager) -> CGFloat{
         return 1.0
     }
-    
 }
 
-
-extension MainVC : MKMapViewDelegate {
+extension MainVC: MKMapViewDelegate {
     
     func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool){
         
@@ -85,25 +147,24 @@ extension MainVC : MKMapViewDelegate {
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         
-        var reuseId = ""
+        if annotation.isKindOfClass(MKUserLocation) {
+            return nil
+        }
         
         if annotation.isKindOfClass(FBAnnotationCluster) {
-            
-            reuseId = "Cluster"
+            let reuseId = "Cluster"
             var clusterView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
             clusterView = FBAnnotationClusterView(annotation: annotation, reuseIdentifier: reuseId, options: nil)
             
             return clusterView
             
         } else {
-            
-            reuseId = "Pin"
+            let reuseId = "Pin"
             var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             
             return pinView
         }
-        
     }
     
     func mapView(mapView: MKMapView, didAddAnnotationViews views: [MKAnnotationView]) {
@@ -127,31 +188,7 @@ extension MainVC : MKMapViewDelegate {
             })
         }
     }
-    
 }
-
-/*
- for annotation in mapView.annotations {
- let anView: MKAnnotationView? = mapView.viewForAnnotation(annotation)
- if let anView = anView {
- if anView.annotation is MKUserLocation {
- continue;
- }
- 
- // Check if current annotation is inside visible map rect, else go to next one
- let point:MKMapPoint  =  MKMapPointForCoordinate(anView.annotation!.coordinate);
- if (!MKMapRectContainsPoint(self.mapView.visibleMapRect, point)) {
- continue;
- }
- 
- view.transform = CGAffineTransformMakeScale(0.85, 0.85)
- UIView.animateWithDuration(0.7, delay: 0.0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0.4, options: .CurveEaseInOut, animations:{() in
- anView.transform = CGAffineTransformMakeScale(1, 1)
- }, completion: {(Bool) in
- 
- })
- }
- }*/
 
 /*
  // 0. This example uses MapKit to calculate the bounding box
