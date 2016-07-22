@@ -159,11 +159,12 @@ extension MainVC: MKMapViewDelegate {
             return clusterView
             
         } else {
-            let reuseId = "Pin"
-            var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
-            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            let reuseId = "poke"
+            var pokeView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? PokeAnnotationView
+            //pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            pokeView  = PokeAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             
-            return pinView
+            return pokeView
         }
     }
     

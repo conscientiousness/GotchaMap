@@ -102,7 +102,7 @@ public class FBAnnotationClusterView : MKAnnotationView {
     func setTheCount(localCount:Int){
         count = localCount;
         
-        countLabel?.text = "\(localCount)"
+        countLabel?.text = String(format: "%@", localCount <= 99 ? localCount : "99+")
         setNeedsLayout()
     }
     

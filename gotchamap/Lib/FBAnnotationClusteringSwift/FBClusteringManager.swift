@@ -23,7 +23,7 @@ public class FBClusteringManager : NSObject {
     
     var lock:NSRecursiveLock = NSRecursiveLock()
     
-    public var maxZoomLevel = 1.0
+    public var maxZoomLevel = 1.5
     
     public override init(){
         super.init()

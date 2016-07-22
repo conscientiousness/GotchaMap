@@ -10,6 +10,7 @@
 		92C76440D49BE5457B366E94 /* Pods_gotchamap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09B270BA4F2869CE10974319 /* Pods_gotchamap.framework */; };
 		F446DEAC1D41DF3B007BDEA0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F446DEAB1D41DF3B007BDEA0 /* CoreLocation.framework */; };
 		F47E36531D4220820030B445 /* pokemon.json in Resources */ = {isa = PBXBuildFile; fileRef = F47E36521D4220820030B445 /* pokemon.json */; };
+		F47E36551D425C750030B445 /* PokeAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47E36541D425C750030B445 /* PokeAnnotationView.swift */; };
 		F4CA4A0C1D408A1100669B1F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A0B1D408A1100669B1F /* AppDelegate.swift */; };
 		F4CA4A131D408A1100669B1F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4CA4A121D408A1100669B1F /* Assets.xcassets */; };
 		F4CA4A211D408A1100669B1F /* gotchamapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A201D408A1100669B1F /* gotchamapTests.swift */; };
@@ -54,6 +55,7 @@
 		C3DF02E75B2DCCD905BB66DD /* Pods-gotchamap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gotchamap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-gotchamap/Pods-gotchamap.debug.xcconfig"; sourceTree = "<group>"; };
 		F446DEAB1D41DF3B007BDEA0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		F47E36521D4220820030B445 /* pokemon.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pokemon.json; sourceTree = "<group>"; };
+		F47E36541D425C750030B445 /* PokeAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokeAnnotationView.swift; sourceTree = "<group>"; };
 		F4CA4A081D408A1100669B1F /* gotchamap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gotchamap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4CA4A0B1D408A1100669B1F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4CA4A121D408A1100669B1F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 		F4CA4A5B1D41381E00669B1F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F47E36541D425C750030B445 /* PokeAnnotationView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -446,6 +449,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F47E36551D425C750030B445 /* PokeAnnotationView.swift in Sources */,
 				F4CA4A551D4137A400669B1F /* FBAnnotationCluster.swift in Sources */,
 				F4CA4A571D4137A400669B1F /* FBClusteringManager.swift in Sources */,
 				F4CA4A581D4137A400669B1F /* FBQuadTree.swift in Sources */,
