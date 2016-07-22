@@ -77,7 +77,7 @@ class MainVC: UIViewController {
     
     // MARK: - Utility
     
-    private func zoomInUserCurrentLocation(coordinate: CLLocationCoordinate2D) {
+    private func zoomInToCurrentLocation(coordinate: CLLocationCoordinate2D) {
         var region = mapView.region;
         region.center = coordinate;
         region.span.latitudeDelta=0.01;
@@ -98,7 +98,7 @@ class MainVC: UIViewController {
     // MARK: - Button Action Method
     
     @objc private func backHomeBtnPressed(sender: UIButton) {
-        zoomInUserCurrentLocation(mapView.userLocation.coordinate)
+        zoomInToCurrentLocation(mapView.userLocation.coordinate)
     }
 }
 
@@ -113,7 +113,7 @@ extension MainVC: CLLocationManagerDelegate {
         
         // get user location and zoom in to current location
         if let currentLocation = currentLocation where !isFirstLocationReceived {
-            zoomInUserCurrentLocation(currentLocation.coordinate)
+            zoomInToCurrentLocation(currentLocation.coordinate)
             isFirstLocationReceived = true;
         }
     }
