@@ -1,4 +1,6 @@
 PODS:
+  - Alamofire (3.4.1)
+  - Kingfisher (2.4.2)
   - R.swift (2.4.0):
     - R.swift.Library (~> 2.2.0)
   - R.swift.Library (2.2.0)
@@ -9,15 +11,19 @@ PODS:
     - Realm (= 1.0.1)
 
 DEPENDENCIES:
+  - Alamofire
+  - Kingfisher
   - R.swift
   - RealmSwift
 
 SPEC CHECKSUMS:
+  Alamofire: 01a82e2f6c0f860ade35534c8dd88be61bdef40c
+  Kingfisher: 05bf8d04408aaa70fcd2c8c81b9f1d0f1ad313dd
   R.swift: 0ef9c42dc6c94ac44a3c78a7639c73f855a8e159
   R.swift.Library: 31a487b65381f37a7d203a6f1f935b43c9be35b0
   Realm: 2e15e39d35b08abb529e212ed5d8af107b5236c8
   RealmSwift: d73ea2af08c3676dbdd5e4b669651a0f492162a4
 
-PODFILE CHECKSUM: bd7517bfd15fb944bfff029d110b5705e17c3c34
+PODFILE CHECKSUM: 678209c650dbe6d30fa46af5883cb7b8c563fc62
 
 COCOAPODS: 1.0.1

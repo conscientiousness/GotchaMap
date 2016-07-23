@@ -5,4 +5,6 @@ target 'gotchamap' do
 
     pod 'RealmSwift'
     pod 'R.swift'
+    pod 'Kingfisher'
+    pod 'Alamofire'
 end
