@@ -14,7 +14,7 @@ import RealmSwift
 class MainVC: UIViewController {
 
     let mapView = MKMapView()
-    let numberOfLocations = 500000
+    let numberOfLocations = 500
     let clusteringManager = FBClusteringManager()
     let locationMananger = CLLocationManager()
     var currentLocation: CLLocation?
@@ -23,11 +23,22 @@ class MainVC: UIViewController {
     
     private(set) lazy var backHomeBtn: UIButton = {
         let _backHomeBtn = UIButton()
-        _backHomeBtn.setTitle("點我回家", forState: .Normal)
         _backHomeBtn.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
-        _backHomeBtn.backgroundColor = UIColor.whiteColor()
+        _backHomeBtn.setImage(UIImage(named: "btn_backHome"), forState: .Normal)
+        _backHomeBtn.imageView?.contentMode = .ScaleAspectFit
+        _backHomeBtn.backgroundColor = UIColor.clearColor()
         _backHomeBtn.addTarget(self, action: .backHomeSelector, forControlEvents: .TouchUpInside)
         return _backHomeBtn
+    }()
+    
+    private(set) lazy var pokedexBtn: UIButton = {
+        let _pokedexBtn = UIButton()
+        _pokedexBtn.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+        _pokedexBtn.setImage(UIImage(named: "btn_pokedex"), forState: .Normal)
+        _pokedexBtn.imageView?.contentMode = .ScaleAspectFit
+        _pokedexBtn.backgroundColor = UIColor.clearColor()
+        _pokedexBtn.addTarget(self, action: .backHomeSelector, forControlEvents: .TouchUpInside)
+        return _pokedexBtn
     }()
     
     override func viewDidLoad() {
@@ -59,8 +70,9 @@ class MainVC: UIViewController {
     private func setupSubviews() {
         self.view.backgroundColor = UIColor.blackColor()
         
-        self.view.addSubview(mapView)
-        self.view.addSubview(backHomeBtn)
+        view.addSubview(mapView)
+        view.addSubview(backHomeBtn)
+        view.addSubview(pokedexBtn)
         
         clusteringManager.delegate = self;
         
@@ -70,14 +82,19 @@ class MainVC: UIViewController {
         
         mapView.translatesAutoresizingMaskIntoConstraints = false
         backHomeBtn.translatesAutoresizingMaskIntoConstraints = false
+        pokedexBtn.translatesAutoresizingMaskIntoConstraints = false
         
-        let views = ["mapView": mapView, "backHomeBtn": backHomeBtn]
+        let views = ["mapView": mapView, "backHomeBtn": backHomeBtn, "pokedexBtn": pokedexBtn]
+        let metrics = ["btnSize": 60, "btnMargin": 15]
         
         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[mapView]|", options: [], metrics: nil, views: views))
         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[mapView]|", options: [], metrics: nil, views: views))
         
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[backHomeBtn]-8-|", options: [], metrics: nil, views: views))
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-8-[backHomeBtn]", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[backHomeBtn(btnSize)]-btnMargin-|", options: [], metrics: metrics, views: views))
+        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-btnMargin-[backHomeBtn(btnSize)]", options: [], metrics: metrics, views: views))
+        
+        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[pokedexBtn(btnSize)]-btnMargin-|", options: [], metrics: metrics, views: views))
+        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[pokedexBtn(btnSize)]-btnMargin-|", options: [], metrics: metrics, views: views))
     }
     
     private func setUpLocationMananger() {
@@ -177,6 +194,7 @@ extension MainVC: MKMapViewDelegate {
             
             let fbAnnotation = annotation as! FBAnnotation
             pokeView?.setUpAnView(basePokes[fbAnnotation.pokeId])
+            pokeView?.canShowCallout = true
             
             return pokeView
         }

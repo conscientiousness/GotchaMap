@@ -9,22 +9,6 @@
 import Foundation
 import SwiftyJSON
 
-//class Pokemon: NSObject {
-//    
-//    var pokeId: String = ""
-//    var img: String = ""
-//    
-//    var imgURL: NSURL? {
-//        return NSURL(string: img)
-//    }
-//    
-//    func parsePokemon(pokemonJSON: JSON) {
-//        
-//        pokeId = pokemonJSON["id"].string ?? ""
-//        img = pokemonJSON["img"].string ?? ""
-//    }
-//}
-
 struct Pokemon {
     
     let pokeId: String
