@@ -17,9 +17,9 @@ class MainVC: UIViewController {
     let numberOfLocations = 1000
     let clusteringManager = FBClusteringManager()
     let locationMananger = CLLocationManager()
-    var currentScaleRate: Double?
     var currentLocation: CLLocation?
     var isFirstLocationReceived = false
+    var basePokes: [Pokemon] = []
     
     private(set) lazy var backHomeBtn: UIButton = {
         let _backHomeBtn = UIButton()
@@ -36,10 +36,20 @@ class MainVC: UIViewController {
         setupSubviews()
         setUpLocationMananger()
         
-        clusteringManager.delegate = self;
-        let array:[MKAnnotation] = randomLocationsWithCount(numberOfLocations)
-        clusteringManager.addAnnotations(array)
-        mapView.centerCoordinate = CLLocationCoordinate2DMake(0, 0);
+        DataManager.getPokeBaseInfoFromFile { (data) in
+
+            if data.type == .Array {
+
+                for json in data.arrayValue {
+                    let pokemon = Pokemon(json: json)
+                    self.basePokes.append(pokemon)
+                }
+                
+                let array:[MKAnnotation] = self.randomLocationsWithCount(self.numberOfLocations)
+                self.clusteringManager.addAnnotations(array)
+                self.mapView.centerCoordinate = CLLocationCoordinate2DMake(0, 0);
+            }
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -51,6 +61,8 @@ class MainVC: UIViewController {
         
         self.view.addSubview(mapView)
         self.view.addSubview(backHomeBtn)
+        
+        clusteringManager.delegate = self;
         
         mapView.cornerRadius = 6
         mapView.delegate = self
@@ -86,9 +98,9 @@ class MainVC: UIViewController {
     }
     
     func randomLocationsWithCount(count:Int) -> [FBAnnotation] {
-        var array:[FBAnnotation] = []
+        var array: [FBAnnotation] = []
         for _ in 0...count {
-            let a:FBAnnotation = FBAnnotation()
+            let a: FBAnnotation = FBAnnotation()
             a.coordinate = CLLocationCoordinate2D(latitude: drand48() * 40 - 20, longitude: drand48() * 80 - 40 )
             array.append(a)
         }
@@ -122,22 +134,20 @@ extension MainVC: CLLocationManagerDelegate {
 extension MainVC: FBClusteringManagerDelegate {
     
     func cellSizeFactorForCoordinator(coordinator:FBClusteringManager) -> CGFloat{
-        return 1.0
+        return 1.5
     }
 }
 
 extension MainVC: MKMapViewDelegate {
     
     func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool){
-        
         NSOperationQueue().addOperationWithBlock({
             let mapBoundsWidth = Double(self.mapView.bounds.size.width)
             
             let mapRectWidth:Double = self.mapView.visibleMapRect.size.width
             
             let scale:Double = mapBoundsWidth / mapRectWidth
-            self.currentScaleRate = scale
-            
+
             let annotationArray = self.clusteringManager.clusteredAnnotationsWithinMapRect(self.mapView.visibleMapRect, withZoomScale:scale)
             
             self.clusteringManager.displayAnnotations(annotationArray, onMapView:self.mapView)
@@ -146,7 +156,6 @@ extension MainVC: MKMapViewDelegate {
     }
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-        
         if annotation.isKindOfClass(MKUserLocation) {
             return nil
         }
@@ -161,15 +170,19 @@ extension MainVC: MKMapViewDelegate {
         } else {
             let reuseId = "poke"
             var pokeView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? PokeAnnotationView
-            //pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            pokeView  = PokeAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            
+            if pokeView == nil {
+                pokeView  = PokeAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            }
+            
+            let fbAnnotation = annotation as! FBAnnotation
+            pokeView?.setUpAnView(basePokes[fbAnnotation.pokeId])
             
             return pokeView
         }
     }
     
     func mapView(mapView: MKMapView, didAddAnnotationViews views: [MKAnnotationView]) {
-        
         for view in views {
             if view.annotation is MKUserLocation {
                 continue;
@@ -187,6 +200,24 @@ extension MainVC: MKMapViewDelegate {
                 }, completion: {(Bool) in
                     
             })
+        }
+    }
+    
+    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+        if let annotation = view.annotation {
+            if annotation.isKindOfClass(MKUserLocation) {
+                return
+            }
+            
+            if annotation.isKindOfClass(FBAnnotation) {
+                let fbAnnotation = annotation as! FBAnnotation
+                print(fbAnnotation.pokeId)
+            }
+            
+            if annotation.isKindOfClass(FBAnnotation) {
+                let fbAnnotation = annotation as! FBAnnotation
+                print(fbAnnotation.pokeId)
+            }
         }
     }
 }

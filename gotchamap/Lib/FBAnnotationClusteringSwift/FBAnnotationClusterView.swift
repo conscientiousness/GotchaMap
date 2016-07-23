@@ -102,7 +102,7 @@ public class FBAnnotationClusterView : MKAnnotationView {
     func setTheCount(localCount:Int){
         count = localCount;
         
-        countLabel?.text = String(format: "%@", localCount <= 99 ? localCount : "99+")
+        countLabel?.text = String(format: "%@", localCount <= 99 ? String(localCount) : "99+")
         setNeedsLayout()
     }
     
@@ -124,7 +124,6 @@ public class FBAnnotationClusterView : MKAnnotationView {
         layer.cornerRadius = self.bounds.size.width / 2
         
     }
-    
 }
 
 public class FBAnnotationClusterViewOptions : NSObject {

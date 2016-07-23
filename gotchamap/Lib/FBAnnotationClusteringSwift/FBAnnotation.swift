@@ -10,10 +10,11 @@ import Foundation
 import CoreLocation
 import MapKit
 
-public class FBAnnotation : NSObject {
-    
-    public var coordinate = CLLocationCoordinate2D(latitude: 39.208407, longitude: -76.799555)
-    public var title: String? = ""
+class FBAnnotation : NSObject {
+
+    var coordinate = CLLocationCoordinate2D(latitude: 25.024739, longitude: 121.468240)
+    var title: String? = ""
+    var pokeId = Int(arc4random_uniform(151))
     
 }
 

@@ -7,4 +7,5 @@ target 'gotchamap' do
     pod 'R.swift'
     pod 'Kingfisher'
     pod 'Alamofire'
+    pod 'SwiftyJSON'
 end
