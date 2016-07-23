@@ -14,7 +14,7 @@ import RealmSwift
 class MainVC: UIViewController {
 
     let mapView = MKMapView()
-    let numberOfLocations = 1000
+    let numberOfLocations = 500000
     let clusteringManager = FBClusteringManager()
     let locationMananger = CLLocationManager()
     var currentLocation: CLLocation?
