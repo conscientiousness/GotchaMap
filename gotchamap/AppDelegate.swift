@@ -18,8 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         if let window = window {
+            let rootNC = UINavigationController(rootViewController: MainVC())
+            
             window.backgroundColor = UIColor.whiteColor()
-            window.rootViewController = MainVC()
+            window.rootViewController = rootNC
             window.makeKeyAndVisible()
         }
         

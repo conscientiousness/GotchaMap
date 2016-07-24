@@ -10,8 +10,13 @@ import UIKit
 
 enum Palette {
     static let GreyishBlack = UIColor.hex("#5E5E5E")
+    static let DarkBlue = UIColor.hex("#00103B")
     
     enum Map {
         static let Ball = GreyishBlack
+    }
+    
+    enum Pokedex {
+        static let Background = DarkBlue
     }
 }

@@ -13,21 +13,39 @@ import RealmSwift
 
 class MainVC: UIViewController {
 
-    let mapView = MKMapView()
-    let numberOfLocations = 500
-    let clusteringManager = FBClusteringManager()
-    let locationMananger = CLLocationManager()
+    private lazy var mapView: MKMapView = {
+        let _mapView = MKMapView()
+        _mapView.cornerRadius = 7
+        _mapView.delegate = self
+        _mapView.setUserTrackingMode(.Follow, animated: true)
+        return _mapView
+    }()
+    
+    private lazy var clusteringManager: FBClusteringManager = {
+        let _clusteringManager = FBClusteringManager()
+        _clusteringManager.delegate = self;
+        return _clusteringManager
+    }()
+    
+    private lazy var locationMananger: CLLocationManager = {
+        let _locationMananger = CLLocationManager()
+        _locationMananger.delegate = self;
+        _locationMananger.requestWhenInUseAuthorization()
+        _locationMananger.desiredAccuracy = kCLLocationAccuracyBest
+        return _locationMananger
+    }()
+    
+    let numberOfLocations = 1000
     var currentLocation: CLLocation?
     var isFirstLocationReceived = false
-    var basePokes: [Pokemon] = []
-    
+
     private(set) lazy var backHomeBtn: UIButton = {
         let _backHomeBtn = UIButton()
         _backHomeBtn.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
         _backHomeBtn.setImage(UIImage(named: "btn_backHome"), forState: .Normal)
         _backHomeBtn.imageView?.contentMode = .ScaleAspectFit
         _backHomeBtn.backgroundColor = UIColor.clearColor()
-        _backHomeBtn.addTarget(self, action: .backHomeSelector, forControlEvents: .TouchUpInside)
+        _backHomeBtn.addTarget(self, action: .backHomeBtnSelector, forControlEvents: .TouchUpInside)
         return _backHomeBtn
     }()
     
@@ -37,7 +55,7 @@ class MainVC: UIViewController {
         _pokedexBtn.setImage(UIImage(named: "btn_pokedex"), forState: .Normal)
         _pokedexBtn.imageView?.contentMode = .ScaleAspectFit
         _pokedexBtn.backgroundColor = UIColor.clearColor()
-        _pokedexBtn.addTarget(self, action: .backHomeSelector, forControlEvents: .TouchUpInside)
+        _pokedexBtn.addTarget(self, action: .pokedexBtnSelector, forControlEvents: .TouchUpInside)
         return _pokedexBtn
     }()
     
@@ -45,15 +63,13 @@ class MainVC: UIViewController {
         super.viewDidLoad()
         
         setupSubviews()
-        setUpLocationMananger()
         
         DataManager.getPokeBaseInfoFromFile { (data) in
 
             if data.type == .Array {
-
                 for json in data.arrayValue {
                     let pokemon = Pokemon(json: json)
-                    self.basePokes.append(pokemon)
+                    PokemonBase.shared.infos.append(pokemon)
                 }
                 
                 let array:[MKAnnotation] = self.randomLocationsWithCount(self.numberOfLocations)
@@ -65,20 +81,21 @@ class MainVC: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.navigationBarHidden = true
+        locationMananger.startUpdatingLocation()
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        locationMananger.stopUpdatingLocation()
     }
     
     private func setupSubviews() {
-        self.view.backgroundColor = UIColor.blackColor()
-        
         view.addSubview(mapView)
         view.addSubview(backHomeBtn)
         view.addSubview(pokedexBtn)
         
-        clusteringManager.delegate = self;
-        
-        mapView.cornerRadius = 6
-        mapView.delegate = self
-        mapView.setUserTrackingMode(.Follow, animated: true)
+        self.view.backgroundColor = UIColor.blackColor()
         
         mapView.translatesAutoresizingMaskIntoConstraints = false
         backHomeBtn.translatesAutoresizingMaskIntoConstraints = false
@@ -97,13 +114,6 @@ class MainVC: UIViewController {
         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[pokedexBtn(btnSize)]-btnMargin-|", options: [], metrics: metrics, views: views))
     }
     
-    private func setUpLocationMananger() {
-        locationMananger.requestWhenInUseAuthorization()
-        locationMananger.desiredAccuracy = kCLLocationAccuracyBest
-        locationMananger.delegate = self
-        locationMananger.startUpdatingLocation()
-    }
-    
     // MARK: - Utility
     
     private func zoomInToCurrentLocation(coordinate: CLLocationCoordinate2D) {
@@ -118,7 +128,7 @@ class MainVC: UIViewController {
         var array: [FBAnnotation] = []
         for _ in 0...count {
             let a: FBAnnotation = FBAnnotation()
-            a.coordinate = CLLocationCoordinate2D(latitude: drand48() * 40 - 20, longitude: drand48() * 80 - 40 )
+            a.coordinate = CLLocationCoordinate2D(latitude: drand48() * 70 - 20, longitude: drand48() * 170 - 40 )
             array.append(a)
         }
         return array
@@ -129,10 +139,15 @@ class MainVC: UIViewController {
     @objc private func backHomeBtnPressed(sender: UIButton) {
         zoomInToCurrentLocation(mapView.userLocation.coordinate)
     }
+    
+    @objc private func pokedexBtnPressed(sender: UIButton) {
+        navigationController?.pushViewController(PokedexVC(), animated: true)
+    }
 }
 
 private extension Selector {
-    static let backHomeSelector = #selector(MainVC.backHomeBtnPressed(_:))
+    static let backHomeBtnSelector = #selector(MainVC.backHomeBtnPressed(_:))
+    static let pokedexBtnSelector = #selector(MainVC.pokedexBtnPressed(_:))
 }
 
 extension MainVC: CLLocationManagerDelegate {
@@ -193,7 +208,7 @@ extension MainVC: MKMapViewDelegate {
             }
             
             let fbAnnotation = annotation as! FBAnnotation
-            pokeView?.setUpAnView(basePokes[fbAnnotation.pokeId])
+            pokeView?.setUpAnView(PokemonBase.shared.infos[fbAnnotation.pokeId])
             pokeView?.canShowCallout = true
             
             return pokeView

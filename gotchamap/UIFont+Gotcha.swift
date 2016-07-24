@@ -38,4 +38,12 @@ extension UIFont {
     class func fontForLargeBallText() -> UIFont {
         return UIFont.appBoldFontOfSize(19)
     }
+    
+    class func pokedexSearchText() -> UIFont {
+        return UIFont.appRegularFontOfSize(14)
+    }
+    
+    class func pokedexCellText() -> UIFont {
+        return UIFont.appRegularFontOfSize(15)
+    }
 }
