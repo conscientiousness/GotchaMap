@@ -35,7 +35,7 @@ class MainVC: UIViewController {
         return _locationMananger
     }()
     
-    let numberOfLocations = 1000
+    let numberOfLocations = 100
     var currentLocation: CLLocation?
     var isFirstLocationReceived = false
 

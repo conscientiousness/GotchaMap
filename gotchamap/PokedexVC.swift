@@ -40,7 +40,7 @@ class PokedexVC: UIViewController {
         _collectionView.registerClass(PokedexCell.self, forCellWithReuseIdentifier: NSStringFromClass(PokedexCell.self))
         _collectionView.backgroundColor = UIColor.clearColor()
         _collectionView.dataSource = self
-        //_collectionView.delegate = self
+        _collectionView.delegate = self
         return _collectionView
     }()
     
@@ -57,8 +57,8 @@ class PokedexVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setUpSubviews()
+        collectionView.reloadData()
     }
     
     private func setUpSubviews() {
@@ -75,7 +75,7 @@ class PokedexVC: UIViewController {
         let views = ["collection": collectionView, "search": searchController.pokedexSearchBar,
                      "backBtn": backBtn]
         
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-25-[search(46)][collection]|", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-25-[search(46)]-5-[collection]|", options: [], metrics: nil, views: views))
         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collection]|", options: [], metrics: nil, views: views))
         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-8-[backBtn(25)]-10-[search]-35-|", options: [], metrics: nil, views: views))
         view.addConstraint(NSLayoutConstraint(item: backBtn, attribute: .CenterY, relatedBy: .Equal, toItem: searchController.pokedexSearchBar, attribute: .CenterY, multiplier: 1.0, constant: 1.0))
@@ -86,7 +86,7 @@ class PokedexVC: UIViewController {
     }
     
     @objc private func backBtnPressed(sender: UIButton) {
-
+        navigationController?.popViewControllerAnimated(true)
     }
 }
 
@@ -94,7 +94,7 @@ private extension Selector {
     static let backBtnSelector = #selector(PokedexVC.backBtnPressed(_:))
 }
 
-// MARK: - UICollectionViewDataSource
+// MARK: - UICollectionViwDataSource
 
 extension PokedexVC: UICollectionViewDataSource {
     
@@ -110,4 +110,14 @@ extension PokedexVC: UICollectionViewDataSource {
 }
 
 // MARK: - UICollectionViewDelegate
+
+extension PokedexVC: UICollectionViewDelegate {
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let vc = PokeInfoVC()
+        vc.pokeData = PokemonBase.shared.infos[indexPath.row]
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        navigationController?.pushViewController(vc, animated: true)
+    }
+}
 

@@ -46,4 +46,16 @@ extension UIFont {
     class func pokedexCellText() -> UIFont {
         return UIFont.appRegularFontOfSize(15)
     }
+    
+    class func pokeInfoText() -> UIFont {
+        return UIFont.appBoldFontOfSize(20)
+    }
+    
+    class func pokeInfoDescText() -> UIFont {
+        return UIFont.appRegularFontOfSize(20)
+    }
+    
+    class func pokeInfoVCTitle() -> UIFont {
+        return UIFont.appRegularFontOfSize(22)
+    }
 }
