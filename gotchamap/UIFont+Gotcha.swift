@@ -48,7 +48,7 @@ extension UIFont {
     }
     
     class func pokeInfoText() -> UIFont {
-        return UIFont.appBoldFontOfSize(20)
+        return UIFont.appBoldFontOfSize(14)
     }
     
     class func pokeInfoDescText() -> UIFont {

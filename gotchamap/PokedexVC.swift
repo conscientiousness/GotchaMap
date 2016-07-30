@@ -46,14 +46,13 @@ class PokedexVC: UIViewController {
     
     private lazy var searchController: PokedexSearchController = {
         let _searchController = PokedexSearchController(searchResultsController: self, searchBarFrame: CGRectZero, searchBarFont: UIFont.pokedexSearchText(), searchBarTextColor: UIColor.whiteColor(), searchBarTintColor: Palette.Pokedex.Background)
-        
         _searchController.pokedexSearchBar.placeholder = "Search"
-        //self.collectionView = PokedexSearchController.pokedexSearchBar
-        
-        
-        //customSearchController.customDelegate = self
+        _searchController.pokedexSearchDelegate = self
+        self.addToolBar(_searchController.pokedexSearchBar)
         return _searchController
     }()
+    
+    private var filteredData = PokemonBase.shared.infos
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,6 +80,20 @@ class PokedexVC: UIViewController {
         view.addConstraint(NSLayoutConstraint(item: backBtn, attribute: .CenterY, relatedBy: .Equal, toItem: searchController.pokedexSearchBar, attribute: .CenterY, multiplier: 1.0, constant: 1.0))
     }
     
+    private func addToolBar(searchBar: UISearchBar){
+        let toolBar = UIToolbar()
+        toolBar.barStyle = UIBarStyle.Default
+        toolBar.translucent = true
+        toolBar.tintColor = Palette.Pokedex.Background
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: .doneSelector)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: .cancelSelector)
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+        toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
+        toolBar.userInteractionEnabled = true
+        toolBar.sizeToFit()
+        searchBar.inputAccessoryView = toolBar
+    }
+    
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
     }
@@ -88,10 +101,20 @@ class PokedexVC: UIViewController {
     @objc private func backBtnPressed(sender: UIButton) {
         navigationController?.popViewControllerAnimated(true)
     }
+    
+    @objc private func donePressed(){
+        view.endEditing(true)
+    }
+    
+    @objc private func cancelPressed(){
+        view.endEditing(true)
+    }
 }
 
 private extension Selector {
     static let backBtnSelector = #selector(PokedexVC.backBtnPressed(_:))
+    static let doneSelector = #selector(PokedexVC.donePressed)
+    static let cancelSelector = #selector(PokedexVC.cancelPressed)
 }
 
 // MARK: - UICollectionViwDataSource
@@ -99,12 +122,12 @@ private extension Selector {
 extension PokedexVC: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return PokemonBase.shared.infos.count
+        return filteredData.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(PokedexCell.self), forIndexPath: indexPath)
-        (cell as? PokedexCell)?.configure(withPokemon: PokemonBase.shared.infos[indexPath.row])
+        (cell as? PokedexCell)?.configure(withPokemon: filteredData[indexPath.row])
         return cell
     }
 }
@@ -114,9 +137,27 @@ extension PokedexVC: UICollectionViewDataSource {
 extension PokedexVC: UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let vc = PokeInfoVC(withPokeModel: PokemonBase.shared.infos[indexPath.row])
+        let vc = PokeInfoVC(withPokeModel: filteredData[indexPath.row])
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
         navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+// MARK - PokedexSearchDelegate
+
+extension PokedexVC: PokedexSearchDelegate {
+    
+    func didChangeSearchText(searchText: String) {
+        filteredData = PokemonBase.shared.infos.filter({ (Pokemon) -> Bool in
+            let pokeName: NSString = Pokemon.name
+            return (pokeName.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch).location) != NSNotFound
+        })
+        
+        if searchText.isEmpty {
+            filteredData = PokemonBase.shared.infos
+        }
+        
+        collectionView.reloadData()
     }
 }
 

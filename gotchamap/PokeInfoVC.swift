@@ -94,6 +94,7 @@ class PokeInfoVC: UIViewController {
         weaknessDescLabel.text = pokeModel?.weaknessDesc
     }
     
+    // for Navigation Bar
     private func findHairLineInImageViewUnder(view view: UIView) -> UIImageView? {
         if let hairLineView = view as? UIImageView where hairLineView.bounds.size.height <= 1.0 {
             return hairLineView
@@ -107,18 +108,18 @@ class PokeInfoVC: UIViewController {
     }
 }
 
-extension UILabel {
+private extension UILabel {
     
     func infoDescStyle() {
         textColor = Palette.PokeInfo.infoDescText
         font = UIFont.pokeInfoDescText()
+        numberOfLines = 2
+        adjustsFontSizeToFitWidth = true
+        minimumScaleFactor = 0.6
     }
     
     func infoTitleStyle() {
         textColor = Palette.PokeInfo.infoTitleText
-        numberOfLines = 2
-        adjustsFontSizeToFitWidth = true
-        minimumScaleFactor = 0.5
         font = UIFont.pokeInfoText()
     }
 }

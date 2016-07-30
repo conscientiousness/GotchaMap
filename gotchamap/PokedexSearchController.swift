@@ -11,8 +11,17 @@ import UIKit
 protocol PokedexSearchDelegate {
     func didStartSearching()
     func didTapOnSearchButton()
-    func didTapOnCancelButton()
     func didChangeSearchText(searchText: String)
+}
+
+// Optional Protocol
+
+extension PokedexSearchDelegate {
+    func didStartSearching() {
+    }
+    
+    func didTapOnSearchButton() {
+    }
 }
 
 
@@ -48,31 +57,16 @@ class PokedexSearchController: UISearchController, UISearchBarDelegate {
         pokedexSearchBar.tintColor = textColor
         pokedexSearchBar.showsBookmarkButton = false
         pokedexSearchBar.showsCancelButton = false
-        
-        //pokedexSearchBar.delegate = self
+        pokedexSearchBar.delegate = self
     }
-    
     
     // MARK: UISearchBarDelegate functions
     
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        pokedexSearchDelegate.didStartSearching()
-    }
-    
-    
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        pokedexSearchBar.resignFirstResponder()
-        pokedexSearchDelegate.didTapOnSearchButton()
-    }
-    
-    
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        pokedexSearchBar.resignFirstResponder()
-        pokedexSearchDelegate.didTapOnCancelButton()
-    }
-    
-    
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         pokedexSearchDelegate.didChangeSearchText(searchText)
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        pokedexSearchBar.endEditing(true)
     }
 }
