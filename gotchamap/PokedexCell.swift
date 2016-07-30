@@ -101,7 +101,6 @@ class PokedexCell: UICollectionViewCell {
             imageView.kf_setImageWithURL(url, placeholderImage: nil)
         }
         nameLabel.text = pokemon.name
-        
         indexLabel.text = String(format: "#%03d", pokemon.pokeId)
     }
 }

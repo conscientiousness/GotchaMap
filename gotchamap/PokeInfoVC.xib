@@ -34,16 +34,16 @@
                     <rect key="frame" x="0.0" y="0.0" width="600" height="809"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9fu-TY-ZFB">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="901"/>
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="943"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kV9-Hw-s5R">
-                                    <rect key="frame" x="201" y="15" width="198" height="198"/>
+                                    <rect key="frame" x="180" y="15" width="240" height="240"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="kV9-Hw-s5R" secondAttribute="height" multiplier="1:1" id="gKc-bD-OBP"/>
                                     </constraints>
                                 </imageView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T0k-bd-VmE">
-                                    <rect key="frame" x="30" y="178" width="540" height="273"/>
+                                    <rect key="frame" x="30" y="220" width="540" height="273"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.99m" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UZz-kQ-klT">
                                             <rect key="frame" x="8" y="40" width="262" height="25"/>
@@ -149,13 +149,13 @@
                                     </userDefinedRuntimeAttributes>
                                 </view>
                                 <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="yog-Q7-wAm">
-                                    <rect key="frame" x="30" y="476" width="540" height="405"/>
+                                    <rect key="frame" x="30" y="518" width="540" height="405"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="yog-Q7-wAm" secondAttribute="height" multiplier="4:3" id="0Iv-f5-Uw6"/>
                                     </constraints>
                                 </mapView>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_pokedex" translatesAutoresizingMaskIntoConstraints="NO" id="OZM-e8-a0f">
-                                    <rect key="frame" x="201" y="15" width="198" height="198"/>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OZM-e8-a0f">
+                                    <rect key="frame" x="180" y="15" width="240" height="240"/>
                                 </imageView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -171,7 +171,7 @@
                                 <constraint firstItem="yog-Q7-wAm" firstAttribute="leading" secondItem="9fu-TY-ZFB" secondAttribute="leading" constant="30" id="TIV-qL-riO"/>
                                 <constraint firstItem="OZM-e8-a0f" firstAttribute="leading" secondItem="kV9-Hw-s5R" secondAttribute="leading" id="ZGp-eg-UHA"/>
                                 <constraint firstAttribute="bottom" secondItem="yog-Q7-wAm" secondAttribute="bottom" constant="20" id="aXZ-Jq-43m"/>
-                                <constraint firstItem="kV9-Hw-s5R" firstAttribute="width" secondItem="9fu-TY-ZFB" secondAttribute="width" multiplier="0.33" id="d3L-GB-oPy"/>
+                                <constraint firstItem="kV9-Hw-s5R" firstAttribute="width" secondItem="9fu-TY-ZFB" secondAttribute="width" multiplier="0.4" id="d3L-GB-oPy"/>
                                 <constraint firstAttribute="trailing" secondItem="T0k-bd-VmE" secondAttribute="trailing" constant="30" id="hMI-32-4vV"/>
                                 <constraint firstItem="yog-Q7-wAm" firstAttribute="trailing" secondItem="T0k-bd-VmE" secondAttribute="trailing" id="m8y-fT-T0Z"/>
                                 <constraint firstItem="T0k-bd-VmE" firstAttribute="leading" secondItem="9fu-TY-ZFB" secondAttribute="leading" constant="30" id="wqn-PI-onf"/>
@@ -207,7 +207,4 @@
             <point key="canvasLocation" x="270" y="514.5"/>
         </view>
     </objects>
-    <resources>
-        <image name="btn_pokedex" width="74" height="74"/>
-    </resources>
 </document>

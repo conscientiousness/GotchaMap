@@ -24,18 +24,23 @@ class PokeInfoVC: UIViewController {
     @IBOutlet weak var infoContainerView: UIView!
     @IBOutlet weak var container: UIView!
     
-    var pokeData: Pokemon?
+    var pokeModel: Pokemon?
     
-    /*
-    private lazy var blurView: UIVisualEffectView = {
-        let _blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
-        return _blurView
-    }()*/
+    init(withPokeModel pokeModel: Pokemon) {
+        self.pokeModel = pokeModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(false, animated: true)
         setUpSubViews()
+        setUpData()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -57,7 +62,6 @@ class PokeInfoVC: UIViewController {
         navigationController?.navigationBar.barStyle = .Black
         navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         navigationController?.navigationBar.barTintColor = Palette.PokeInfo.Background
-        title = "妙挖種子種子"
         navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName : UIFont.pokeInfoVCTitle()]
         
         // infoLabel
@@ -79,21 +83,18 @@ class PokeInfoVC: UIViewController {
         pokeImg.contentMode = .ScaleAspectFit
         pokeImg.clipsToBounds = true
         pokeBgImg.contentMode = .ScaleAspectFill
-        if let pokeData = pokeData {
-            pokeImg.kf_setImageWithURL(pokeData.imgURL, placeholderImage: nil)
-            //pokeBgImg.kf_setImageWithURL(pokeData.imgURL, placeholderImage: nil)
-        }
-        
-        /*/ blurView
-        pokeBgImg.insertSubview(blurView, belowSubview: infoContainerView)
-        blurView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let views = ["blurView": blurView]
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[blurView]|", options: [], metrics: nil, views: views))
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[blurView]|", options: [], metrics: nil, views: views))*/
     }
     
-    func findHairLineInImageViewUnder(view view: UIView) -> UIImageView? {
+    private func setUpData() {
+        title = pokeModel?.name
+        pokeImg.kf_setImageWithURL(pokeModel?.imgURL, placeholderImage: nil)
+        heightDescLabel.text = pokeModel?.height
+        weightDescLabel.text = pokeModel?.weight
+        typeDescLabel.text =  pokeModel?.typeDesc
+        weaknessDescLabel.text = pokeModel?.weaknessDesc
+    }
+    
+    private func findHairLineInImageViewUnder(view view: UIView) -> UIImageView? {
         if let hairLineView = view as? UIImageView where hairLineView.bounds.size.height <= 1.0 {
             return hairLineView
         }

@@ -114,8 +114,7 @@ extension PokedexVC: UICollectionViewDataSource {
 extension PokedexVC: UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let vc = PokeInfoVC()
-        vc.pokeData = PokemonBase.shared.infos[indexPath.row]
+        let vc = PokeInfoVC(withPokeModel: PokemonBase.shared.infos[indexPath.row])
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
         navigationController?.pushViewController(vc, animated: true)
     }
