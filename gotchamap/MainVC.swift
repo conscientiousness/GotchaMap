@@ -59,6 +59,8 @@ class MainVC: UIViewController {
         return _pokedexBtn
     }()
     
+    private let transition = BubbleTransition()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -141,7 +143,10 @@ class MainVC: UIViewController {
     }
     
     @objc private func pokedexBtnPressed(sender: UIButton) {
-        navigationController?.pushViewController(PokedexVC(), animated: true)
+        let targetVC = PokedexVC()
+        targetVC.transitioningDelegate = self
+        targetVC.modalPresentationStyle = .Custom
+        self.presentViewController(targetVC, animated: true, completion: nil)
     }
 }
 
@@ -149,6 +154,27 @@ private extension Selector {
     static let backHomeBtnSelector = #selector(MainVC.backHomeBtnPressed(_:))
     static let pokedexBtnSelector = #selector(MainVC.pokedexBtnPressed(_:))
 }
+
+// MARK: - UIViewController Transitioning Delegate
+
+extension MainVC: UIViewControllerTransitioningDelegate {
+    
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transition.transitionMode = .Present
+        transition.startingPoint = pokedexBtn.center
+        transition.bubbleColor = Palette.Pokedex.Background
+        return transition
+    }
+    
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transition.transitionMode = .Dismiss
+        transition.startingPoint = pokedexBtn.center
+        transition.bubbleColor = Palette.Pokedex.Background
+        return transition
+    }
+}
+
+// MARK: - CLLocation Manager Delegate
 
 extension MainVC: CLLocationManagerDelegate {
     
@@ -163,12 +189,16 @@ extension MainVC: CLLocationManagerDelegate {
     }
 }
 
+// MARK: - FBClustering Manager Delegate
+
 extension MainVC: FBClusteringManagerDelegate {
     
     func cellSizeFactorForCoordinator(coordinator:FBClusteringManager) -> CGFloat{
         return 1.5
     }
 }
+
+// MARK: - MKMapView Delegate
 
 extension MainVC: MKMapViewDelegate {
     

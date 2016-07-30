@@ -39,6 +39,7 @@
 		F4CA4A571D4137A400669B1F /* FBClusteringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A501D4137A400669B1F /* FBClusteringManager.swift */; };
 		F4CA4A581D4137A400669B1F /* FBQuadTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A511D4137A400669B1F /* FBQuadTree.swift */; };
 		F4CA4A591D4137A400669B1F /* FBQuadTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A521D4137A400669B1F /* FBQuadTreeNode.swift */; };
+		F4E9FA791D4D101200CE692F /* BubbleTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E9FA781D4D101200CE692F /* BubbleTransition.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +100,7 @@
 		F4CA4A501D4137A400669B1F /* FBClusteringManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBClusteringManager.swift; path = Lib/FBAnnotationClusteringSwift/FBClusteringManager.swift; sourceTree = "<group>"; };
 		F4CA4A511D4137A400669B1F /* FBQuadTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBQuadTree.swift; path = Lib/FBAnnotationClusteringSwift/FBQuadTree.swift; sourceTree = "<group>"; };
 		F4CA4A521D4137A400669B1F /* FBQuadTreeNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBQuadTreeNode.swift; path = Lib/FBAnnotationClusteringSwift/FBQuadTreeNode.swift; sourceTree = "<group>"; };
+		F4E9FA781D4D101200CE692F /* BubbleTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BubbleTransition.swift; path = Lib/BubbleTransition/BubbleTransition.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -251,6 +253,7 @@
 		F4CA4A4A1D41373B00669B1F /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				F4E9FA771D4D0FB500CE692F /* BubbleTransition */,
 				F4CA4A4B1D41375800669B1F /* FBAnnotationClusteringSwift */,
 			);
 			name = Lib;
@@ -302,6 +305,14 @@
 			);
 			name = "Supporting Files";
 			path = gotchamap;
+			sourceTree = "<group>";
+		};
+		F4E9FA771D4D0FB500CE692F /* BubbleTransition */ = {
+			isa = PBXGroup;
+			children = (
+				F4E9FA781D4D101200CE692F /* BubbleTransition.swift */,
+			);
+			name = BubbleTransition;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -513,6 +524,7 @@
 				F4CA4A3C1D408AA400669B1F /* MainVC.swift in Sources */,
 				F47464D11D44BE840003F4C4 /* PokedexSearchBar.swift in Sources */,
 				F47464CD1D44959D0003F4C4 /* PokedexVC.swift in Sources */,
+				F4E9FA791D4D101200CE692F /* BubbleTransition.swift in Sources */,
 				F4CA4A471D41311900669B1F /* UIFont+Gotcha.swift in Sources */,
 				F4CA4A561D4137A400669B1F /* FBBoundingBox.swift in Sources */,
 			);

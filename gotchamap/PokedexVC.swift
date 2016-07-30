@@ -73,7 +73,6 @@ class PokedexVC: UIViewController {
         
         let views = ["collection": collectionView, "search": searchController.pokedexSearchBar,
                      "backBtn": backBtn]
-        
         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-25-[search(46)]-5-[collection]|", options: [], metrics: nil, views: views))
         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collection]|", options: [], metrics: nil, views: views))
         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-8-[backBtn(25)]-10-[search]-35-|", options: [], metrics: nil, views: views))
@@ -99,7 +98,8 @@ class PokedexVC: UIViewController {
     }
     
     @objc private func backBtnPressed(sender: UIButton) {
-        navigationController?.popViewControllerAnimated(true)
+        //navigationController?.popViewControllerAnimated(true)
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @objc private func donePressed(){
