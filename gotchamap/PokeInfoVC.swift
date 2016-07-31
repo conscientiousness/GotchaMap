@@ -11,6 +11,7 @@ import Kingfisher
 
 class PokeInfoVC: UIViewController {
 
+    @IBOutlet weak var pokeNameTitleLabel: UILabel!
     @IBOutlet weak var heightTitleLabel: UILabel!
     @IBOutlet weak var weightTitleLabel: UILabel!
     @IBOutlet weak var typeTitleLabel: UILabel!
@@ -57,12 +58,15 @@ class PokeInfoVC: UIViewController {
         view.backgroundColor = Palette.PokeInfo.Background
         container.backgroundColor = Palette.PokeInfo.Background
         
-        // Navigation
+        /*/ Navigation
         navigationController?.navigationBar.translucent = false
         navigationController?.navigationBar.barStyle = .Black
         navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         navigationController?.navigationBar.barTintColor = Palette.PokeInfo.Background
-        navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName : UIFont.pokeInfoVCTitle()]
+        navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName : UIFont.pokeInfoVCTitle()]*/
+        
+        pokeNameTitleLabel.textColor = UIColor.whiteColor()
+        pokeNameTitleLabel.font = UIFont.pokeInfoVCTitle()
         
         // infoLabel
         heightTitleLabel.infoTitleStyle()
@@ -87,11 +91,20 @@ class PokeInfoVC: UIViewController {
     
     private func setUpData() {
         title = pokeModel?.name
+        pokeNameTitleLabel.text = pokeModel?.name
         pokeImg.kf_setImageWithURL(pokeModel?.imgURL, placeholderImage: nil)
         heightDescLabel.text = pokeModel?.height
         weightDescLabel.text = pokeModel?.weight
         typeDescLabel.text =  pokeModel?.typeDesc
         weaknessDescLabel.text = pokeModel?.weaknessDesc
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
+    
+    @IBAction func backBtnPressed(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     // for Navigation Bar

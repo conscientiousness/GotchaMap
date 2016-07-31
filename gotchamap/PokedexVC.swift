@@ -75,7 +75,7 @@ class PokedexVC: UIViewController {
                      "backBtn": backBtn]
         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-25-[search(46)]-5-[collection]|", options: [], metrics: nil, views: views))
         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collection]|", options: [], metrics: nil, views: views))
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-8-[backBtn(25)]-10-[search]-35-|", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-8-[backBtn(44)]-10-[search]-35-|", options: [], metrics: nil, views: views))
         view.addConstraint(NSLayoutConstraint(item: backBtn, attribute: .CenterY, relatedBy: .Equal, toItem: searchController.pokedexSearchBar, attribute: .CenterY, multiplier: 1.0, constant: 1.0))
     }
     
@@ -138,8 +138,9 @@ extension PokedexVC: UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let vc = PokeInfoVC(withPokeModel: filteredData[indexPath.row])
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
-        navigationController?.pushViewController(vc, animated: true)
+        self.presentViewController(vc, animated: true, completion: nil)
+        //navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        //navigationController?.pushViewController(vc, animated: true)
     }
 }
 
