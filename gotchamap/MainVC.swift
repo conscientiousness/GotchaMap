@@ -39,7 +39,7 @@ class MainVC: UIViewController {
     var currentLocation: CLLocation?
     var isFirstLocationReceived = false
 
-    private(set) lazy var backHomeBtn: UIButton = {
+    private lazy var backHomeBtn: UIButton = {
         let _backHomeBtn = UIButton()
         _backHomeBtn.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
         _backHomeBtn.setImage(UIImage(named: "btn_backHome"), forState: .Normal)
@@ -49,7 +49,7 @@ class MainVC: UIViewController {
         return _backHomeBtn
     }()
     
-    private(set) lazy var pokedexBtn: UIButton = {
+    private lazy var pokedexBtn: UIButton = {
         let _pokedexBtn = UIButton()
         _pokedexBtn.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
         _pokedexBtn.setImage(UIImage(named: "btn_pokedex"), forState: .Normal)
@@ -59,7 +59,12 @@ class MainVC: UIViewController {
         return _pokedexBtn
     }()
     
-    private let transition = BubbleTransition()
+    private lazy var transition: BubbleTransition = {
+        let _transition = BubbleTransition()
+        _transition.startingPoint = self.pokedexBtn.center
+        _transition.bubbleColor = Palette.Pokedex.Background
+        return _transition
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -161,15 +166,11 @@ extension MainVC: UIViewControllerTransitioningDelegate {
     
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         transition.transitionMode = .Present
-        transition.startingPoint = pokedexBtn.center
-        transition.bubbleColor = Palette.Pokedex.Background
         return transition
     }
     
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         transition.transitionMode = .Dismiss
-        transition.startingPoint = pokedexBtn.center
-        transition.bubbleColor = Palette.Pokedex.Background
         return transition
     }
 }
@@ -223,23 +224,24 @@ extension MainVC: MKMapViewDelegate {
         }
         
         if annotation.isKindOfClass(FBAnnotationCluster) {
-            let reuseId = "Cluster"
-            var clusterView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
-            clusterView = FBAnnotationClusterView(annotation: annotation, reuseIdentifier: reuseId, options: nil)
+            var clusterView = mapView.dequeueReusableAnnotationViewWithIdentifier(kFBAnnotationClusterViewId)
             
+            clusterView = FBAnnotationClusterView(annotation: annotation, reuseIdentifier: kFBAnnotationClusterViewId, options: nil)
+
             return clusterView
             
         } else {
-            let reuseId = "poke"
-            var pokeView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? PokeAnnotationView
+            var pokeView = mapView.dequeueReusableAnnotationViewWithIdentifier(kPokeAnnotationViewId) as? PokeAnnotationView
             
             if pokeView == nil {
-                pokeView  = PokeAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+                pokeView  = PokeAnnotationView(annotation: annotation, reuseIdentifier: kPokeAnnotationViewId)
             }
             
             let fbAnnotation = annotation as! FBAnnotation
-            pokeView?.setUpAnView(PokemonBase.shared.infos[fbAnnotation.pokeId])
-            pokeView?.canShowCallout = true
+            let pokeModel: Pokemon = PokemonBase.shared.infos[fbAnnotation.pokeId]
+            
+            fbAnnotation.title = pokeModel.name
+            pokeView?.setUpAnView(pokeModel)
             
             return pokeView
         }
@@ -271,19 +273,19 @@ extension MainVC: MKMapViewDelegate {
             if annotation.isKindOfClass(MKUserLocation) {
                 return
             }
-            
-            if annotation.isKindOfClass(FBAnnotation) {
-                let fbAnnotation = annotation as! FBAnnotation
-                print(fbAnnotation.pokeId)
-            }
-            
-            if annotation.isKindOfClass(FBAnnotation) {
-                let fbAnnotation = annotation as! FBAnnotation
-                print(fbAnnotation.pokeId)
+        }
+    }
+    
+    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        if view.isKindOfClass(PokeAnnotationView) {
+            if let pokeModel = (view as? PokeAnnotationView)?.pokeModel {
+                let targetVC = PokeInfoVC(withPokeModel: pokeModel)
+                self.presentViewController(targetVC, animated: true, completion: nil)
             }
         }
     }
 }
+
 
 /*
  // 0. This example uses MapKit to calculate the bounding box

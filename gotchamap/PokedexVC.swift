@@ -10,7 +10,7 @@ import UIKit
 
 class PokedexVC: UIViewController {
     
-    private(set) lazy var backBtn: UIButton = {
+    private lazy var backBtn: UIButton = {
         let _backBtn = UIButton()
         _backBtn.setImage(UIImage(named: "btn_back"), forState: .Normal)
         _backBtn.addTarget(self, action: .backBtnSelector, forControlEvents: .TouchUpInside)
@@ -35,7 +35,7 @@ class PokedexVC: UIViewController {
         return _grid
     }
     
-    private(set) lazy var collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let _collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: self.gridFlowLayout)
         _collectionView.registerClass(PokedexCell.self, forCellWithReuseIdentifier: NSStringFromClass(PokedexCell.self))
         _collectionView.backgroundColor = UIColor.clearColor()

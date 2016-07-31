@@ -9,6 +9,8 @@
 import Foundation
 import MapKit
 
+let kFBAnnotationClusterViewId = "FBAnnotationClusterView"
+
 public class FBAnnotationClusterView : MKAnnotationView {
     
     var count = 0

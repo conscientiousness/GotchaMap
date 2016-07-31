@@ -10,11 +10,14 @@ import Foundation
 import MapKit
 import Kingfisher
 
+let kPokeAnnotationViewId = "pokeAnnotationView"
+
 class PokeAnnotationView: MKAnnotationView {
     
     let viewFrame = CGRectMake(0, 0, 44, 44)
+    var pokeModel: Pokemon?
     
-    private(set) lazy var imageView: UIImageView = {
+    private lazy var imageView: UIImageView = {
         let _imageView = UIImageView()
         _imageView.contentMode = .ScaleAspectFit
         _imageView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
@@ -33,6 +36,7 @@ class PokeAnnotationView: MKAnnotationView {
     
     required override init(frame: CGRect) {
         super.init(frame: viewFrame)
+        setUpCalloutView()
         setUpSubViews()
     }
     
@@ -40,11 +44,26 @@ class PokeAnnotationView: MKAnnotationView {
         super.init(coder: aDecoder)
     }
     
-    func setUpSubViews() {
+    // MARK - Private Method
+    
+    private func setUpCalloutView() {
+        canShowCallout = true
+        
+        let infoBtn = UIButton(frame: CGRectMake(0, 0, 22, 22))
+        infoBtn.setImage(UIImage(named: "btn_map_poke_info"), forState: .Normal)
+        infoBtn.autoresizingMask = [.FlexibleBottomMargin, .FlexibleTopMargin, .FlexibleRightMargin]
+        rightCalloutAccessoryView = infoBtn
+    }
+    
+    private func setUpSubViews() {
         imageView.frame = bounds
     }
     
+    // MARK - Public Method
+    
     func setUpAnView(poke: Pokemon) {
+        pokeModel = poke
+        
         if let imgURL = poke.imgURL {
             imageView.kf_setImageWithURL(imgURL)
         }
