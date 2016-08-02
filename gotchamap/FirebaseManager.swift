@@ -15,6 +15,7 @@ class FirebaseManager {
     private(set) lazy var baseRef: FIRDatabaseReference = FIRDatabase.database().reference()
     private(set) lazy var postsRef: FIRDatabaseReference = self.baseRef.child(FirebaseRefKey.pokemons)
     private(set) lazy var usersRef: FIRDatabaseReference = self.baseRef.child(FirebaseRefKey.users)
+    private(set) lazy var geoFire: GeoFire = GeoFire(firebaseRef: self.baseRef)
     
     typealias userCreatedResult = Bool? -> Void
     

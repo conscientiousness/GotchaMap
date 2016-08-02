@@ -6,19 +6,14 @@
 //  Copyright © 2016年 JesseLin. All rights reserved.
 //
 
-import Foundation
-
 enum FirebaseRefKey {
     static let users = "users"
     static let pokemons = "pokemons"
     static let likes = "likes"
     
     enum Pokemons {
-        enum Coordinate {
-            static let latitude = "lat"
-            static let longitude = "long"
-        }
-        
+        static let Coordinate = "Coordinate"
+
         enum Vote {
             static let good = "good"
             static let shit = "shit"
@@ -29,6 +24,3 @@ enum FirebaseRefKey {
 enum UserDefaultsKey {
     static let uid = "uid"
 }
-
-
-

@@ -35,10 +35,6 @@ class MainVC: UIViewController {
         _locationMananger.desiredAccuracy = kCLLocationAccuracyBest
         return _locationMananger
     }()
-    
-    let numberOfLocations = 100
-    var currentLocation: CLLocation?
-    var isFirstLocationReceived = false
 
     private lazy var backHomeBtn: UIButton = {
         let _backHomeBtn = UIButton()
@@ -67,6 +63,11 @@ class MainVC: UIViewController {
         return _transition
     }()
     
+    let numberOfLocations = 100
+    var currentLocation: CLLocation?
+    var isFirstLocationReceived = false
+    var clusteringArray:[MKAnnotation] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -80,9 +81,10 @@ class MainVC: UIViewController {
                     PokemonBase.shared.infos.append(pokemon)
                 }
                 
-                let array:[MKAnnotation] = self.randomLocationsWithCount(self.numberOfLocations)
+                // for test
+                /*let array:[MKAnnotation] = self.randomLocationsWithCount(self.numberOfLocations)
                 self.clusteringManager.addAnnotations(array)
-                self.mapView.centerCoordinate = CLLocationCoordinate2DMake(0, 0);
+                self.mapView.centerCoordinate = CLLocationCoordinate2DMake(0, 0);*/
             }
         }
     }
@@ -96,6 +98,44 @@ class MainVC: UIViewController {
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         locationMananger.stopUpdatingLocation()
+    }
+    
+    func initObservers(coordinate: CLLocationCoordinate2D) {
+
+        let center = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        
+        // 600 meters
+        let circleQuery = FirebaseManager.shared.geoFire.queryAtLocation(center, withRadius: 0.6)
+        
+        /*
+        let span = MKCoordinateSpanMake(0.001, 0.001)
+        let region = MKCoordinateRegionMake(center.coordinate, span)
+        var regionQuery = FirebaseManager.shared.geoFire.queryWithRegion(region)*/
+        
+        _ = circleQuery.observeEventType(.KeyEntered, withBlock: { (key: String!, location: CLLocation!) in
+            
+            let a: FBAnnotation = FBAnnotation()
+            a.coordinate = location.coordinate
+            self.clusteringArray.append(a)
+            
+        })
+        
+        _ = circleQuery.observeEventType(.KeyExited, withBlock: { (key: String!, location: CLLocation!) in
+            print("KeyExited")
+        })
+        
+        _ = circleQuery.observeEventType(.KeyMoved, withBlock: { (key: String!, location: CLLocation!) in
+            print("KeyExited")
+        })
+        
+        circleQuery.observeReadyWithBlock({
+            self.clusteringManager.addAnnotations(self.clusteringArray)
+            var region = self.mapView.region;
+            region.center = coordinate;
+            region.span.latitudeDelta=0.05;
+            region.span.longitudeDelta=0.05;
+            self.mapView.setRegion(region, animated: true)
+        })
     }
     
     private func setupSubviews() {
@@ -127,9 +167,11 @@ class MainVC: UIViewController {
     private func zoomInToCurrentLocation(coordinate: CLLocationCoordinate2D) {
         var region = mapView.region;
         region.center = coordinate;
-        region.span.latitudeDelta=0.01;
-        region.span.longitudeDelta=0.01;
+        region.span.latitudeDelta=0.5;
+        region.span.longitudeDelta=0.5;
         mapView.setRegion(region, animated: true)
+        
+        initObservers(coordinate)
     }
     
     func randomLocationsWithCount(count:Int) -> [FBAnnotation] {
@@ -142,21 +184,26 @@ class MainVC: UIViewController {
         return array
     }
     
+    func random(num: Double) -> Double {
+        return Double(NSString(format:"%.6f",num - drand48() / 1000.0) as String)!
+    }
+    
     // MARK: - Button Action Method
     
     @objc private func backHomeBtnPressed(sender: UIButton) {
         
         let request = PostPoke()
-        request.pokemonId = "123"
-        request.coordinate = [FirebaseRefKey.Pokemons.Coordinate.latitude: 25.019683, FirebaseRefKey.Pokemons.Coordinate.longitude: 121.465934]
-        request.vote = [FirebaseRefKey.Pokemons.Vote.good: 50, FirebaseRefKey.Pokemons.Vote.shit: 0]
+        request.pokemonId = String(arc4random_uniform(100) + 1)
+        request.vote = [FirebaseRefKey.Pokemons.Vote.good: Int(arc4random_uniform(300)), FirebaseRefKey.Pokemons.Vote.shit: Int(arc4random_uniform(10))]
         
         let JSONString = Mapper().toJSON(request)
         
         let fbPost = FirebaseManager.shared.postsRef.childByAutoId()
         fbPost.setValue(JSONString)
         
-        let userPostsRef = FirebaseManager.shared.currentUsersRef.child(FirebaseRefKey.pokemons).child(NSUserDefaults.standardUserDefaults().stringForKey(UserDefaultsKey.uid) ?? "")
+        FirebaseManager.shared.geoFire.setLocation(CLLocation(latitude: random(25.019683), longitude: random(121.465934)), forKey: fbPost.key)
+        
+        let userPostsRef = FirebaseManager.shared.currentUsersRef.child(FirebaseRefKey.pokemons).child(fbPost.key)
         userPostsRef.setValue(true)
         
         //zoomInToCurrentLocation(mapView.userLocation.coordinate)
