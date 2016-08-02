@@ -7,12 +7,12 @@
 //
 
 import UIKit
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
@@ -28,6 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // hide all Navigation Separator Line
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        
+        FIRApp.configure()
+        FirebaseManager.shared.anonymousUserSignIn(withCompletionHandler: nil)
         
         return true
     }

@@ -6,8 +6,6 @@
 //  Copyright © 2016年 JesseLin. All rights reserved.
 //
 
-import Foundation
-
 class PokemonBase {
     static let shared = PokemonBase()
     var infos: [Pokemon] = []

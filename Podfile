@@ -8,4 +8,8 @@ target 'gotchamap' do
     pod 'Kingfisher'
     pod 'Alamofire'
     pod 'SwiftyJSON'
+    pod 'ObjectMapper', '~> 1.3'
+    pod 'Firebase/Core'
+    pod 'Firebase/Database'
+    pod 'Firebase/Auth'
 end

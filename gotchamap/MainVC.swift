@@ -10,6 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 import RealmSwift
+import ObjectMapper
 
 class MainVC: UIViewController {
 
@@ -144,7 +145,21 @@ class MainVC: UIViewController {
     // MARK: - Button Action Method
     
     @objc private func backHomeBtnPressed(sender: UIButton) {
-        zoomInToCurrentLocation(mapView.userLocation.coordinate)
+        
+        let request = PostPoke()
+        request.pokemonId = "123"
+        request.coordinate = [FirebaseRefKey.Pokemons.Coordinate.latitude: 25.019683, FirebaseRefKey.Pokemons.Coordinate.longitude: 121.465934]
+        request.vote = [FirebaseRefKey.Pokemons.Vote.good: 50, FirebaseRefKey.Pokemons.Vote.shit: 0]
+        
+        let JSONString = Mapper().toJSON(request)
+        
+        let fbPost = FirebaseManager.shared.postsRef.childByAutoId()
+        fbPost.setValue(JSONString)
+        
+        let userPostsRef = FirebaseManager.shared.currentUsersRef.child(FirebaseRefKey.pokemons).child(NSUserDefaults.standardUserDefaults().stringForKey(UserDefaultsKey.uid) ?? "")
+        userPostsRef.setValue(true)
+        
+        //zoomInToCurrentLocation(mapView.userLocation.coordinate)
     }
     
     @objc private func pokedexBtnPressed(sender: UIButton) {
