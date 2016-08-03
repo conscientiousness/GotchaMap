@@ -63,10 +63,11 @@ class MainVC: UIViewController {
         return _transition
     }()
     
-    let numberOfLocations = 100
+    let numberOfLocations = 1000
     var currentLocation: CLLocation?
     var isFirstLocationReceived = false
     var clusteringArray:[MKAnnotation] = []
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,9 +83,9 @@ class MainVC: UIViewController {
                 }
                 
                 // for test
-                /*let array:[MKAnnotation] = self.randomLocationsWithCount(self.numberOfLocations)
+                let array:[MKAnnotation] = self.randomLocationsWithCount(self.numberOfLocations)
                 self.clusteringManager.addAnnotations(array)
-                self.mapView.centerCoordinate = CLLocationCoordinate2DMake(0, 0);*/
+                self.mapView.centerCoordinate = CLLocationCoordinate2DMake(0, 0);
             }
         }
     }
@@ -130,11 +131,11 @@ class MainVC: UIViewController {
         
         circleQuery.observeReadyWithBlock({
             self.clusteringManager.addAnnotations(self.clusteringArray)
-            var region = self.mapView.region;
-            region.center = coordinate;
-            region.span.latitudeDelta=0.05;
-            region.span.longitudeDelta=0.05;
-            self.mapView.setRegion(region, animated: true)
+            //var region = self.mapView.region;
+            //region.center = coordinate;
+            //region.span.latitudeDelta=0.05;
+            //region.span.longitudeDelta=0.05;
+            //self.mapView.setRegion(region, animated: true)
         })
     }
     
@@ -165,13 +166,17 @@ class MainVC: UIViewController {
     // MARK: - Utility
     
     private func zoomInToCurrentLocation(coordinate: CLLocationCoordinate2D) {
-        var region = mapView.region;
-        region.center = coordinate;
-        region.span.latitudeDelta=0.5;
-        region.span.longitudeDelta=0.5;
-        mapView.setRegion(region, animated: true)
         
-        initObservers(coordinate)
+        //let span = MKCoordinateSpanMake(0, 360 / pow(2, Double(20.0)) * Double(mapView.frame.size.width) / 256)
+        //mapView.setRegion(MKCoordinateRegionMake(coordinate, span), animated: true)
+        
+//        var region = mapView.region;
+//        region.center = coordinate;
+//        region.span.latitudeDelta=3;
+//        region.span.longitudeDelta=3;
+//        mapView.setRegion(region, animated: true)
+        
+        //initObservers(coordinate)
     }
     
     func randomLocationsWithCount(count:Int) -> [FBAnnotation] {
@@ -195,13 +200,14 @@ class MainVC: UIViewController {
         let request = PostPoke()
         request.pokemonId = String(arc4random_uniform(100) + 1)
         request.vote = [FirebaseRefKey.Pokemons.Vote.good: Int(arc4random_uniform(300)), FirebaseRefKey.Pokemons.Vote.shit: Int(arc4random_uniform(10))]
-        
         let JSONString = Mapper().toJSON(request)
         
         let fbPost = FirebaseManager.shared.postsRef.childByAutoId()
         fbPost.setValue(JSONString)
         
-        FirebaseManager.shared.geoFire.setLocation(CLLocation(latitude: random(25.019683), longitude: random(121.465934)), forKey: fbPost.key)
+        let location = CLLocation(latitude: random(25.019683), longitude: random(121.465934))
+        GeoFire(firebaseRef: fbPost).setLocation(location, forKey: FirebaseRefKey.Pokemons.coordinate)
+        FirebaseManager.shared.geoFire.setLocation(location, forKey: fbPost.key)
         
         let userPostsRef = FirebaseManager.shared.currentUsersRef.child(FirebaseRefKey.pokemons).child(fbPost.key)
         userPostsRef.setValue(true)

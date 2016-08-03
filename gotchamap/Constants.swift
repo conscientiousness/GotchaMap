@@ -10,9 +10,11 @@ enum FirebaseRefKey {
     static let users = "users"
     static let pokemons = "pokemons"
     static let likes = "likes"
+    static let coordinates = "coordinates"
     
     enum Pokemons {
-        static let Coordinate = "Coordinate"
+        static let coordinate = "coordinate"
+        
 
         enum Vote {
             static let good = "good"
