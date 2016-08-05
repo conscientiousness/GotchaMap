@@ -23,7 +23,7 @@ public class FBClusteringManager : NSObject {
     
     var lock:NSRecursiveLock = NSRecursiveLock()
     
-    public var maxZoomLevel = 19
+    public var maxZoomLevel = 1.5
     
     public override init(){
         super.init()
@@ -54,8 +54,11 @@ public class FBClusteringManager : NSObject {
     public func clusteredAnnotationsWithinMapRect(rect:MKMapRect, withZoomScale zoomScale:Double) -> [MKAnnotation]{
         guard !zoomScale.isInfinite else { return [] }
         
-        let zoomLevel   = FBClusteringManager.FBZoomScaleToZoomLevel(MKZoomScale(zoomScale))
-        let cellSize    = FBClusteringManager.FBCellSizeForZoomLevel(zoomLevel)
+        let cellSize:CGFloat = FBClusteringManager.FBCellSizeForZoomScale(MKZoomScale(zoomScale))
+        
+        //        if delegate?.respondsToSelector("cellSizeFactorForCoordinator:") {
+        //            cellSize *= delegate.cellSizeFactorForCoordinator(self)
+        //        }
         
         let scaleFactor:Double = zoomScale / Double(cellSize)
         
@@ -92,9 +95,11 @@ public class FBClusteringManager : NSObject {
                 
                 let count = annotations.count
                 
-                if count == 1 || zoomLevel >= self.maxZoomLevel {
+                if count == 1 {
                     clusteredAnnotations += annotations
-                } else if count > 1 {
+                }
+                
+                if count > 1 && zoomScale < self.maxZoomLevel {
                     let coordinate = CLLocationCoordinate2D(
                         latitude: CLLocationDegrees(totalLatitude)/CLLocationDegrees(count),
                         longitude: CLLocationDegrees(totalLongitude)/CLLocationDegrees(count)
@@ -103,8 +108,11 @@ public class FBClusteringManager : NSObject {
                     cluster.coordinate = coordinate
                     cluster.annotations = annotations
                     clusteredAnnotations.append(cluster)
+                } else {
+                    clusteredAnnotations += annotations
                 }
             }
+            
         }
         
         
@@ -140,9 +148,6 @@ public class FBClusteringManager : NSObject {
             let toRemove = NSMutableSet(set: before)
             toRemove.minusSet(after as Set<NSObject>)
             
-            let annotationsOnlyPredicate = NSPredicate(format: "SELF isKindOfClass:%@", argumentArray: [FBAnnotationCluster.self])
-            toRemove.filterUsingPredicate(annotationsOnlyPredicate)
-            
             if let toAddAnnotations = toAdd.allObjects as? [MKAnnotation]{
                 mapView.addAnnotations(toAddAnnotations)
             }
@@ -164,7 +169,9 @@ public class FBClusteringManager : NSObject {
         return zoomLevel;
     }
     
-    public class func FBCellSizeForZoomLevel(zoomLevel: Int) -> CGFloat {
+    public class func FBCellSizeForZoomScale(zoomScale:MKZoomScale) -> CGFloat {
+        
+        let zoomLevel:Int = FBClusteringManager.FBZoomScaleToZoomLevel(zoomScale)
         
         switch (zoomLevel) {
         case 13:
@@ -186,11 +193,7 @@ public class FBClusteringManager : NSObject {
             // less than 13 zoom level
             return 88
         }
+        
     }
     
-    public class func FBCellSizeForZoomScale(zoomScale:MKZoomScale) -> CGFloat {
-        
-        let zoomLevel = FBClusteringManager.FBZoomScaleToZoomLevel(zoomScale)
-        return FBClusteringManager.FBCellSizeForZoomLevel(zoomLevel)
-    }
 }

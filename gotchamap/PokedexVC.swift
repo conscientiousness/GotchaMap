@@ -162,3 +162,19 @@ extension PokedexVC: PokedexSearchDelegate {
     }
 }
 
+/* POST test
+let request = PostPoke()
+        request.pokemonId = String(arc4random_uniform(100) + 1)
+        request.vote = [FirebaseRefKey.Pokemons.Vote.good: Int(arc4random_uniform(300)), FirebaseRefKey.Pokemons.Vote.shit: Int(arc4random_uniform(10))]
+        let JSONString = Mapper().toJSON(request)
+        
+        let fbPost = FirebaseManager.shared.postsRef.childByAutoId()
+        fbPost.setValue(JSONString)
+        
+        let location = CLLocation(latitude: random(currentLocation?.coordinate.latitude ?? 25.019683), longitude: random(currentLocation?.coordinate.longitude ?? 121.465934))
+        GeoFire(firebaseRef: fbPost).setLocation(location, forKey: FirebaseRefKey.Pokemons.coordinate)
+        FirebaseManager.shared.geoFire.setLocation(location, forKey: fbPost.key)
+        
+        let userPostsRef = FirebaseManager.shared.currentUsersRef.child(FirebaseRefKey.pokemons).child(fbPost.key)
+        userPostsRef.setValue(true)
+ */

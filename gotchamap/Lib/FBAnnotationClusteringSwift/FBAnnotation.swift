@@ -13,9 +13,9 @@ import MapKit
 class FBAnnotation : NSObject {
 
     var coordinate = CLLocationCoordinate2D(latitude: 25.024739, longitude: 121.468240)
-    var title: String? = ""
-    var pokeId = Int(arc4random_uniform(151))
-    
+    var title: String?
+    var pokeId: Int?
+    var objectId: String?
 }
 
 extension FBAnnotation : MKAnnotation {

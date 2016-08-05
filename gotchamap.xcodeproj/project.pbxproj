@@ -188,13 +188,6 @@
 			name = Util;
 			sourceTree = "<group>";
 		};
-		F4038D3A1D50EF3A00445DA4 /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Protocol;
-			sourceTree = "<group>";
-		};
 		F4038D411D51112700445DA4 /* GeoFire */ = {
 			isa = PBXGroup;
 			children = (
@@ -298,7 +291,6 @@
 			isa = PBXGroup;
 			children = (
 				F4038D371D50D82B00445DA4 /* Util */,
-				F4038D3A1D50EF3A00445DA4 /* Protocol */,
 				F47E36591D4334F20030B445 /* NetWork */,
 				F47E36561D4334030030B445 /* Model */,
 				F4CA4A5B1D41381E00669B1F /* View */,

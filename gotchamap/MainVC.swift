@@ -13,7 +13,7 @@ import RealmSwift
 import ObjectMapper
 
 class MainVC: UIViewController {
-
+    
     private lazy var mapView: MKMapView = {
         let _mapView = MKMapView()
         _mapView.cornerRadius = 7
@@ -38,7 +38,6 @@ class MainVC: UIViewController {
 
     private lazy var backHomeBtn: UIButton = {
         let _backHomeBtn = UIButton()
-        _backHomeBtn.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
         _backHomeBtn.setImage(UIImage(named: "btn_backHome"), forState: .Normal)
         _backHomeBtn.imageView?.contentMode = .ScaleAspectFit
         _backHomeBtn.backgroundColor = UIColor.clearColor()
@@ -48,8 +47,16 @@ class MainVC: UIViewController {
     
     private lazy var pokedexBtn: UIButton = {
         let _pokedexBtn = UIButton()
-        _pokedexBtn.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
         _pokedexBtn.setImage(UIImage(named: "btn_pokedex"), forState: .Normal)
+        _pokedexBtn.imageView?.contentMode = .ScaleAspectFit
+        _pokedexBtn.backgroundColor = UIColor.clearColor()
+        _pokedexBtn.addTarget(self, action: .pokedexBtnSelector, forControlEvents: .TouchUpInside)
+        return _pokedexBtn
+    }()
+    
+    private lazy var repotPokeBtn: UIButton = {
+        let _pokedexBtn = UIButton()
+        _pokedexBtn.setImage(UIImage(named: "btn_add_pokemon_location"), forState: .Normal)
         _pokedexBtn.imageView?.contentMode = .ScaleAspectFit
         _pokedexBtn.backgroundColor = UIColor.clearColor()
         _pokedexBtn.addTarget(self, action: .pokedexBtnSelector, forControlEvents: .TouchUpInside)
@@ -66,14 +73,16 @@ class MainVC: UIViewController {
     let numberOfLocations = 1000
     var currentLocation: CLLocation?
     var isFirstLocationReceived = false
-    var clusteringArray:[MKAnnotation] = []
+    var clusteringArray:[FBAnnotation] = []
     
-    
+    required convenience init?(_ map: Map) {
+        self.init()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupSubviews()
-        
         DataManager.getPokeBaseInfoFromFile { (data) in
 
             if data.type == .Array {
@@ -83,9 +92,9 @@ class MainVC: UIViewController {
                 }
                 
                 // for test
-                let array:[MKAnnotation] = self.randomLocationsWithCount(self.numberOfLocations)
+                /*let array:[MKAnnotation] = self.randomLocationsWithCount(self.numberOfLocations)
                 self.clusteringManager.addAnnotations(array)
-                self.mapView.centerCoordinate = CLLocationCoordinate2DMake(0, 0);
+                self.mapView.centerCoordinate = CLLocationCoordinate2DMake(0, 0);*/
             }
         }
     }
@@ -101,56 +110,70 @@ class MainVC: UIViewController {
         locationMananger.stopUpdatingLocation()
     }
     
-    func initObservers(coordinate: CLLocationCoordinate2D) {
+    func initObservers(coordinate: CLLocationCoordinate2D?) {
 
-        let center = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        
-        // 600 meters
-        let circleQuery = FirebaseManager.shared.geoFire.queryAtLocation(center, withRadius: 0.6)
-        
-        /*
-        let span = MKCoordinateSpanMake(0.001, 0.001)
-        let region = MKCoordinateRegionMake(center.coordinate, span)
-        var regionQuery = FirebaseManager.shared.geoFire.queryWithRegion(region)*/
-        
-        _ = circleQuery.observeEventType(.KeyEntered, withBlock: { (key: String!, location: CLLocation!) in
+        if let coordinate = coordinate {
+            let center = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
             
-            let a: FBAnnotation = FBAnnotation()
-            a.coordinate = location.coordinate
-            self.clusteringArray.append(a)
+            // 1000 meters
+            let circleQuery = FirebaseManager.shared.geoFire.queryAtLocation(center, withRadius: 1)
             
-        })
-        
-        _ = circleQuery.observeEventType(.KeyExited, withBlock: { (key: String!, location: CLLocation!) in
-            print("KeyExited")
-        })
-        
-        _ = circleQuery.observeEventType(.KeyMoved, withBlock: { (key: String!, location: CLLocation!) in
-            print("KeyExited")
-        })
-        
-        circleQuery.observeReadyWithBlock({
-            self.clusteringManager.addAnnotations(self.clusteringArray)
-            //var region = self.mapView.region;
-            //region.center = coordinate;
-            //region.span.latitudeDelta=0.05;
-            //region.span.longitudeDelta=0.05;
-            //self.mapView.setRegion(region, animated: true)
-        })
+            /*
+             let span = MKCoordinateSpanMake(0.001, 0.001)
+             let region = MKCoordinateRegionMake(center.coordinate, span)
+             var regionQuery = FirebaseManager.shared.geoFire.queryWithRegion(region)*/
+            
+            circleQuery.observeEventType(.KeyEntered, withBlock: { (key: String!, location: CLLocation!) in
+                let a: FBAnnotation = FBAnnotation()
+                a.coordinate = location.coordinate
+                a.objectId = key
+                self.clusteringArray.append(a)
+                print("poke = \(location.coordinate) ,key = \(key)")
+            })
+            
+            circleQuery.observeEventType(.KeyExited, withBlock: { (key: String!, location: CLLocation!) in
+                self.mapView.removeAnnotations(self.clusteringArray)
+                print("KeyExited")
+            })
+            
+            circleQuery.observeEventType(.KeyMoved, withBlock: { (key: String!, location: CLLocation!) in
+                print("KeyMoved")
+            })
+            
+            circleQuery.observeReadyWithBlock({
+                
+                for (index, annotation) in self.clusteringArray.enumerate() {
+                    
+                    FirebaseManager.shared.postsRef.child(annotation.objectId ?? "").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                        if let value = snapshot.value {
+                            if let pokeId: Int = Int((value["pokemonId"] as! String)) {
+                                annotation.pokeId = pokeId
+                            }
+                            // update Annotation
+                            if index + 1 == self.clusteringArray.count {
+                                self.clusteringManager.addAnnotations(self.clusteringArray)
+                            }
+                        }
+                    })
+                }
+            })
+        }
     }
     
     private func setupSubviews() {
         view.addSubview(mapView)
         view.addSubview(backHomeBtn)
         view.addSubview(pokedexBtn)
+        view.addSubview(repotPokeBtn)
         
         self.view.backgroundColor = UIColor.blackColor()
         
         mapView.translatesAutoresizingMaskIntoConstraints = false
         backHomeBtn.translatesAutoresizingMaskIntoConstraints = false
         pokedexBtn.translatesAutoresizingMaskIntoConstraints = false
+        repotPokeBtn.translatesAutoresizingMaskIntoConstraints = false
         
-        let views = ["mapView": mapView, "backHomeBtn": backHomeBtn, "pokedexBtn": pokedexBtn]
+        let views = ["mapView": mapView, "backHomeBtn": backHomeBtn, "pokedexBtn": pokedexBtn, "reportPokeBtn": repotPokeBtn]
         let metrics = ["btnSize": 60, "btnMargin": 15]
         
         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[mapView]|", options: [], metrics: nil, views: views))
@@ -161,22 +184,21 @@ class MainVC: UIViewController {
         
         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[pokedexBtn(btnSize)]-btnMargin-|", options: [], metrics: metrics, views: views))
         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[pokedexBtn(btnSize)]-btnMargin-|", options: [], metrics: metrics, views: views))
+        
+        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[reportPokeBtn(btnSize)]-btnMargin-|", options: [], metrics: metrics, views: views))
+        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[reportPokeBtn(btnSize)]", options: [], metrics: metrics, views: views))
+        NSLayoutConstraint.activateConstraints([NSLayoutConstraint(item: repotPokeBtn, attribute: .CenterX, relatedBy: .Equal, toItem: view, attribute: .CenterX, multiplier: 1, constant: 0)])
     }
     
     // MARK: - Utility
     
     private func zoomInToCurrentLocation(coordinate: CLLocationCoordinate2D) {
         
-        //let span = MKCoordinateSpanMake(0, 360 / pow(2, Double(20.0)) * Double(mapView.frame.size.width) / 256)
-        //mapView.setRegion(MKCoordinateRegionMake(coordinate, span), animated: true)
-        
-//        var region = mapView.region;
-//        region.center = coordinate;
-//        region.span.latitudeDelta=3;
-//        region.span.longitudeDelta=3;
-//        mapView.setRegion(region, animated: true)
-        
-        //initObservers(coordinate)
+        var region = mapView.region;
+        region.center = coordinate;
+        region.span.latitudeDelta = 3;
+        region.span.longitudeDelta = 3;
+        mapView.setRegion(region, animated: true)
     }
     
     func randomLocationsWithCount(count:Int) -> [FBAnnotation] {
@@ -190,13 +212,13 @@ class MainVC: UIViewController {
     }
     
     func random(num: Double) -> Double {
-        return Double(NSString(format:"%.6f",num - drand48() / 1000.0) as String)!
+        return Double(NSString(format:"%.6f",num - drand48() / 100.0) as String)!
     }
     
     // MARK: - Button Action Method
     
     @objc private func backHomeBtnPressed(sender: UIButton) {
-        
+        /*FOR LOCATION POST TEST
         let request = PostPoke()
         request.pokemonId = String(arc4random_uniform(100) + 1)
         request.vote = [FirebaseRefKey.Pokemons.Vote.good: Int(arc4random_uniform(300)), FirebaseRefKey.Pokemons.Vote.shit: Int(arc4random_uniform(10))]
@@ -205,14 +227,13 @@ class MainVC: UIViewController {
         let fbPost = FirebaseManager.shared.postsRef.childByAutoId()
         fbPost.setValue(JSONString)
         
-        let location = CLLocation(latitude: random(25.019683), longitude: random(121.465934))
+        let location = CLLocation(latitude: random(currentLocation?.coordinate.latitude ?? 25.019683), longitude: random(currentLocation?.coordinate.longitude ?? 121.465934))
         GeoFire(firebaseRef: fbPost).setLocation(location, forKey: FirebaseRefKey.Pokemons.coordinate)
         FirebaseManager.shared.geoFire.setLocation(location, forKey: fbPost.key)
         
         let userPostsRef = FirebaseManager.shared.currentUsersRef.child(FirebaseRefKey.pokemons).child(fbPost.key)
-        userPostsRef.setValue(true)
-        
-        //zoomInToCurrentLocation(mapView.userLocation.coordinate)
+        userPostsRef.setValue(true)*/
+        zoomInToCurrentLocation(mapView.userLocation.coordinate)
     }
     
     @objc private func pokedexBtnPressed(sender: UIButton) {
@@ -253,6 +274,7 @@ extension MainVC: CLLocationManagerDelegate {
         // get user location and zoom in to current location
         if let currentLocation = currentLocation where !isFirstLocationReceived {
             zoomInToCurrentLocation(currentLocation.coordinate)
+            initObservers(currentLocation.coordinate)
             isFirstLocationReceived = true;
         }
     }
@@ -305,12 +327,11 @@ extension MainVC: MKMapViewDelegate {
                 pokeView  = PokeAnnotationView(annotation: annotation, reuseIdentifier: kPokeAnnotationViewId)
             }
             
-            let fbAnnotation = annotation as! FBAnnotation
-            let pokeModel: Pokemon = PokemonBase.shared.infos[fbAnnotation.pokeId]
-            
-            fbAnnotation.title = pokeModel.name
-            pokeView?.setUpAnView(pokeModel)
-            
+            if let fbAnnotation = annotation as? FBAnnotation, pokeId = fbAnnotation.pokeId {
+                let pokeModel: Pokemon = PokemonBase.shared.infos[pokeId]
+                fbAnnotation.title = pokeModel.name
+                pokeView?.setUpAnView(pokeModel)
+            }
             return pokeView
         }
     }
@@ -353,35 +374,3 @@ extension MainVC: MKMapViewDelegate {
         }
     }
 }
-
-
-/*
- // 0. This example uses MapKit to calculate the bounding box
- import MapKit
- 
- // 1. Plenty of answers for this one...
- let currentLocation = CLLocationCoordinate2DMake(37.7749295, -122.4194155)
- 
- // 2. Create the bounding box with, 1km radius
- let region = MKCoordinateRegionMakeWithDistance(currentLocation, 1000, 1000)
- let northWestCorner = CLLocationCoordinate2DMake(
- currentLocation.latitude + (region.span.latitudeDelta),
- currentLocation.longitude - (region.span.longitudeDelta)
- )
- let southEastCorner = CLLocationCoordinate2DMake(
- currentLocation.latitude - (region.span.latitudeDelta),
- currentLocation.longitude + (region.span.longitudeDelta)
- )
- 
- // 3. Filter your objects
- let predicate = NSPredicate(format: "lat BETWEEN {%f, %f} AND lon BETWEEN {%f, %f}",
- northWestCorner.latitude,
- southEastCorner.latitude,
- northWestCorner.longitude,
- southEastCorner.longitude
- )
- 
- let nearbyLocations = realm.objects(MyLocation).filter(predicate)
- 
- http://stackoverflow.com/questions/33200296/realm-filter-cllocation
- */
