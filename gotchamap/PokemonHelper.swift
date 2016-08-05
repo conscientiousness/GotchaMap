@@ -6,7 +6,8 @@
 //  Copyright © 2016年 JesseLin. All rights reserved.
 //
 
-class PokemonBase {
-    static let shared = PokemonBase()
+class PokemonHelper {
+    static let shared = PokemonHelper()
     var infos: [Pokemon] = []
+    var currentLocation: CLLocation?
 }

@@ -8,14 +8,18 @@
 
 import ObjectMapper
 
-class PostPoke: Mappable {
+class PokeRequest: Mappable {
     var pokemonId: String?
     var coordinate: [String : Double] = [:]
     var vote: [String : Int] = [:]
     
+    init?() {
+        // Empty Constructor
+    }
+    
     // To support mapping, a class or struct just needs to implement the Mappable protocol
-    required convenience init?(_ map: Map) {
-        self.init()
+    required init?(_ map: Map) {
+       mapping(map)
     }
     
     func mapping(map: Map) {

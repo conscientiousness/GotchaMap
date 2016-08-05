@@ -6,6 +6,7 @@
 //  Copyright © 2016年 JesseLin. All rights reserved.
 //
 
+
 enum FirebaseRefKey {
     static let users = "users"
     static let pokemons = "pokemons"
@@ -25,4 +26,9 @@ enum FirebaseRefKey {
 
 enum UserDefaultsKey {
     static let uid = "uid"
+    static let trainerName = "trainerName"
+}
+
+enum PokedexType {
+    case Normal, Report
 }

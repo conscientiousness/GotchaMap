@@ -10,7 +10,7 @@
 		92C76440D49BE5457B366E94 /* Pods_gotchamap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09B270BA4F2869CE10974319 /* Pods_gotchamap.framework */; };
 		F4038D361D50D6C500445DA4 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4038D351D50D6C500445DA4 /* FirebaseManager.swift */; };
 		F4038D391D50D83E00445DA4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4038D381D50D83E00445DA4 /* Constants.swift */; };
-		F4038D3C1D50F1B900445DA4 /* PostPoke.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4038D3B1D50F1B900445DA4 /* PostPoke.swift */; };
+		F4038D3C1D50F1B900445DA4 /* PokeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4038D3B1D50F1B900445DA4 /* PokeRequest.swift */; };
 		F4038D531D51113400445DA4 /* GeoFire.m in Sources */ = {isa = PBXBuildFile; fileRef = F4038D4A1D51113400445DA4 /* GeoFire.m */; };
 		F4038D541D51113400445DA4 /* GFBase32Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = F4038D4C1D51113400445DA4 /* GFBase32Utils.m */; };
 		F4038D551D51113400445DA4 /* GFGeoHash.m in Sources */ = {isa = PBXBuildFile; fileRef = F4038D4E1D51113400445DA4 /* GFGeoHash.m */; };
@@ -19,7 +19,7 @@
 		F41FCB191D464D7A00FC446E /* PokeInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41FCB171D464D7A00FC446E /* PokeInfoVC.swift */; };
 		F41FCB1A1D464D7A00FC446E /* PokeInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = F41FCB181D464D7A00FC446E /* PokeInfoVC.xib */; };
 		F446DEAC1D41DF3B007BDEA0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F446DEAB1D41DF3B007BDEA0 /* CoreLocation.framework */; };
-		F47464CB1D4494250003F4C4 /* PokemonBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47464CA1D4494250003F4C4 /* PokemonBase.swift */; };
+		F47464CB1D4494250003F4C4 /* PokemonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47464CA1D4494250003F4C4 /* PokemonHelper.swift */; };
 		F47464CD1D44959D0003F4C4 /* PokedexVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47464CC1D44959D0003F4C4 /* PokedexVC.swift */; };
 		F47464CF1D44BDD00003F4C4 /* PokedexSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47464CE1D44BDD00003F4C4 /* PokedexSearchController.swift */; };
 		F47464D11D44BE840003F4C4 /* PokedexSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47464D01D44BE840003F4C4 /* PokedexSearchBar.swift */; };
@@ -74,7 +74,7 @@
 		C3DF02E75B2DCCD905BB66DD /* Pods-gotchamap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gotchamap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-gotchamap/Pods-gotchamap.debug.xcconfig"; sourceTree = "<group>"; };
 		F4038D351D50D6C500445DA4 /* FirebaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		F4038D381D50D83E00445DA4 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		F4038D3B1D50F1B900445DA4 /* PostPoke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPoke.swift; sourceTree = "<group>"; };
+		F4038D3B1D50F1B900445DA4 /* PokeRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokeRequest.swift; sourceTree = "<group>"; };
 		F4038D431D51113400445DA4 /* GeoFire.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeoFire.h; sourceTree = "<group>"; };
 		F4038D441D51113400445DA4 /* GFCircleQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFCircleQuery.h; sourceTree = "<group>"; };
 		F4038D451D51113400445DA4 /* GFQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFQuery.h; sourceTree = "<group>"; };
@@ -94,7 +94,7 @@
 		F41FCB171D464D7A00FC446E /* PokeInfoVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokeInfoVC.swift; sourceTree = "<group>"; };
 		F41FCB181D464D7A00FC446E /* PokeInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PokeInfoVC.xib; sourceTree = "<group>"; };
 		F446DEAB1D41DF3B007BDEA0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		F47464CA1D4494250003F4C4 /* PokemonBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokemonBase.swift; sourceTree = "<group>"; };
+		F47464CA1D4494250003F4C4 /* PokemonHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokemonHelper.swift; sourceTree = "<group>"; };
 		F47464CC1D44959D0003F4C4 /* PokedexVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokedexVC.swift; sourceTree = "<group>"; };
 		F47464CE1D44BDD00003F4C4 /* PokedexSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokedexSearchController.swift; sourceTree = "<group>"; };
 		F47464D01D44BE840003F4C4 /* PokedexSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokedexSearchBar.swift; sourceTree = "<group>"; };
@@ -249,8 +249,8 @@
 			isa = PBXGroup;
 			children = (
 				F47E36571D4334E70030B445 /* Pokemon.swift */,
-				F47464CA1D4494250003F4C4 /* PokemonBase.swift */,
-				F4038D3B1D50F1B900445DA4 /* PostPoke.swift */,
+				F47464CA1D4494250003F4C4 /* PokemonHelper.swift */,
+				F4038D3B1D50F1B900445DA4 /* PokeRequest.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -594,7 +594,7 @@
 				F47464D31D44C0320003F4C4 /* PokedexCell.swift in Sources */,
 				F41FCB191D464D7A00FC446E /* PokeInfoVC.swift in Sources */,
 				F4CA4A551D4137A400669B1F /* FBAnnotationCluster.swift in Sources */,
-				F4038D3C1D50F1B900445DA4 /* PostPoke.swift in Sources */,
+				F4038D3C1D50F1B900445DA4 /* PokeRequest.swift in Sources */,
 				F4CA4A571D4137A400669B1F /* FBClusteringManager.swift in Sources */,
 				F4CA4A581D4137A400669B1F /* FBQuadTree.swift in Sources */,
 				F4038D551D51113400445DA4 /* GFGeoHash.m in Sources */,
@@ -603,7 +603,7 @@
 				F47464CF1D44BDD00003F4C4 /* PokedexSearchController.swift in Sources */,
 				F4038D541D51113400445DA4 /* GFBase32Utils.m in Sources */,
 				F4CA4A491D41351D00669B1F /* UIColor+Hue.swift in Sources */,
-				F47464CB1D4494250003F4C4 /* PokemonBase.swift in Sources */,
+				F47464CB1D4494250003F4C4 /* PokemonHelper.swift in Sources */,
 				F4038D361D50D6C500445DA4 /* FirebaseManager.swift in Sources */,
 				F4CA4A3E1D408B4800669B1F /* UIView+Radius.swift in Sources */,
 				F4CA4A451D4130FC00669B1F /* UIColor+Gotcha.swift in Sources */,

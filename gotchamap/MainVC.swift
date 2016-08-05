@@ -59,25 +59,19 @@ class MainVC: UIViewController {
         _pokedexBtn.setImage(UIImage(named: "btn_add_pokemon_location"), forState: .Normal)
         _pokedexBtn.imageView?.contentMode = .ScaleAspectFit
         _pokedexBtn.backgroundColor = UIColor.clearColor()
-        _pokedexBtn.addTarget(self, action: .pokedexBtnSelector, forControlEvents: .TouchUpInside)
+        _pokedexBtn.addTarget(self, action: .reportBtnSelector, forControlEvents: .TouchUpInside)
         return _pokedexBtn
     }()
     
     private lazy var transition: BubbleTransition = {
         let _transition = BubbleTransition()
-        _transition.startingPoint = self.pokedexBtn.center
         _transition.bubbleColor = Palette.Pokedex.Background
         return _transition
     }()
     
-    let numberOfLocations = 1000
-    var currentLocation: CLLocation?
+    //let numberOfLocations = 1000 //for test
     var isFirstLocationReceived = false
     var clusteringArray:[FBAnnotation] = []
-    
-    required convenience init?(_ map: Map) {
-        self.init()
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,7 +82,7 @@ class MainVC: UIViewController {
             if data.type == .Array {
                 for json in data.arrayValue {
                     let pokemon = Pokemon(json: json)
-                    PokemonBase.shared.infos.append(pokemon)
+                    PokemonHelper.shared.infos.append(pokemon)
                 }
                 
                 // for test
@@ -193,7 +187,6 @@ class MainVC: UIViewController {
     // MARK: - Utility
     
     private func zoomInToCurrentLocation(coordinate: CLLocationCoordinate2D) {
-        
         var region = mapView.region;
         region.center = coordinate;
         region.span.latitudeDelta = 3;
@@ -237,9 +230,18 @@ class MainVC: UIViewController {
     }
     
     @objc private func pokedexBtnPressed(sender: UIButton) {
-        let targetVC = PokedexVC()
+        let targetVC = PokedexVC(pokedexType: .Normal)
         targetVC.transitioningDelegate = self
         targetVC.modalPresentationStyle = .Custom
+        transition.startingPoint = self.pokedexBtn.center
+        self.presentViewController(targetVC, animated: true, completion: nil)
+    }
+    
+    @objc private func reportBtnPressed(sender: UIButton) {
+        let targetVC = PokedexVC(pokedexType: .Report)
+        targetVC.transitioningDelegate = self
+        targetVC.modalPresentationStyle = .Custom
+        transition.startingPoint = self.repotPokeBtn.center
         self.presentViewController(targetVC, animated: true, completion: nil)
     }
 }
@@ -247,6 +249,7 @@ class MainVC: UIViewController {
 private extension Selector {
     static let backHomeBtnSelector = #selector(MainVC.backHomeBtnPressed(_:))
     static let pokedexBtnSelector = #selector(MainVC.pokedexBtnPressed(_:))
+    static let reportBtnSelector = #selector(MainVC.reportBtnPressed(_:))
 }
 
 // MARK: - UIViewController Transitioning Delegate
@@ -269,10 +272,10 @@ extension MainVC: UIViewControllerTransitioningDelegate {
 extension MainVC: CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        currentLocation = locations.last
+        PokemonHelper.shared.currentLocation = locations.last
         
         // get user location and zoom in to current location
-        if let currentLocation = currentLocation where !isFirstLocationReceived {
+        if let currentLocation = PokemonHelper.shared.currentLocation where !isFirstLocationReceived {
             zoomInToCurrentLocation(currentLocation.coordinate)
             initObservers(currentLocation.coordinate)
             isFirstLocationReceived = true;
@@ -328,7 +331,7 @@ extension MainVC: MKMapViewDelegate {
             }
             
             if let fbAnnotation = annotation as? FBAnnotation, pokeId = fbAnnotation.pokeId {
-                let pokeModel: Pokemon = PokemonBase.shared.infos[pokeId]
+                let pokeModel: Pokemon = PokemonHelper.shared.infos[pokeId]
                 fbAnnotation.title = pokeModel.name
                 pokeView?.setUpAnView(pokeModel)
             }
