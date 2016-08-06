@@ -65,13 +65,13 @@ class PokedexVC: UIViewController {
     }()
     
     private lazy var blurView: UIVisualEffectView = {
-        let _blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
+        let _blurView = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight))
         return _blurView
     }()
     
-    private var trainerNameTextField: UITextField?
+    private var alertTextField: UITextField?
     private var actionToEnable : UIAlertAction?
-    private var filteredData = PokemonHelper.shared.infos
+    private var filteredData: [Pokemon] = PokemonHelper.shared.infos
     private let pokedexType: PokedexType
     
     init(pokedexType: PokedexType) {
@@ -93,7 +93,7 @@ class PokedexVC: UIViewController {
         super.viewWillAppear(animated)
         
         let userName = NSUserDefaults.standardUserDefaults().stringForKey(UserDefaultsKey.trainerName)
-        if let userName = userName where userName.isEmpty && pokedexType == .Report {
+        if userName == nil && pokedexType == .Report {
             showNameAlert()
         }
     }
@@ -154,14 +154,14 @@ class PokedexVC: UIViewController {
         let doneAction = UIAlertAction (title: "確認", style: UIAlertActionStyle.Default) {
             (action) -> Void in
             
-            if let username = self.trainerNameTextField?.text {
+            if let username = self.alertTextField?.text {
                 NSUserDefaults.standardUserDefaults().setObject(username, forKey: UserDefaultsKey.trainerName)
                 NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
         
         alertController.addTextFieldWithConfigurationHandler { (textField) -> Void in
-            self.trainerNameTextField = textField
+            self.alertTextField = textField
             textField.addTarget(self, action: .textChangeSelector, forControlEvents: .EditingChanged)
         }
         
@@ -173,6 +173,38 @@ class PokedexVC: UIViewController {
     
     func textChanged(sender:UITextField) {
         self.actionToEnable?.enabled = !(sender.text ?? "").isEmpty
+    }
+    
+    private func showReportAlert(indexPath: NSIndexPath) {
+        let pokemon = filteredData[indexPath.row]
+        
+        let alertController = UIAlertController(title: pokemon.name, message: NSUserDefaults.standardUserDefaults().stringForKey(UserDefaultsKey.trainerName), preferredStyle: .Alert)
+        
+        let doneAction = UIAlertAction (title: "回報", style: .Default) { (action) -> Void in
+            
+            if let request = PokeRequest() {
+                request.pokemonId = String(pokemon.pokeId)
+                request.trainer = NSUserDefaults.standardUserDefaults().stringForKey(UserDefaultsKey.trainerName) ?? "Trainer"
+                request.memo = self.alertTextField?.text ?? ""
+                
+                let formatter = NSDateFormatter();
+                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss z";
+                request.timestemp = formatter.stringFromDate(NSDate())
+                
+                FirebaseManager.shared.reportLocation(withRequestModel: request)
+                
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
+        
+        alertController.addTextFieldWithConfigurationHandler { (textField) -> Void in
+            textField.placeholder = "備註"
+            self.alertTextField = textField
+        }
+        
+        alertController.addAction(doneAction)
+        alertController.addAction(UIAlertAction(title: "取消", style: .Cancel, handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     // MARK: - Button Action Method
@@ -221,21 +253,7 @@ extension PokedexVC: UICollectionViewDelegate {
         
         switch pokedexType {
         case .Report:
-            /*
-            let request = PostPoke()
-            request.pokemonId = String(arc4random_uniform(100) + 1)
-            request.vote = [FirebaseRefKey.Pokemons.Vote.good: Int(arc4random_uniform(300)), FirebaseRefKey.Pokemons.Vote.shit: Int(arc4random_uniform(10))]
-            let JSONString = Mapper().toJSON(request)
-            
-            let fbPost = FirebaseManager.shared.postsRef.childByAutoId()
-            fbPost.setValue(JSONString)
-            
-            let location = CLLocation(latitude: random(currentLocation?.coordinate.latitude ?? 25.019683), longitude: random(currentLocation?.coordinate.longitude ?? 121.465934))
-            GeoFire(firebaseRef: fbPost).setLocation(location, forKey: FirebaseRefKey.Pokemons.coordinate)
-            FirebaseManager.shared.geoFire.setLocation(location, forKey: fbPost.key)
-            
-            let userPostsRef = FirebaseManager.shared.currentUsersRef.child(FirebaseRefKey.pokemons).child(fbPost.key)
-            userPostsRef.setValue(true)*/
+            showReportAlert(indexPath)
             break
         default:
             let vc = PokeInfoVC(withPokeModel: filteredData[indexPath.row])

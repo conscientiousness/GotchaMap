@@ -10,6 +10,9 @@ import ObjectMapper
 
 class PokeRequest: Mappable {
     var pokemonId: String?
+    var trainer: String?
+    var timestemp: String?
+    var memo: String?
     var coordinate: [String : Double] = [:]
     var vote: [String : Int] = [:]
     
@@ -26,5 +29,8 @@ class PokeRequest: Mappable {
         pokemonId   <- map["pokemonId"]
         coordinate  <- map["coordinate"]
         vote        <- map["vote"]
+        trainer     <- map["trainer"]
+        timestemp   <- map["timestemp"]
+        memo        <- map["memo"]
     }
 }

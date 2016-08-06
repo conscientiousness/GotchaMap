@@ -11,6 +11,7 @@ import MapKit
 import CoreLocation
 import RealmSwift
 import ObjectMapper
+import Firebase
 
 class MainVC: UIViewController {
     
@@ -104,56 +105,6 @@ class MainVC: UIViewController {
         locationMananger.stopUpdatingLocation()
     }
     
-    func initObservers(coordinate: CLLocationCoordinate2D?) {
-
-        if let coordinate = coordinate {
-            let center = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-            
-            // 1000 meters
-            let circleQuery = FirebaseManager.shared.geoFire.queryAtLocation(center, withRadius: 1)
-            
-            /*
-             let span = MKCoordinateSpanMake(0.001, 0.001)
-             let region = MKCoordinateRegionMake(center.coordinate, span)
-             var regionQuery = FirebaseManager.shared.geoFire.queryWithRegion(region)*/
-            
-            circleQuery.observeEventType(.KeyEntered, withBlock: { (key: String!, location: CLLocation!) in
-                let a: FBAnnotation = FBAnnotation()
-                a.coordinate = location.coordinate
-                a.objectId = key
-                self.clusteringArray.append(a)
-                print("poke = \(location.coordinate) ,key = \(key)")
-            })
-            
-            circleQuery.observeEventType(.KeyExited, withBlock: { (key: String!, location: CLLocation!) in
-                self.mapView.removeAnnotations(self.clusteringArray)
-                print("KeyExited")
-            })
-            
-            circleQuery.observeEventType(.KeyMoved, withBlock: { (key: String!, location: CLLocation!) in
-                print("KeyMoved")
-            })
-            
-            circleQuery.observeReadyWithBlock({
-                
-                for (index, annotation) in self.clusteringArray.enumerate() {
-                    
-                    FirebaseManager.shared.postsRef.child(annotation.objectId ?? "").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-                        if let value = snapshot.value {
-                            if let pokeId: Int = Int((value["pokemonId"] as! String)) {
-                                annotation.pokeId = pokeId
-                            }
-                            // update Annotation
-                            if index + 1 == self.clusteringArray.count {
-                                self.clusteringManager.addAnnotations(self.clusteringArray)
-                            }
-                        }
-                    })
-                }
-            })
-        }
-    }
-    
     private func setupSubviews() {
         view.addSubview(mapView)
         view.addSubview(backHomeBtn)
@@ -184,14 +135,78 @@ class MainVC: UIViewController {
         NSLayoutConstraint.activateConstraints([NSLayoutConstraint(item: repotPokeBtn, attribute: .CenterX, relatedBy: .Equal, toItem: view, attribute: .CenterX, multiplier: 1, constant: 0)])
     }
     
+    // MARK: - fetch Data
+    
+    func initObservers(coordinate: CLLocationCoordinate2D?) {
+        
+        if let coordinate = coordinate {
+            let center = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            
+            // 1000 meters
+            let circleQuery = FirebaseManager.shared.geoFire.queryAtLocation(center, withRadius: 1)
+            
+            /*
+             let span = MKCoordinateSpanMake(0.001, 0.001)
+             let region = MKCoordinateRegionMake(center.coordinate, span)
+             var regionQuery = FirebaseManager.shared.geoFire.queryWithRegion(region)*/
+            
+            circleQuery.observeEventType(.KeyEntered, withBlock: { (key: String!, location: CLLocation!) in
+                let a: FBAnnotation = FBAnnotation()
+                a.coordinate = location.coordinate
+                a.objectId = key
+                self.clusteringArray.append(a)
+                //print("poke = \(location.coordinate) ,key = \(key)")
+            })
+            
+            circleQuery.observeEventType(.KeyExited, withBlock: { (key: String!, location: CLLocation!) in
+                self.mapView.removeAnnotations(self.clusteringArray)
+                print("KeyExited")
+            })
+            
+            circleQuery.observeEventType(.KeyMoved, withBlock: { (key: String!, location: CLLocation!) in
+                print("KeyMoved")
+            })
+            
+            circleQuery.observeReadyWithBlock({
+                
+                let priority = DISPATCH_QUEUE_PRIORITY_HIGH
+                dispatch_async(dispatch_get_global_queue(priority, 0)) {
+                    for (index, annotation) in self.clusteringArray.enumerate() {
+                        
+                        FirebaseManager.shared.postsRef.child(annotation.objectId ?? "").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                            if let value = snapshot.value {
+                                if let pokeId: Int = Int((value["pokemonId"] as! String)) {
+                                    annotation.pokeId = pokeId
+                                }
+                                
+                                if index + 1 == self.clusteringArray.count {
+                                    dispatch_async(dispatch_get_main_queue()) {
+                                        //print("index = \(index) ,key = \(self.clusteringArray[index].pokeId)")
+                                        self.clusteringManager.addAnnotations(self.clusteringArray)
+                                        self.zoomInToCurrentLocation(PokemonHelper.shared.currentLocation?.coordinate)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+                
+            })
+        }
+    }
+    
     // MARK: - Utility
     
-    private func zoomInToCurrentLocation(coordinate: CLLocationCoordinate2D) {
-        var region = mapView.region;
-        region.center = coordinate;
-        region.span.latitudeDelta = 3;
-        region.span.longitudeDelta = 3;
-        mapView.setRegion(region, animated: true)
+    private func zoomInToCurrentLocation(coordinate: CLLocationCoordinate2D?) {
+        
+        if let coordinate = coordinate {
+            var region = mapView.region;
+            region.center = coordinate;
+            region.span.latitudeDelta = 0.03;
+            region.span.longitudeDelta = 0.03;
+            mapView.setRegion(region, animated: true)
+        }
+        
     }
     
     func randomLocationsWithCount(count:Int) -> [FBAnnotation] {
@@ -204,28 +219,9 @@ class MainVC: UIViewController {
         return array
     }
     
-    func random(num: Double) -> Double {
-        return Double(NSString(format:"%.6f",num - drand48() / 100.0) as String)!
-    }
-    
     // MARK: - Button Action Method
     
     @objc private func backHomeBtnPressed(sender: UIButton) {
-        /*FOR LOCATION POST TEST
-        let request = PostPoke()
-        request.pokemonId = String(arc4random_uniform(100) + 1)
-        request.vote = [FirebaseRefKey.Pokemons.Vote.good: Int(arc4random_uniform(300)), FirebaseRefKey.Pokemons.Vote.shit: Int(arc4random_uniform(10))]
-        let JSONString = Mapper().toJSON(request)
-        
-        let fbPost = FirebaseManager.shared.postsRef.childByAutoId()
-        fbPost.setValue(JSONString)
-        
-        let location = CLLocation(latitude: random(currentLocation?.coordinate.latitude ?? 25.019683), longitude: random(currentLocation?.coordinate.longitude ?? 121.465934))
-        GeoFire(firebaseRef: fbPost).setLocation(location, forKey: FirebaseRefKey.Pokemons.coordinate)
-        FirebaseManager.shared.geoFire.setLocation(location, forKey: fbPost.key)
-        
-        let userPostsRef = FirebaseManager.shared.currentUsersRef.child(FirebaseRefKey.pokemons).child(fbPost.key)
-        userPostsRef.setValue(true)*/
         zoomInToCurrentLocation(mapView.userLocation.coordinate)
     }
     
@@ -276,9 +272,13 @@ extension MainVC: CLLocationManagerDelegate {
         
         // get user location and zoom in to current location
         if let currentLocation = PokemonHelper.shared.currentLocation where !isFirstLocationReceived {
-            zoomInToCurrentLocation(currentLocation.coordinate)
             initObservers(currentLocation.coordinate)
             isFirstLocationReceived = true;
+            var region = mapView.region;
+            region.center = currentLocation.coordinate;
+            region.span.latitudeDelta = 1;
+            region.span.longitudeDelta = 1;
+            mapView.setRegion(region, animated: false)
         }
     }
 }

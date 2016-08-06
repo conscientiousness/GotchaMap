@@ -23,7 +23,7 @@ public class FBClusteringManager : NSObject {
     
     var lock:NSRecursiveLock = NSRecursiveLock()
     
-    public var maxZoomLevel = 1.5
+    public var maxZoomLevel = 0.05
     
     public override init(){
         super.init()
@@ -99,6 +99,7 @@ public class FBClusteringManager : NSObject {
                     clusteredAnnotations += annotations
                 }
                 
+                //print("zoomScale=\(zoomScale)")
                 if count > 1 && zoomScale < self.maxZoomLevel {
                     let coordinate = CLLocationCoordinate2D(
                         latitude: CLLocationDegrees(totalLatitude)/CLLocationDegrees(count),

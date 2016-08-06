@@ -7,6 +7,7 @@
 //
 
 import Firebase
+import ObjectMapper
 
 class FirebaseManager {
     
@@ -41,5 +42,30 @@ class FirebaseManager {
                 }
             }
         })
+    }
+    
+    func reportLocation(withRequestModel model: PokeRequest) {
+        
+        let JSONString = Mapper().toJSON(model)
+        
+        let pokePost = FirebaseManager.shared.postsRef.childByAutoId()
+        pokePost.setValue(JSONString)
+        
+        if let currentCoordinate = PokemonHelper.shared.currentLocation?.coordinate {
+            let location = CLLocation(latitude: format(withLocation: currentCoordinate.latitude), longitude: format(withLocation: currentCoordinate.longitude))
+            GeoFire(firebaseRef: pokePost).setLocation(location, forKey: FirebaseRefKey.Pokemons.coordinate)
+            FirebaseManager.shared.geoFire.setLocation(location, forKey: pokePost.key)
+            
+            let userPostsRef = FirebaseManager.shared.currentUsersRef.child(FirebaseRefKey.pokemons).child(pokePost.key)
+            userPostsRef.setValue(true)
+        }
+    }
+    
+    func format(withLocation location: Double) -> Double {
+         return Double(NSString(format:"%.6f",location) as String)!
+    }
+    
+    func random(num: Double) -> Double {
+        return Double(NSString(format:"%.6f",num - drand48() / 1000.0) as String)!
     }
 }

@@ -5,7 +5,7 @@
   "names" : {
   "jp" : "フシギダネ",
   "en" : "Bulbasaur",
-  "zh" : "妙蛙种子"
+  "zh" : "妙蛙種子"
   },
   "next_evolution" : [
                       {
@@ -120,7 +120,7 @@
   "names" : {
   "jp" : "ヒトカゲ",
   "en" : "Charmander",
-  "zh" : "小火龙"
+  "zh" : "小火龍"
   },
   "next_evolution" : [
                       {
@@ -156,7 +156,7 @@
   "names" : {
   "jp" : "リザード",
   "en" : "Charmeleon",
-  "zh" : "火恐龙"
+  "zh" : "火恐龍"
   },
   "next_evolution" : [
                       {
@@ -194,7 +194,7 @@
   "names" : {
   "jp" : "リザードン",
   "en" : "Charizard",
-  "zh" : "喷火龙"
+  "zh" : "噴火龍"
   },
   "weight" : "90.5 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/006.png",
@@ -229,7 +229,7 @@
   "names" : {
   "jp" : "ゼニガメ",
   "en" : "Squirtle",
-  "zh" : "杰尼龟"
+  "zh" : "傑尼龜"
   },
   "next_evolution" : [
                       {
@@ -264,7 +264,7 @@
   "names" : {
   "jp" : "カメール",
   "en" : "Wartortle",
-  "zh" : "卡咪龟"
+  "zh" : "卡咪龜"
   },
   "next_evolution" : [
                       {
@@ -301,7 +301,7 @@
   "names" : {
   "jp" : "カメックス",
   "en" : "Blastoise",
-  "zh" : "水箭龟"
+  "zh" : "水箭龜"
   },
   "weight" : "85.5 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/009.png",
@@ -334,7 +334,7 @@
   "names" : {
   "jp" : "キャタピー",
   "en" : "Caterpie",
-  "zh" : "绿毛虫"
+  "zh" : "綠毛蟲"
   },
   "next_evolution" : [
                       {
@@ -370,7 +370,7 @@
   "names" : {
   "jp" : "トランセル",
   "en" : "Metapod",
-  "zh" : "铁甲蛹"
+  "zh" : "鐵甲蛹"
   },
   "next_evolution" : [
                       {
@@ -446,7 +446,7 @@
   "names" : {
   "jp" : "ビードル",
   "en" : "Weedle",
-  "zh" : "独角虫"
+  "zh" : "獨角蟲"
   },
   "next_evolution" : [
                       {
@@ -526,7 +526,7 @@
   "names" : {
   "jp" : "スピアー",
   "en" : "Beedrill",
-  "zh" : "大针蜂"
+  "zh" : "大針蜂"
   },
   "weight" : "29.5 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/015.png",
@@ -599,7 +599,7 @@
   "names" : {
   "jp" : "ピジョン",
   "en" : "Pidgeotto",
-  "zh" : "比比鸟"
+  "zh" : "比比鳥"
   },
   "next_evolution" : [
                       {
@@ -637,7 +637,7 @@
   "names" : {
   "jp" : "ピジョット",
   "en" : "Pidgeot",
-  "zh" : "大比鸟"
+  "zh" : "大比鳥"
   },
   "weight" : "39.5 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/018.png",
@@ -671,7 +671,7 @@
   "names" : {
   "jp" : "コラッタ",
   "en" : "Rattata",
-  "zh" : "小拉达"
+  "zh" : "小拉達"
   },
   "next_evolution" : [
                       {
@@ -702,7 +702,7 @@
   "names" : {
   "jp" : "ラッタ",
   "en" : "Raticate",
-  "zh" : "拉达"
+  "zh" : "拉達"
   },
   "weight" : "18.5 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/020.png",
@@ -974,7 +974,7 @@
   "names" : {
   "jp" : "ニドラン♀",
   "en" : "Nidoran♀",
-  "zh" : "尼多兰"
+  "zh" : "尼多蘭♀"
   },
   "next_evolution" : [
                       {
@@ -997,20 +997,20 @@
                   ],
   "num" : "029",
   "height" : "0.41 m",
-  "candy" : "25 Nidoran ♀ (Female) Candy",
+  "candy" : "25 Nidoran ♀ ",
   "multipliers" : [
                    1.63,
                    2.48
                    ],
-  "name" : "Nidoran ♀ (Female)"
+  "name" : "Nidoran ♀"
   },
   {
   "id" : 30,
   "egg" : "Not in Eggs",
   "names" : {
-  "jp" : "ニドリーナ",
-  "en" : "Nidorina",
-  "zh" : "尼多娜"
+  "jp" : "ニドリーナ♀",
+  "en" : "Nidorina♀",
+  "zh" : "尼多娜♀"
   },
   "next_evolution" : [
                       {
@@ -1029,11 +1029,11 @@
                   ],
   "num" : "030",
   "height" : "0.79 m",
-  "candy" : "100 Nidoran ♀ Candy",
+  "candy" : "100 Nidoran ♀",
   "prev_evolution" : [
                       {
                       "num" : "029",
-                      "name" : "Nidoran(Female)"
+                      "name" : "Nidoran"
                       }
                       ],
   "multipliers" : [
@@ -1112,7 +1112,7 @@
                    1.64,
                    1.7
                    ],
-  "name" : "Nidoran ♂ (Male)"
+  "name" : "Nidoran ♂ "
   },
   {
   "id" : 33,
@@ -1120,7 +1120,7 @@
   "names" : {
   "jp" : "ニドリーノ",
   "en" : "Nidorino",
-  "zh" : "尼多力诺"
+  "zh" : "尼多力諾"
   },
   "next_evolution" : [
                       {
@@ -1811,7 +1811,7 @@
   "names" : {
   "jp" : "コダック",
   "en" : "Psyduck",
-  "zh" : "可达鸭"
+  "zh" : "可達鴨"
   },
   "next_evolution" : [
                       {
@@ -1842,7 +1842,7 @@
   "names" : {
   "jp" : "ゴルダック",
   "en" : "Golduck",
-  "zh" : "哥达鸭"
+  "zh" : "哥達鴨"
   },
   "weight" : "76.6 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/055.png",
@@ -1967,7 +1967,7 @@
   "names" : {
   "jp" : "ウインディ",
   "en" : "Arcanine",
-  "zh" : "风速狗"
+  "zh" : "風速狗"
   },
   "weight" : "155.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/059.png",
@@ -2107,7 +2107,7 @@
   "names" : {
   "jp" : "ケーシィ",
   "en" : "Abra",
-  "zh" : "凯西"
+  "zh" : "凱西"
   },
   "next_evolution" : [
                       {
@@ -2439,7 +2439,7 @@
   "names" : {
   "jp" : "メノクラゲ",
   "en" : "Tentacool",
-  "zh" : "玛瑙水母"
+  "zh" : "瑪瑙水母"
   },
   "next_evolution" : [
                       {
@@ -2625,7 +2625,7 @@
   "names" : {
   "jp" : "ポニータ",
   "en" : "Ponyta",
-  "zh" : "小火马"
+  "zh" : "小火馬"
   },
   "next_evolution" : [
                       {
@@ -2658,7 +2658,7 @@
   "names" : {
   "jp" : "ギャロップ",
   "en" : "Rapidash",
-  "zh" : "烈焰马"
+  "zh" : "烈焰馬"
   },
   "weight" : "95.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/078.png",
@@ -2688,7 +2688,7 @@
   "names" : {
   "jp" : "ヤドン",
   "en" : "Slowpoke",
-  "zh" : "呆呆兽"
+  "zh" : "呆呆獸"
   },
   "next_evolution" : [
                       {
@@ -2723,7 +2723,7 @@
   "names" : {
   "jp" : "ヤドラン",
   "en" : "Slowbro",
-  "zh" : "呆壳兽"
+  "zh" : "呆殼獸"
   },
   "weight" : "78.5 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/080.png",
@@ -2819,7 +2819,7 @@
   "names" : {
   "jp" : "カモネギ",
   "en" : "Farfetch'd",
-  "zh" : "大葱鸭"
+  "zh" : "大蔥鴨"
   },
   "weight" : "15.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/083.png",
@@ -2906,7 +2906,7 @@
   "names" : {
   "jp" : "パウワウ",
   "en" : "Seel",
-  "zh" : "小海狮"
+  "zh" : "小海獅"
   },
   "next_evolution" : [
                       {
@@ -2938,7 +2938,7 @@
   "names" : {
   "jp" : "ジュゴン",
   "en" : "Dewgong",
-  "zh" : "白海狮"
+  "zh" : "白海獅"
   },
   "weight" : "120.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/087.png",
@@ -3030,7 +3030,7 @@
   "names" : {
   "jp" : "シェルダー",
   "en" : "Shellder",
-  "zh" : "大舌贝"
+  "zh" : "大舌貝"
   },
   "next_evolution" : [
                       {
@@ -3061,7 +3061,7 @@
   "names" : {
   "jp" : "パルシェン",
   "en" : "Cloyster",
-  "zh" : "刺甲贝"
+  "zh" : "刺甲貝"
   },
   "weight" : "132.5 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/091.png",
@@ -3269,7 +3269,7 @@
   "names" : {
   "jp" : "スリーパー",
   "en" : "Hypno",
-  "zh" : "引梦貘人"
+  "zh" : "引夢貘人"
   },
   "weight" : "75.6 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/097.png",
@@ -3299,7 +3299,7 @@
   "names" : {
   "jp" : "クラブ",
   "en" : "Krabby",
-  "zh" : "大钳蟹"
+  "zh" : "大鉗蟹"
   },
   "next_evolution" : [
                       {
@@ -3331,7 +3331,7 @@
   "names" : {
   "jp" : "キングラー",
   "en" : "Kingler",
-  "zh" : "巨钳蟹"
+  "zh" : "巨鉗蟹"
   },
   "weight" : "60.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/099.png",
@@ -3360,7 +3360,7 @@
   "names" : {
   "jp" : "ビリリダマ",
   "en" : "Voltorb",
-  "zh" : "霹雳电球"
+  "zh" : "霹靂電球"
   },
   "next_evolution" : [
                       {
@@ -3391,7 +3391,7 @@
   "names" : {
   "jp" : "マルマイン",
   "en" : "Electrode",
-  "zh" : "顽皮雷弹"
+  "zh" : "頑皮雷彈"
   },
   "weight" : "66.6 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/101.png",
@@ -3457,7 +3457,7 @@
   "names" : {
   "jp" : "ナッシー",
   "en" : "Exeggutor",
-  "zh" : "椰蛋树"
+  "zh" : "椰蛋樹"
   },
   "weight" : "120.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/103.png",
@@ -3554,7 +3554,7 @@
   "names" : {
   "jp" : "サワムラー",
   "en" : "Hitmonlee",
-  "zh" : "飞腿郎"
+  "zh" : "飛腿郎"
   },
   "weight" : "49.8 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/106.png",
@@ -3602,7 +3602,7 @@
   "names" : {
   "jp" : "ベロリンガ",
   "en" : "Lickitung",
-  "zh" : "大舌头"
+  "zh" : "大舌頭"
   },
   "weight" : "65.5 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/108.png",
@@ -3624,7 +3624,7 @@
   "names" : {
   "jp" : "ドガース",
   "en" : "Koffing",
-  "zh" : "瓦斯弹"
+  "zh" : "瓦斯彈"
   },
   "next_evolution" : [
                       {
@@ -3655,7 +3655,7 @@
   "names" : {
   "jp" : "マタドガス",
   "en" : "Weezing",
-  "zh" : "双弹瓦斯"
+  "zh" : "雙彈瓦斯"
   },
   "weight" : "9.5 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/110.png",
@@ -3684,7 +3684,7 @@
   "names" : {
   "jp" : "サイホーン",
   "en" : "Rhyhorn",
-  "zh" : "独角犀牛"
+  "zh" : "獨角犀牛"
   },
   "next_evolution" : [
                       {
@@ -3720,7 +3720,7 @@
   "names" : {
   "jp" : "サイドン",
   "en" : "Rhydon",
-  "zh" : "钻角犀兽"
+  "zh" : "鑽角犀獸"
   },
   "weight" : "120.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/112.png",
@@ -3802,7 +3802,7 @@
   "names" : {
   "jp" : "ガルーラ",
   "en" : "Kangaskhan",
-  "zh" : "袋兽"
+  "zh" : "袋獸"
   },
   "weight" : "80.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/115.png",
@@ -3824,7 +3824,7 @@
   "names" : {
   "jp" : "タッツー",
   "en" : "Horsea",
-  "zh" : "墨海马"
+  "zh" : "墨海馬"
   },
   "next_evolution" : [
                       {
@@ -3855,7 +3855,7 @@
   "names" : {
   "jp" : "シードラ",
   "en" : "Seadra",
-  "zh" : "海刺龙"
+  "zh" : "海刺龍"
   },
   "weight" : "25.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/117.png",
@@ -3884,7 +3884,7 @@
   "names" : {
   "jp" : "トサキント",
   "en" : "Goldeen",
-  "zh" : "角金鱼"
+  "zh" : "角金魚"
   },
   "next_evolution" : [
                       {
@@ -3916,7 +3916,7 @@
   "names" : {
   "jp" : "アズマオウ",
   "en" : "Seaking",
-  "zh" : "金鱼王"
+  "zh" : "金魚王"
   },
   "weight" : "39.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/119.png",
@@ -3977,7 +3977,7 @@
   "names" : {
   "jp" : "スターミー",
   "en" : "Starmie",
-  "zh" : "宝石海星"
+  "zh" : "寶石海星"
   },
   "weight" : "80.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/121.png",
@@ -4010,7 +4010,7 @@
   "names" : {
   "jp" : "バリヤード",
   "en" : "Mr. Mime",
-  "zh" : "魔墙人偶"
+  "zh" : "魔牆人偶"
   },
   "weight" : "54.5 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/122.png",
@@ -4034,7 +4034,7 @@
   "names" : {
   "jp" : "ストライク",
   "en" : "Scyther",
-  "zh" : "飞天螳螂"
+  "zh" : "飛天螳螂"
   },
   "weight" : "56.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/123.png",
@@ -4089,7 +4089,7 @@
   "names" : {
   "jp" : "エレブー",
   "en" : "Electabuzz",
-  "zh" : "电击兽"
+  "zh" : "電擊獸"
   },
   "weight" : "30.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/125.png",
@@ -4111,7 +4111,7 @@
   "names" : {
   "jp" : "ブーバー",
   "en" : "Magmar",
-  "zh" : "鸭嘴火兽"
+  "zh" : "鴨嘴火獸"
   },
   "weight" : "44.5 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/126.png",
@@ -4135,7 +4135,7 @@
   "names" : {
   "jp" : "カイロス",
   "en" : "Pinsir",
-  "zh" : "凯罗斯"
+  "zh" : "凱羅斯"
   },
   "weight" : "55.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/127.png",
@@ -4159,7 +4159,7 @@
   "names" : {
   "jp" : "ケンタロス",
   "en" : "Tauros",
-  "zh" : "肯泰罗"
+  "zh" : "肯泰羅"
   },
   "weight" : "88.4 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/128.png",
@@ -4181,7 +4181,7 @@
   "names" : {
   "jp" : "コイキング",
   "en" : "Magikarp",
-  "zh" : "鲤鱼王"
+  "zh" : "鯉魚王"
   },
   "next_evolution" : [
                       {
@@ -4213,7 +4213,7 @@
   "names" : {
   "jp" : "ギャラドス",
   "en" : "Gyarados",
-  "zh" : "暴鲤龙"
+  "zh" : "暴鯉龍"
   },
   "weight" : "235.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/130.png",
@@ -4269,7 +4269,7 @@
   "names" : {
   "jp" : "メタモン",
   "en" : "Ditto",
-  "zh" : "百变怪"
+  "zh" : "百變怪"
   },
   "weight" : "4.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/132.png",
@@ -4417,7 +4417,7 @@
   "names" : {
   "jp" : "ポリゴン",
   "en" : "Porygon",
-  "zh" : "多边兽"
+  "zh" : "多邊獸"
   },
   "weight" : "36.5 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/137.png",
@@ -4439,7 +4439,7 @@
   "names" : {
   "jp" : "オムナイト",
   "en" : "Omanyte",
-  "zh" : "菊石兽"
+  "zh" : "菊石獸"
   },
   "next_evolution" : [
                       {
@@ -4473,7 +4473,7 @@
   "names" : {
   "jp" : "オムスター",
   "en" : "Omastar",
-  "zh" : "多刺菊石兽"
+  "zh" : "多刺菊石獸"
   },
   "weight" : "35.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/139.png",
@@ -4540,7 +4540,7 @@
   "names" : {
   "jp" : "カブトプス",
   "en" : "Kabutops",
-  "zh" : "镰刀盔"
+  "zh" : "鐮刀盔"
   },
   "weight" : "40.5 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/141.png",
@@ -4572,7 +4572,7 @@
   "names" : {
   "jp" : "プテラ",
   "en" : "Aerodactyl",
-  "zh" : "化石翼龙"
+  "zh" : "化石翼龍"
   },
   "weight" : "59.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/142.png",
@@ -4599,7 +4599,7 @@
   "names" : {
   "jp" : "カビゴン",
   "en" : "Snorlax",
-  "zh" : "卡比兽"
+  "zh" : "卡比獸"
   },
   "weight" : "460.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/143.png",
@@ -4621,7 +4621,7 @@
   "names" : {
   "jp" : "フリーザー",
   "en" : "Articuno",
-  "zh" : "急冻鸟"
+  "zh" : "急凍鳥"
   },
   "weight" : "55.4 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/144.png",
@@ -4647,7 +4647,7 @@
   "names" : {
   "jp" : "サンダー",
   "en" : "Zapdos",
-  "zh" : "闪电鸟"
+  "zh" : "閃电鳥"
   },
   "weight" : "52.6 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/145.png",
@@ -4671,7 +4671,7 @@
   "names" : {
   "jp" : "ファイヤー",
   "en" : "Moltres",
-  "zh" : "火焰鸟"
+  "zh" : "火焰鳥"
   },
   "weight" : "60.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/146.png",
@@ -4696,7 +4696,7 @@
   "names" : {
   "jp" : "ミニリュウ",
   "en" : "Dratini",
-  "zh" : "迷你龙"
+  "zh" : "迷你龍"
   },
   "next_evolution" : [
                       {
@@ -4733,7 +4733,7 @@
   "names" : {
   "jp" : "ハクリュー",
   "en" : "Dragonair",
-  "zh" : "哈克龙"
+  "zh" : "哈克龍"
   },
   "next_evolution" : [
                       {
@@ -4765,7 +4765,7 @@
   "names" : {
   "jp" : "カイリュー",
   "en" : "Dragonite",
-  "zh" : "快龙"
+  "zh" : "快龍"
   },
   "weight" : "210.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/149.png",
@@ -4797,7 +4797,7 @@
   "names" : {
   "jp" : "ミュウツー",
   "en" : "Mewtwo",
-  "zh" : "超梦"
+  "zh" : "超夢"
   },
   "weight" : "122.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/150.png",
@@ -4821,7 +4821,7 @@
   "names" : {
   "jp" : "ミュウ",
   "en" : "Mew",
-  "zh" : "梦幻"
+  "zh" : "夢幻"
   },
   "weight" : "4.0 kg",
   "img" : "http://www.serebii.net/pokemongo/pokemon/151.png",
