@@ -256,7 +256,7 @@ extension PokedexVC: UICollectionViewDelegate {
             showReportAlert(indexPath)
             break
         default:
-            let vc = PokeInfoVC(withPokeModel: filteredData[indexPath.row])
+            let vc = PokeInfoVC(withPokeModel: filteredData[indexPath.row], pokeDetailType: .Normal)
             self.presentViewController(vc, animated: true, completion: nil)
         }
     }

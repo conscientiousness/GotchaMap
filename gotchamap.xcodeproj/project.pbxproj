@@ -48,6 +48,7 @@
 		F4CA4A571D4137A400669B1F /* FBClusteringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A501D4137A400669B1F /* FBClusteringManager.swift */; };
 		F4CA4A581D4137A400669B1F /* FBQuadTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A511D4137A400669B1F /* FBQuadTree.swift */; };
 		F4CA4A591D4137A400669B1F /* FBQuadTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A521D4137A400669B1F /* FBQuadTreeNode.swift */; };
+		F4CCA7F71D56511A0002A6F2 /* FIRPokemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CCA7F61D56511A0002A6F2 /* FIRPokemon.swift */; };
 		F4E9FA791D4D101200CE692F /* BubbleTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E9FA781D4D101200CE692F /* BubbleTransition.swift */; };
 /* End PBXBuildFile section */
 
@@ -129,6 +130,7 @@
 		F4CA4A501D4137A400669B1F /* FBClusteringManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBClusteringManager.swift; path = Lib/FBAnnotationClusteringSwift/FBClusteringManager.swift; sourceTree = "<group>"; };
 		F4CA4A511D4137A400669B1F /* FBQuadTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBQuadTree.swift; path = Lib/FBAnnotationClusteringSwift/FBQuadTree.swift; sourceTree = "<group>"; };
 		F4CA4A521D4137A400669B1F /* FBQuadTreeNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBQuadTreeNode.swift; path = Lib/FBAnnotationClusteringSwift/FBQuadTreeNode.swift; sourceTree = "<group>"; };
+		F4CCA7F61D56511A0002A6F2 /* FIRPokemon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FIRPokemon.swift; sourceTree = "<group>"; };
 		F4E9FA781D4D101200CE692F /* BubbleTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BubbleTransition.swift; path = Lib/BubbleTransition/BubbleTransition.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -251,6 +253,7 @@
 				F47E36571D4334E70030B445 /* Pokemon.swift */,
 				F47464CA1D4494250003F4C4 /* PokemonHelper.swift */,
 				F4038D3B1D50F1B900445DA4 /* PokeRequest.swift */,
+				F4CCA7F61D56511A0002A6F2 /* FIRPokemon.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -593,6 +596,7 @@
 				F47E365B1D4338DD0030B445 /* DataManager.swift in Sources */,
 				F47464D31D44C0320003F4C4 /* PokedexCell.swift in Sources */,
 				F41FCB191D464D7A00FC446E /* PokeInfoVC.swift in Sources */,
+				F4CCA7F71D56511A0002A6F2 /* FIRPokemon.swift in Sources */,
 				F4CA4A551D4137A400669B1F /* FBAnnotationCluster.swift in Sources */,
 				F4038D3C1D50F1B900445DA4 /* PokeRequest.swift in Sources */,
 				F4CA4A571D4137A400669B1F /* FBClusteringManager.swift in Sources */,

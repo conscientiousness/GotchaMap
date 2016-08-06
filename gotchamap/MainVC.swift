@@ -73,6 +73,7 @@ class MainVC: UIViewController {
     //let numberOfLocations = 1000 //for test
     var isFirstLocationReceived = false
     var clusteringArray:[FBAnnotation] = []
+    var needZoomIn = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -155,7 +156,6 @@ class MainVC: UIViewController {
                 a.coordinate = location.coordinate
                 a.objectId = key
                 self.clusteringArray.append(a)
-                //print("poke = \(location.coordinate) ,key = \(key)")
             })
             
             circleQuery.observeEventType(.KeyExited, withBlock: { (key: String!, location: CLLocation!) in
@@ -169,41 +169,37 @@ class MainVC: UIViewController {
             
             circleQuery.observeReadyWithBlock({
                 
-                let priority = DISPATCH_QUEUE_PRIORITY_HIGH
-                dispatch_async(dispatch_get_global_queue(priority, 0)) {
-                    for (index, annotation) in self.clusteringArray.enumerate() {
-                        
-                        FirebaseManager.shared.postsRef.child(annotation.objectId ?? "").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-                            if let value = snapshot.value {
-                                if let pokeId: Int = Int((value["pokemonId"] as! String)) {
-                                    annotation.pokeId = pokeId
-                                }
+                for (index, annotation) in self.clusteringArray.enumerate() {
+                    
+                    FirebaseManager.shared.postsRef.child(annotation.objectId ?? "").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                        if let value = snapshot.value {
+                            if let pokeId: Int = Int((value["pokemonId"] as! String)) {
+                                annotation.pokeId = pokeId
                                 
-                                if index + 1 == self.clusteringArray.count {
-                                    dispatch_async(dispatch_get_main_queue()) {
-                                        //print("index = \(index) ,key = \(self.clusteringArray[index].pokeId)")
+                                if index + 1 == self.clusteringArray.count && self.clusteringManager.allAnnotations().count == 0 {
+                                    print("index = \(index) ,key = \(self.clusteringArray[index].pokeId)")
+                                    self.needZoomIn = true
+                                    NSOperationQueue.mainQueue().addOperationWithBlock({
                                         self.clusteringManager.addAnnotations(self.clusteringArray)
-                                        self.zoomInToCurrentLocation(PokemonHelper.shared.currentLocation?.coordinate)
-                                    }
+                                    })
                                 }
                             }
-                        })
-                    }
+                        }
+                    })
                 }
-                
             })
         }
     }
     
     // MARK: - Utility
     
-    private func zoomInToCurrentLocation(coordinate: CLLocationCoordinate2D?) {
+    private func zoomInToCurrentLocation(coordinate: CLLocationCoordinate2D?, level: Double) {
         
         if let coordinate = coordinate {
             var region = mapView.region;
             region.center = coordinate;
-            region.span.latitudeDelta = 0.03;
-            region.span.longitudeDelta = 0.03;
+            region.span.latitudeDelta = level;
+            region.span.longitudeDelta = level;
             mapView.setRegion(region, animated: true)
         }
         
@@ -222,7 +218,7 @@ class MainVC: UIViewController {
     // MARK: - Button Action Method
     
     @objc private func backHomeBtnPressed(sender: UIButton) {
-        zoomInToCurrentLocation(mapView.userLocation.coordinate)
+        zoomInToCurrentLocation(mapView.userLocation.coordinate, level: 0.01)
     }
     
     @objc private func pokedexBtnPressed(sender: UIButton) {
@@ -272,13 +268,14 @@ extension MainVC: CLLocationManagerDelegate {
         
         // get user location and zoom in to current location
         if let currentLocation = PokemonHelper.shared.currentLocation where !isFirstLocationReceived {
-            initObservers(currentLocation.coordinate)
-            isFirstLocationReceived = true;
             var region = mapView.region;
             region.center = currentLocation.coordinate;
             region.span.latitudeDelta = 1;
             region.span.longitudeDelta = 1;
             mapView.setRegion(region, animated: false)
+            isFirstLocationReceived = true
+            
+            initObservers(currentLocation.coordinate)
         }
     }
 }
@@ -297,18 +294,22 @@ extension MainVC: FBClusteringManagerDelegate {
 extension MainVC: MKMapViewDelegate {
     
     func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool){
-        NSOperationQueue().addOperationWithBlock({
-            let mapBoundsWidth = Double(self.mapView.bounds.size.width)
-            
-            let mapRectWidth:Double = self.mapView.visibleMapRect.size.width
-            
-            let scale:Double = mapBoundsWidth / mapRectWidth
-
-            let annotationArray = self.clusteringManager.clusteredAnnotationsWithinMapRect(self.mapView.visibleMapRect, withZoomScale:scale)
-            
-            self.clusteringManager.displayAnnotations(annotationArray, onMapView:self.mapView)
-        })
         
+        if self.clusteringManager.allAnnotations().count > 0 {
+            NSOperationQueue().addOperationWithBlock({
+                let mapBoundsWidth = Double(self.mapView.bounds.size.width)
+                
+                let mapRectWidth:Double = self.mapView.visibleMapRect.size.width
+                
+                let scale:Double = mapBoundsWidth / mapRectWidth
+                
+                let annotationArray = self.clusteringManager.clusteredAnnotationsWithinMapRect(self.mapView.visibleMapRect, withZoomScale:scale)
+                
+                NSOperationQueue.mainQueue().addOperationWithBlock({
+                    self.clusteringManager.displayAnnotations(annotationArray, onMapView:self.mapView)
+                })
+            })
+        }
     }
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
@@ -331,7 +332,8 @@ extension MainVC: MKMapViewDelegate {
             }
             
             if let fbAnnotation = annotation as? FBAnnotation, pokeId = fbAnnotation.pokeId {
-                let pokeModel: Pokemon = PokemonHelper.shared.infos[pokeId]
+                var pokeModel: Pokemon = PokemonHelper.shared.infos[pokeId]
+                pokeModel.objectId = fbAnnotation.objectId ?? ""
                 fbAnnotation.title = pokeModel.name
                 pokeView?.setUpAnView(pokeModel)
             }
@@ -346,7 +348,7 @@ extension MainVC: MKMapViewDelegate {
             }
             
             // Check if current annotation is inside visible map rect, else go to next one
-            let point:MKMapPoint  =  MKMapPointForCoordinate(view.annotation!.coordinate);
+            let point:MKMapPoint = MKMapPointForCoordinate(view.annotation!.coordinate);
             if (!MKMapRectContainsPoint(self.mapView.visibleMapRect, point)) {
                 continue;
             }
@@ -355,7 +357,6 @@ extension MainVC: MKMapViewDelegate {
             UIView.animateWithDuration(0.7, delay: 0.0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0.4, options: .CurveEaseInOut, animations:{() in
                 view.transform = CGAffineTransformMakeScale(1, 1)
                 }, completion: {(Bool) in
-                    
             })
         }
     }
@@ -371,7 +372,7 @@ extension MainVC: MKMapViewDelegate {
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if view.isKindOfClass(PokeAnnotationView) {
             if let pokeModel = (view as? PokeAnnotationView)?.pokeModel {
-                let targetVC = PokeInfoVC(withPokeModel: pokeModel)
+                let targetVC = PokeInfoVC(withPokeModel: pokeModel, pokeDetailType: .Map)
                 self.presentViewController(targetVC, animated: true, completion: nil)
             }
         }

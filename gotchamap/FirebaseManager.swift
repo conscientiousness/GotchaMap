@@ -46,18 +46,23 @@ class FirebaseManager {
     
     func reportLocation(withRequestModel model: PokeRequest) {
         
+        model.vote = ["good": Int(arc4random_uniform(30) + 10), "shit": Int(arc4random_uniform(30) + 50)]
+        
         let JSONString = Mapper().toJSON(model)
         
         let pokePost = FirebaseManager.shared.postsRef.childByAutoId()
         pokePost.setValue(JSONString)
         
         if let currentCoordinate = PokemonHelper.shared.currentLocation?.coordinate {
-            let location = CLLocation(latitude: format(withLocation: currentCoordinate.latitude), longitude: format(withLocation: currentCoordinate.longitude))
+            let location = CLLocation(latitude: random(withLocation: currentCoordinate.latitude), longitude: random(withLocation: currentCoordinate.longitude))
             GeoFire(firebaseRef: pokePost).setLocation(location, forKey: FirebaseRefKey.Pokemons.coordinate)
             FirebaseManager.shared.geoFire.setLocation(location, forKey: pokePost.key)
             
             let userPostsRef = FirebaseManager.shared.currentUsersRef.child(FirebaseRefKey.pokemons).child(pokePost.key)
             userPostsRef.setValue(true)
+            
+            let userVotesRef = FirebaseManager.shared.currentUsersRef.child(FirebaseRefKey.Users.votes).child(pokePost.key)
+            userVotesRef.setValue(true)
         }
     }
     
@@ -65,7 +70,8 @@ class FirebaseManager {
          return Double(NSString(format:"%.6f",location) as String)!
     }
     
-    func random(num: Double) -> Double {
-        return Double(NSString(format:"%.6f",num - drand48() / 1000.0) as String)!
+    // for test
+    func random(withLocation location: Double) -> Double {
+        return Double(NSString(format:"%.6f",location - drand48() / 1000.0) as String)!
     }
 }

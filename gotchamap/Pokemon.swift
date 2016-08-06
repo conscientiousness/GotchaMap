@@ -10,6 +10,7 @@ import SwiftyJSON
 
 struct Pokemon {
     
+    var objectId: String?
     let pokeId: Int
     let img: String
     let name: String

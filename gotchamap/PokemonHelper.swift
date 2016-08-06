@@ -10,4 +10,12 @@ class PokemonHelper {
     static let shared = PokemonHelper()
     var infos: [Pokemon] = []
     var currentLocation: CLLocation?
+    
+    static func trustPercent(good good: Int, shit: Int) -> Int {
+        guard good + shit > 50 else {
+            return 50
+        }
+        
+        return Int(Float(good) / Float(good + shit) * 100)
+    }
 }
