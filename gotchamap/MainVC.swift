@@ -13,6 +13,9 @@ import RealmSwift
 import ObjectMapper
 import Firebase
 
+// km
+let queryRadius = 5.0
+
 class MainVC: UIViewController {
     
     private lazy var mapView: MKMapView = {
@@ -72,13 +75,12 @@ class MainVC: UIViewController {
     
     private lazy var circleQuery :GFCircleQuery = {
         let center = CLLocation(latitude: 0, longitude: 0)
-        return FirebaseManager.shared.geoFire.queryAtLocation(center, withRadius: 1)
+        return FirebaseManager.shared.geoFire.queryAtLocation(center, withRadius: queryRadius)
     }()
     
     //let numberOfLocations = 1000 //for test
     var isFirstLocationReceived = false
-    var clusteringArray:[FBAnnotation] = []
-    var needZoomIn = false
+    var clusteringDict:[String: FBAnnotation] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -143,30 +145,50 @@ class MainVC: UIViewController {
     
     // MARK: - fetch Data
     
-    func initObservers(coordinate: CLLocationCoordinate2D?) {
+    func updateCircleQuery() {
+
+        let centerCoordinate = mapView.convertPoint(mapView.center, toCoordinateFromView: view)
+        let centerLocation = CLLocation(latitude: centerCoordinate.latitude, longitude: centerCoordinate.longitude)
+        circleQuery.center = centerLocation
+        circleQuery.radius = queryRadius
         
-        if let coordinate = coordinate {
-            let center = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-            
-            // 1000 meters
-            circleQuery = FirebaseManager.shared.geoFire.queryAtLocation(center, withRadius: 1)
-            
-            /*
-             let span = MKCoordinateSpanMake(0.001, 0.001)
-             let region = MKCoordinateRegionMake(center.coordinate, span)
-             var regionQuery = FirebaseManager.shared.geoFire.queryWithRegion(region)*/
+    }
+    
+    func setupObservers() {
+        
+
+            //let center = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            //circleQuery = FirebaseManager.shared.geoFire.queryAtLocation(center, withRadius: queryRadius)
             
             circleQuery.observeEventType(.KeyEntered, withBlock: { (key: String!, location: CLLocation!) in
                 Debug.print("KeyEntered")
-                let a: FBAnnotation = FBAnnotation()
-                a.coordinate = location.coordinate
-                a.objectId = key
-                self.clusteringArray.append(a)
+                let an: FBAnnotation = FBAnnotation()
+                an.coordinate = location.coordinate
+                an.objectId = key
+
+                FirebaseManager.shared.postsRef.child(key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                    if let value = snapshot.value {
+                        if let pokeId: Int = Int((value["pokemonId"] as! String)) {
+                            an.pokeId = pokeId
+                            
+                            self.clusteringManager.addAnnotations([an])
+                            self.clusteringDict[key] = an
+                            
+                            Debug.print("pokeid = \(pokeId) ,key = \(key)")
+                        }
+                    }
+                })
             })
             
             circleQuery.observeEventType(.KeyExited, withBlock: { (key: String!, location: CLLocation!) in
-                self.mapView.removeAnnotations(self.clusteringArray)
                 Debug.print("KeyExited")
+                
+                if let fbAnnotation = self.clusteringDict[key] {
+                    self.mapView.removeAnnotation(fbAnnotation)
+                    self.clusteringDict.removeValueForKey(key)
+                    self.clusteringManager = FBClusteringManager()
+                    self.clusteringManager.delegate = self;
+                }
             })
             
             circleQuery.observeEventType(.KeyMoved, withBlock: { (key: String!, location: CLLocation!) in
@@ -174,32 +196,9 @@ class MainVC: UIViewController {
             })
             
             circleQuery.observeReadyWithBlock({
-                
-                for (index, annotation) in self.clusteringArray.enumerate() {
-                    
-                    FirebaseManager.shared.postsRef.child(annotation.objectId ?? "").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-                        if let value = snapshot.value {
-                            if let pokeId: Int = Int((value["pokemonId"] as! String)) {
-                                annotation.pokeId = pokeId
-                                
-                                if index + 1 == self.clusteringArray.count && self.clusteringManager.allAnnotations().count == 0 {
-                                    Debug.print("index = \(index) ,key = \(self.clusteringArray[index].pokeId)")
-                                    self.needZoomIn = true
-                                    NSOperationQueue.mainQueue().addOperationWithBlock({
-                                        self.clusteringManager.addAnnotations(self.clusteringArray)
-                                        
-                                        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * Double(NSEC_PER_SEC)))
-                                        dispatch_after(delayTime, dispatch_get_main_queue()) {
-                                            self.zoomInToCurrentLocation(self.mapView.userLocation.coordinate, level: 0.03)
-                                        }
-                                    })
-                                }
-                            }
-                        }
-                    })
-                }
+                Debug.print("observeReadyWithBlock")
             })
-        }
+        
     }
     
     // MARK: - Utility
@@ -246,6 +245,22 @@ class MainVC: UIViewController {
         transition.startingPoint = self.repotPokeBtn.center
         self.presentViewController(targetVC, animated: true, completion: nil)
     }
+    
+    // MARK: - FBClusteringMap
+    
+    private func refreshClusteringAnnotations() {
+        NSOperationQueue().addOperationWithBlock({
+            let mapBoundsWidth = Double(self.mapView.bounds.size.width)
+            
+            let mapRectWidth:Double = self.mapView.visibleMapRect.size.width
+            
+            let scale:Double = mapBoundsWidth / mapRectWidth
+            
+            let annotationArray = self.clusteringManager.clusteredAnnotationsWithinMapRect(self.mapView.visibleMapRect, withZoomScale:scale)
+            
+            self.clusteringManager.displayAnnotations(annotationArray, onMapView:self.mapView)
+        })
+    }
 }
 
 private extension Selector {
@@ -280,12 +295,12 @@ extension MainVC: CLLocationManagerDelegate {
         if let currentLocation = PokemonHelper.shared.currentLocation where !isFirstLocationReceived {
             var region = mapView.region;
             region.center = currentLocation.coordinate;
-            region.span.latitudeDelta = 1;
-            region.span.longitudeDelta = 1;
+            region.span.latitudeDelta = 0.05;
+            region.span.longitudeDelta = 0.05;
             mapView.setRegion(region, animated: false)
             isFirstLocationReceived = true
-            
-            initObservers(currentLocation.coordinate)
+            updateCircleQuery()
+            setupObservers()
         }
     }
 }
@@ -297,6 +312,12 @@ extension MainVC: FBClusteringManagerDelegate {
     func cellSizeFactorForCoordinator(coordinator:FBClusteringManager) -> CGFloat{
         return 1.5
     }
+    
+    func didAddAnnotation() {
+       
+            refreshClusteringAnnotations()
+        
+    }
 }
 
 // MARK: - MKMapView Delegate
@@ -304,22 +325,7 @@ extension MainVC: FBClusteringManagerDelegate {
 extension MainVC: MKMapViewDelegate {
     
     func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool){
-        
-        if self.clusteringManager.allAnnotations().count > 0 {
-            NSOperationQueue().addOperationWithBlock({
-                let mapBoundsWidth = Double(self.mapView.bounds.size.width)
-                
-                let mapRectWidth:Double = self.mapView.visibleMapRect.size.width
-                
-                let scale:Double = mapBoundsWidth / mapRectWidth
-                
-                let annotationArray = self.clusteringManager.clusteredAnnotationsWithinMapRect(self.mapView.visibleMapRect, withZoomScale:scale)
-                
-                NSOperationQueue.mainQueue().addOperationWithBlock({
-                    self.clusteringManager.displayAnnotations(annotationArray, onMapView:self.mapView)
-                })
-            })
-        }
+        updateCircleQuery()
     }
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {

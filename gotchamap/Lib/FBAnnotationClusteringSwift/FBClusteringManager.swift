@@ -12,7 +12,7 @@ import MapKit
 public protocol FBClusteringManagerDelegate {
     
     func cellSizeFactorForCoordinator(coordinator:FBClusteringManager) -> CGFloat
-    
+    func didAddAnnotation()
 }
 
 public class FBClusteringManager : NSObject {
@@ -44,11 +44,12 @@ public class FBClusteringManager : NSObject {
             tree = FBQuadTree()
         }
         
-        lock.lock()
+        //lock.lock()
         for annotation in annotations {
             tree!.insertAnnotation(annotation)
         }
-        lock.unlock()
+        //lock.unlock()
+        self.delegate?.didAddAnnotation()
     }
     
     public func clusteredAnnotationsWithinMapRect(rect:MKMapRect, withZoomScale zoomScale:Double) -> [MKAnnotation]{
