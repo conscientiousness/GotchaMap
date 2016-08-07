@@ -46,23 +46,27 @@ class FirebaseManager {
     
     func reportLocation(withRequestModel model: PokeRequest) {
         
-        model.vote = ["good": Int(arc4random_uniform(30) + 10), "shit": Int(arc4random_uniform(30) + 50)]
-        
+        // add to Pokemons
         let JSONString = Mapper().toJSON(model)
-        
         let pokePost = FirebaseManager.shared.postsRef.childByAutoId()
         pokePost.setValue(JSONString)
         
         if let currentCoordinate = PokemonHelper.shared.currentLocation?.coordinate {
             let location = CLLocation(latitude: random(withLocation: currentCoordinate.latitude), longitude: random(withLocation: currentCoordinate.longitude))
-            GeoFire(firebaseRef: pokePost).setLocation(location, forKey: FirebaseRefKey.Pokemons.coordinate)
-            FirebaseManager.shared.geoFire.setLocation(location, forKey: pokePost.key)
             
+            // add to coordinates
+            geoFire.setLocation(location, forKey: pokePost.key)
+            
+            // sync location to Pokemons
+            GeoFire(firebaseRef: pokePost).setLocation(location, forKey: FirebaseRefKey.Pokemons.coordinate)
+            
+            // update Users post status
             let userPostsRef = FirebaseManager.shared.currentUsersRef.child(FirebaseRefKey.pokemons).child(pokePost.key)
             userPostsRef.setValue(true)
             
+            /* for test
             let userVotesRef = FirebaseManager.shared.currentUsersRef.child(FirebaseRefKey.Users.votes).child(pokePost.key)
-            userVotesRef.setValue(true)
+            userVotesRef.setValue(true)*/
         }
     }
     

@@ -18,6 +18,7 @@
 		F4038D571D51113400445DA4 /* GFQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = F4038D521D51113400445DA4 /* GFQuery.m */; };
 		F41FCB191D464D7A00FC446E /* PokeInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41FCB171D464D7A00FC446E /* PokeInfoVC.swift */; };
 		F41FCB1A1D464D7A00FC446E /* PokeInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = F41FCB181D464D7A00FC446E /* PokeInfoVC.xib */; };
+		F43EED971D570FAB00DF2D91 /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43EED961D570FAB00DF2D91 /* Debug.swift */; };
 		F446DEAC1D41DF3B007BDEA0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F446DEAB1D41DF3B007BDEA0 /* CoreLocation.framework */; };
 		F47464CB1D4494250003F4C4 /* PokemonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47464CA1D4494250003F4C4 /* PokemonHelper.swift */; };
 		F47464CD1D44959D0003F4C4 /* PokedexVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47464CC1D44959D0003F4C4 /* PokedexVC.swift */; };
@@ -94,6 +95,7 @@
 		F4038D5B1D5111B600445DA4 /* gotchamap-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "gotchamap-Bridging-Header.h"; sourceTree = "<group>"; };
 		F41FCB171D464D7A00FC446E /* PokeInfoVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokeInfoVC.swift; sourceTree = "<group>"; };
 		F41FCB181D464D7A00FC446E /* PokeInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PokeInfoVC.xib; sourceTree = "<group>"; };
+		F43EED961D570FAB00DF2D91 /* Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
 		F446DEAB1D41DF3B007BDEA0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		F47464CA1D4494250003F4C4 /* PokemonHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokemonHelper.swift; sourceTree = "<group>"; };
 		F47464CC1D44959D0003F4C4 /* PokedexVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokedexVC.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 			children = (
 				F4CA4A0B1D408A1100669B1F /* AppDelegate.swift */,
 				F4038D381D50D83E00445DA4 /* Constants.swift */,
+				F43EED961D570FAB00DF2D91 /* Debug.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -604,6 +607,7 @@
 				F4038D551D51113400445DA4 /* GFGeoHash.m in Sources */,
 				F4CA4A541D4137A400669B1F /* FBAnnotation.swift in Sources */,
 				F47E36581D4334E70030B445 /* Pokemon.swift in Sources */,
+				F43EED971D570FAB00DF2D91 /* Debug.swift in Sources */,
 				F47464CF1D44BDD00003F4C4 /* PokedexSearchController.swift in Sources */,
 				F4038D541D51113400445DA4 /* GFBase32Utils.m in Sources */,
 				F4CA4A491D41351D00669B1F /* UIColor+Hue.swift in Sources */,

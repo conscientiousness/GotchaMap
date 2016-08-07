@@ -178,7 +178,6 @@ class PokeInfoVC: UIViewController {
                 strongSelf.reportLoadingView.stopAnimating()
                 
                 if let value = snapshot.value {
-                    print(value)
                     let model = FIRPokemon(json: JSON(value))
                     strongSelf.FIRPokeModel = model
                     strongSelf.reportTrustDegreeLabel.text = "正確度：\(PokemonHelper.trustPercent(good: model.goodCount, shit: model.shitCount))%"
@@ -212,11 +211,12 @@ class PokeInfoVC: UIViewController {
         let isGood = (type == .Good ? true : false)
         
         if let userId = NSUserDefaults.standardUserDefaults().stringForKey(UserDefaultsKey.uid), objectid = pokeModel.objectId, model = FIRPokeModel {
-            // user
+            // update user vote status
             FirebaseManager.shared.currentUsersRef.child(userId).child(FirebaseRefKey.Users.votes).child(objectid).setValue(isGood)
             
-            // pokemon
-            FirebaseManager.shared.postsRef.child(objectid).child(FirebaseRefKey.Pokemons.vote).child(isGood ? FirebaseRefKey.Pokemons.Vote.good : FirebaseRefKey.Pokemons.Vote.shit).setValue(isGood ? model.goodCount : model.shitCount)
+            // update pokemon vote count
+            FirebaseManager.shared.postsRef.child(objectid).child(FirebaseRefKey.Pokemons.vote).child(FirebaseRefKey.Pokemons.Vote.good).setValue(model.goodCount)
+            FirebaseManager.shared.postsRef.child(objectid).child(FirebaseRefKey.Pokemons.vote).child(FirebaseRefKey.Pokemons.Vote.shit).setValue(model.shitCount)
         }
     }
     
@@ -243,7 +243,7 @@ class PokeInfoVC: UIViewController {
 
             if let model = FIRPokeModel {
                 model.adjustTrustCount(goodVal: 1, shitVal: reportShitBtn.tintColor == UIColor.blackColor() ? 0 : -1)
-                print(model.goodCount,model.shitCount)
+                reportTrustDegree(withType: .Good)
             }
             
             reportShitBtn.tintColor = UIColor.blackColor()
@@ -259,7 +259,7 @@ class PokeInfoVC: UIViewController {
             
             if let model = FIRPokeModel {
                 model.adjustTrustCount(goodVal: reportGoodBtn.tintColor == UIColor.blackColor() ? 0 : -1, shitVal: 1)
-                print(model.goodCount,model.shitCount)
+                reportTrustDegree(withType: .Shit)
             }
             
             reportGoodBtn.tintColor = UIColor.blackColor()

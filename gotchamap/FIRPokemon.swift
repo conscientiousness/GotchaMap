@@ -43,7 +43,7 @@ class FIRPokemon {
     }
     
     func adjustTrustCount(goodVal goodVal: Int, shitVal: Int) {
-        goodCount = goodCount + goodVal
-        shitCount = shitCount + shitVal
+        goodCount = (goodCount + goodVal) < 0 ? 0 : goodCount + goodVal
+        shitCount = (shitCount + shitVal) < 0 ? 0 : shitCount + shitVal
     }
 }

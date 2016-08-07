@@ -22,7 +22,7 @@ struct DataManager {
                 fatalError()
             }
         } else {
-            print("The local JSON file could not be found")
+            //Debug.print("The local JSON file could not be found")
         }
     }
 }

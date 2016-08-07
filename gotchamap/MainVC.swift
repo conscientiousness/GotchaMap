@@ -70,11 +70,16 @@ class MainVC: UIViewController {
         return _transition
     }()
     
+    private lazy var circleQuery :GFCircleQuery = {
+        let center = CLLocation(latitude: 0, longitude: 0)
+        return FirebaseManager.shared.geoFire.queryAtLocation(center, withRadius: 1)
+    }()
+    
     //let numberOfLocations = 1000 //for test
     var isFirstLocationReceived = false
     var clusteringArray:[FBAnnotation] = []
     var needZoomIn = false
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -144,7 +149,7 @@ class MainVC: UIViewController {
             let center = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
             
             // 1000 meters
-            let circleQuery = FirebaseManager.shared.geoFire.queryAtLocation(center, withRadius: 1)
+            circleQuery = FirebaseManager.shared.geoFire.queryAtLocation(center, withRadius: 1)
             
             /*
              let span = MKCoordinateSpanMake(0.001, 0.001)
@@ -152,6 +157,7 @@ class MainVC: UIViewController {
              var regionQuery = FirebaseManager.shared.geoFire.queryWithRegion(region)*/
             
             circleQuery.observeEventType(.KeyEntered, withBlock: { (key: String!, location: CLLocation!) in
+                Debug.print("KeyEntered")
                 let a: FBAnnotation = FBAnnotation()
                 a.coordinate = location.coordinate
                 a.objectId = key
@@ -160,11 +166,11 @@ class MainVC: UIViewController {
             
             circleQuery.observeEventType(.KeyExited, withBlock: { (key: String!, location: CLLocation!) in
                 self.mapView.removeAnnotations(self.clusteringArray)
-                print("KeyExited")
+                Debug.print("KeyExited")
             })
             
             circleQuery.observeEventType(.KeyMoved, withBlock: { (key: String!, location: CLLocation!) in
-                print("KeyMoved")
+                Debug.print("KeyMoved")
             })
             
             circleQuery.observeReadyWithBlock({
@@ -177,10 +183,15 @@ class MainVC: UIViewController {
                                 annotation.pokeId = pokeId
                                 
                                 if index + 1 == self.clusteringArray.count && self.clusteringManager.allAnnotations().count == 0 {
-                                    print("index = \(index) ,key = \(self.clusteringArray[index].pokeId)")
+                                    Debug.print("index = \(index) ,key = \(self.clusteringArray[index].pokeId)")
                                     self.needZoomIn = true
                                     NSOperationQueue.mainQueue().addOperationWithBlock({
                                         self.clusteringManager.addAnnotations(self.clusteringArray)
+                                        
+                                        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * Double(NSEC_PER_SEC)))
+                                        dispatch_after(delayTime, dispatch_get_main_queue()) {
+                                            self.zoomInToCurrentLocation(self.mapView.userLocation.coordinate, level: 0.03)
+                                        }
                                     })
                                 }
                             }
@@ -202,7 +213,6 @@ class MainVC: UIViewController {
             region.span.longitudeDelta = level;
             mapView.setRegion(region, animated: true)
         }
-        
     }
     
     func randomLocationsWithCount(count:Int) -> [FBAnnotation] {
@@ -332,7 +342,7 @@ extension MainVC: MKMapViewDelegate {
             }
             
             if let fbAnnotation = annotation as? FBAnnotation, pokeId = fbAnnotation.pokeId {
-                var pokeModel: Pokemon = PokemonHelper.shared.infos[pokeId]
+                var pokeModel: Pokemon = PokemonHelper.shared.infos[pokeId - 1]
                 pokeModel.objectId = fbAnnotation.objectId ?? ""
                 fbAnnotation.title = pokeModel.name
                 pokeView?.setUpAnView(pokeModel)
