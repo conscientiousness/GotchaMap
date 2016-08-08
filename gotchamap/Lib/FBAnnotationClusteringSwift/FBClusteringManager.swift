@@ -70,7 +70,7 @@ public class FBClusteringManager : NSObject {
         
         var clusteredAnnotations = [MKAnnotation]()
         
-        lock.lock()
+        //lock.lock()
         
         for i in minX...maxX {
             
@@ -118,7 +118,7 @@ public class FBClusteringManager : NSObject {
         }
         
         
-        lock.unlock()
+        //lock.unlock()
         
         return clusteredAnnotations
     }
@@ -127,11 +127,11 @@ public class FBClusteringManager : NSObject {
         
         var annotations = [MKAnnotation]()
         
-        lock.lock()
+        //lock.lock()
         tree?.enumerateAnnotationsUsingBlock(){ obj in
             annotations.append(obj)
         }
-        lock.unlock()
+        //lock.unlock()
         
         return annotations
     }

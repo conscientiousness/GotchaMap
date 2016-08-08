@@ -187,12 +187,14 @@ class PokeInfoVC: UIViewController {
                 self?.reportLoadingView.stopAnimating()
             }
             
-            // Fetch User
+            
+            // Fetch User Vote
             if let userId = NSUserDefaults.standardUserDefaults().stringForKey(UserDefaultsKey.uid) {
+                Debug.print("\(objectId) , \(userId)")
                 FirebaseManager.shared.usersRef.child(userId).child(FirebaseRefKey.Users.votes).child(objectId).observeSingleEventOfType(.Value, withBlock: { [weak self] (snapshot) in
                     guard let strongSelf = self else { return }
                     strongSelf.reportLoadingView.stopAnimating()
-                    
+                    Debug.print(snapshot.value)
                     guard (snapshot.value as? NSNull) != nil else {
                         if let value = snapshot.value as? NSNumber, type = PokeDetailReportBtnType(rawValue: value.integerValue) {
                             strongSelf.activeBtn(withType: type)
@@ -210,9 +212,9 @@ class PokeInfoVC: UIViewController {
     private func reportTrustDegree(withType type: PokeDetailReportBtnType) {
         let isGood = (type == .Good ? true : false)
         
-        if let userId = NSUserDefaults.standardUserDefaults().stringForKey(UserDefaultsKey.uid), objectid = pokeModel.objectId, model = FIRPokeModel {
+        if let objectid = pokeModel.objectId, model = FIRPokeModel {
             // update user vote status
-            FirebaseManager.shared.currentUsersRef.child(userId).child(FirebaseRefKey.Users.votes).child(objectid).setValue(isGood)
+            FirebaseManager.shared.currentUsersRef.child(FirebaseRefKey.Users.votes).child(objectid).setValue(isGood)
             
             // update pokemon vote count
             FirebaseManager.shared.postsRef.child(objectid).child(FirebaseRefKey.Pokemons.vote).child(FirebaseRefKey.Pokemons.Vote.good).setValue(model.goodCount)

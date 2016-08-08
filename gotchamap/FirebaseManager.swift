@@ -35,6 +35,7 @@ class FirebaseManager {
         FIRAuth.auth()?.signInAnonymouslyWithCompletion({ (user, error) in
             if let user = user where error == nil {
                 NSUserDefaults.standardUserDefaults().setValue(user.uid, forKey: UserDefaultsKey.uid)
+                NSUserDefaults.standardUserDefaults().synchronize()
                 self.usersRef.child(user.uid).updateChildValues(["provider": "anonymous"])
 
                 if let result = result {
@@ -52,7 +53,7 @@ class FirebaseManager {
         pokePost.setValue(JSONString)
         
         if let currentCoordinate = PokemonHelper.shared.currentLocation?.coordinate {
-            let location = CLLocation(latitude: random(withLocation: currentCoordinate.latitude), longitude: random(withLocation: currentCoordinate.longitude))
+            let location = CLLocation(latitude: format(withLocation: currentCoordinate.latitude), longitude: format(withLocation: currentCoordinate.longitude))
             
             // add to coordinates
             geoFire.setLocation(location, forKey: pokePost.key)

@@ -9,7 +9,6 @@
 import UIKit
 import MapKit
 import CoreLocation
-import RealmSwift
 import ObjectMapper
 import Firebase
 
@@ -214,6 +213,7 @@ class MainVC: UIViewController {
         }
     }
     
+    /*/ for test
     func randomLocationsWithCount(count:Int) -> [FBAnnotation] {
         var array: [FBAnnotation] = []
         for _ in 0...count {
@@ -222,12 +222,43 @@ class MainVC: UIViewController {
             array.append(a)
         }
         return array
+    }*/
+    
+    func checkLocationPermission() -> Bool {
+        
+        switch CLLocationManager.authorizationStatus() {
+        case .AuthorizedAlways, .AuthorizedWhenInUse:
+            return true
+        case .NotDetermined:
+            locationMananger.requestWhenInUseAuthorization()
+            return false
+        case .Restricted, .Denied:
+            let alertController = UIAlertController(
+                title: "沒有開啟定位資訊", // Background Location Access Disabled
+                message: "位置權限請選擇 '使用App期間' 或 '永遠', 才能搜尋或回報目前位置資訊",
+                preferredStyle: .Alert)
+            
+            let cancelAction = UIAlertAction(title: "取消", style: .Cancel, handler: nil) //Cancel
+            alertController.addAction(cancelAction)
+            
+            let openAction = UIAlertAction(title: "打開設定", style: .Default) { (action) in // Open Settings
+                if let url = NSURL(string: UIApplicationOpenSettingsURLString) {
+                    UIApplication.sharedApplication().openURL(url)
+                }
+            }
+            alertController.addAction(openAction)
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+            return false
+        }
     }
     
     // MARK: - Button Action Method
     
     @objc private func backHomeBtnPressed(sender: UIButton) {
-        zoomInToCurrentLocation(mapView.userLocation.coordinate, level: 0.01)
+        if checkLocationPermission() {
+            zoomInToCurrentLocation(mapView.userLocation.coordinate, level: 0.01)
+        }
     }
     
     @objc private func pokedexBtnPressed(sender: UIButton) {
@@ -239,11 +270,13 @@ class MainVC: UIViewController {
     }
     
     @objc private func reportBtnPressed(sender: UIButton) {
-        let targetVC = PokedexVC(pokedexType: .Report)
-        targetVC.transitioningDelegate = self
-        targetVC.modalPresentationStyle = .Custom
-        transition.startingPoint = self.repotPokeBtn.center
-        self.presentViewController(targetVC, animated: true, completion: nil)
+        if checkLocationPermission() {
+            let targetVC = PokedexVC(pokedexType: .Report)
+            targetVC.transitioningDelegate = self
+            targetVC.modalPresentationStyle = .Custom
+            transition.startingPoint = self.repotPokeBtn.center
+            self.presentViewController(targetVC, animated: true, completion: nil)
+        }
     }
     
     // MARK: - FBClusteringMap
@@ -314,9 +347,7 @@ extension MainVC: FBClusteringManagerDelegate {
     }
     
     func didAddAnnotation() {
-       
-            refreshClusteringAnnotations()
-        
+        refreshClusteringAnnotations()
     }
 }
 
@@ -325,6 +356,7 @@ extension MainVC: FBClusteringManagerDelegate {
 extension MainVC: MKMapViewDelegate {
     
     func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool){
+        refreshClusteringAnnotations()
         updateCircleQuery()
     }
     
