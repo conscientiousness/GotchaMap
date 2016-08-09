@@ -50,6 +50,7 @@
 		F4CA4A581D4137A400669B1F /* FBQuadTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A511D4137A400669B1F /* FBQuadTree.swift */; };
 		F4CA4A591D4137A400669B1F /* FBQuadTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A521D4137A400669B1F /* FBQuadTreeNode.swift */; };
 		F4CCA7F71D56511A0002A6F2 /* FIRPokemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CCA7F61D56511A0002A6F2 /* FIRPokemon.swift */; };
+		F4D706BD1D58E1EB00B22C60 /* ReportPokeMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D706BC1D58E1EB00B22C60 /* ReportPokeMapVC.swift */; };
 		F4E9FA791D4D101200CE692F /* BubbleTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E9FA781D4D101200CE692F /* BubbleTransition.swift */; };
 /* End PBXBuildFile section */
 
@@ -133,6 +134,7 @@
 		F4CA4A511D4137A400669B1F /* FBQuadTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBQuadTree.swift; path = Lib/FBAnnotationClusteringSwift/FBQuadTree.swift; sourceTree = "<group>"; };
 		F4CA4A521D4137A400669B1F /* FBQuadTreeNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBQuadTreeNode.swift; path = Lib/FBAnnotationClusteringSwift/FBQuadTreeNode.swift; sourceTree = "<group>"; };
 		F4CCA7F61D56511A0002A6F2 /* FIRPokemon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FIRPokemon.swift; sourceTree = "<group>"; };
+		F4D706BC1D58E1EB00B22C60 /* ReportPokeMapVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportPokeMapVC.swift; sourceTree = "<group>"; };
 		F4E9FA781D4D101200CE692F /* BubbleTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BubbleTransition.swift; path = Lib/BubbleTransition/BubbleTransition.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -369,6 +371,7 @@
 				F47464CE1D44BDD00003F4C4 /* PokedexSearchController.swift */,
 				F41FCB171D464D7A00FC446E /* PokeInfoVC.swift */,
 				F41FCB181D464D7A00FC446E /* PokeInfoVC.xib */,
+				F4D706BC1D58E1EB00B22C60 /* ReportPokeMapVC.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -417,6 +420,7 @@
 				F4CA4A061D408A1100669B1F /* Resources */,
 				7F5017F75C5CB2E05A4D7AFB /* [CP] Embed Pods Frameworks */,
 				61869E974F49699D73094A4A /* [CP] Copy Pods Resources */,
+				F498DE9B1D59A0F9007BBBD0 /* Bump Buold Version */,
 			);
 			buildRules = (
 			);
@@ -576,6 +580,20 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-gotchamap/Pods-gotchamap-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		F498DE9B1D59A0F9007BBBD0 /* Bump Buold Version */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bump Buold Version";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "#if [ $CONFIGURATION == Release ]; then\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\n#fi";
+		};
 		F7DD8A2E6A18C8FEDBA147FD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -606,6 +624,7 @@
 				F4CCA7F71D56511A0002A6F2 /* FIRPokemon.swift in Sources */,
 				F4CA4A551D4137A400669B1F /* FBAnnotationCluster.swift in Sources */,
 				F4038D3C1D50F1B900445DA4 /* PokeRequest.swift in Sources */,
+				F4D706BD1D58E1EB00B22C60 /* ReportPokeMapVC.swift in Sources */,
 				F4CA4A571D4137A400669B1F /* FBClusteringManager.swift in Sources */,
 				F4CA4A581D4137A400669B1F /* FBQuadTree.swift in Sources */,
 				F4038D551D51113400445DA4 /* GFGeoHash.m in Sources */,
@@ -762,7 +781,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEBUG\"";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jesse.gotchamap;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jesselin.gotchamap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "./gotchamap/gotchamap-Bridging-Header.h";
 			};
@@ -774,12 +793,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = gotchamap/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jesse.gotchamap;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jesselin.gotchamap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "./gotchamap/gotchamap-Bridging-Header.h";
 			};

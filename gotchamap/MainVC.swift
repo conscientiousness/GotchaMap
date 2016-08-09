@@ -19,7 +19,7 @@ class MainVC: UIViewController {
     
     private lazy var mapView: MKMapView = {
         let _mapView = MKMapView()
-        _mapView.cornerRadius = 7
+        _mapView.cornerRadius = 10
         _mapView.delegate = self
         _mapView.setUserTrackingMode(.Follow, animated: true)
         return _mapView
@@ -155,48 +155,44 @@ class MainVC: UIViewController {
     
     func setupObservers() {
         
-
-            //let center = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-            //circleQuery = FirebaseManager.shared.geoFire.queryAtLocation(center, withRadius: queryRadius)
+        circleQuery.observeEventType(.KeyEntered, withBlock: { (key: String!, location: CLLocation!) in
+            Debug.print("KeyEntered")
+            let an: FBAnnotation = FBAnnotation()
+            an.coordinate = location.coordinate
+            an.objectId = key
             
-            circleQuery.observeEventType(.KeyEntered, withBlock: { (key: String!, location: CLLocation!) in
-                Debug.print("KeyEntered")
-                let an: FBAnnotation = FBAnnotation()
-                an.coordinate = location.coordinate
-                an.objectId = key
-
-                FirebaseManager.shared.postsRef.child(key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-                    if let value = snapshot.value {
-                        if let pokeId: Int = Int((value["pokemonId"] as! String)) {
-                            an.pokeId = pokeId
-                            
-                            self.clusteringManager.addAnnotations([an])
-                            self.clusteringDict[key] = an
-                            
-                            Debug.print("pokeid = \(pokeId) ,key = \(key)")
-                        }
+            FirebaseManager.shared.postsRef.child(key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                if let value = snapshot.value {
+                    if let pokeId: Int = Int((value["pokemonId"] as! String)) {
+                        an.pokeId = pokeId
+                        
+                        self.clusteringManager.addAnnotations([an])
+                        self.clusteringDict[key] = an
+                        
+                        Debug.print("pokeid = \(pokeId) ,key = \(key)")
                     }
-                })
-            })
-            
-            circleQuery.observeEventType(.KeyExited, withBlock: { (key: String!, location: CLLocation!) in
-                Debug.print("KeyExited")
-                
-                if let fbAnnotation = self.clusteringDict[key] {
-                    self.mapView.removeAnnotation(fbAnnotation)
-                    self.clusteringDict.removeValueForKey(key)
-                    self.clusteringManager = FBClusteringManager()
-                    self.clusteringManager.delegate = self;
                 }
             })
+        })
+        
+        circleQuery.observeEventType(.KeyExited, withBlock: { (key: String!, location: CLLocation!) in
+            Debug.print("KeyExited")
             
-            circleQuery.observeEventType(.KeyMoved, withBlock: { (key: String!, location: CLLocation!) in
-                Debug.print("KeyMoved")
-            })
-            
-            circleQuery.observeReadyWithBlock({
-                Debug.print("observeReadyWithBlock")
-            })
+            if let fbAnnotation = self.clusteringDict[key] {
+                self.mapView.removeAnnotation(fbAnnotation)
+                self.clusteringDict.removeValueForKey(key)
+                self.clusteringManager = FBClusteringManager()
+                self.clusteringManager.delegate = self;
+            }
+        })
+        
+        circleQuery.observeEventType(.KeyMoved, withBlock: { (key: String!, location: CLLocation!) in
+            Debug.print("KeyMoved")
+        })
+        
+        circleQuery.observeReadyWithBlock({
+            Debug.print("observeReadyWithBlock")
+        })
         
     }
     
@@ -291,7 +287,9 @@ class MainVC: UIViewController {
             
             let annotationArray = self.clusteringManager.clusteredAnnotationsWithinMapRect(self.mapView.visibleMapRect, withZoomScale:scale)
             
-            self.clusteringManager.displayAnnotations(annotationArray, onMapView:self.mapView)
+            NSOperationQueue.mainQueue().addOperationWithBlock({
+                self.clusteringManager.displayAnnotations(annotationArray, onMapView:self.mapView)
+            })
         })
     }
 }

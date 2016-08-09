@@ -50,6 +50,7 @@ class FirebaseManager {
         // add to Pokemons
         let JSONString = Mapper().toJSON(model)
         let pokePost = FirebaseManager.shared.postsRef.childByAutoId()
+        
         pokePost.setValue(JSONString)
         
         if let currentCoordinate = PokemonHelper.shared.currentLocation?.coordinate {
