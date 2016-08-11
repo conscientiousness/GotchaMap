@@ -12,9 +12,6 @@ import CoreLocation
 import ObjectMapper
 import Firebase
 
-// km
-let queryRadius = 5.0
-
 class MainVC: UIViewController {
     
     private lazy var mapView: MKMapView = {
@@ -74,12 +71,14 @@ class MainVC: UIViewController {
     
     private lazy var circleQuery :GFCircleQuery = {
         let center = CLLocation(latitude: 0, longitude: 0)
-        return FirebaseManager.shared.geoFire.queryAtLocation(center, withRadius: queryRadius)
+        return FirebaseManager.shared.geoFire.queryAtLocation(center, withRadius: 5.0)
     }()
     
     //let numberOfLocations = 1000 //for test
     var isFirstLocationReceived = false
     var clusteringDict:[String: FBAnnotation] = [:]
+    // km
+    var queryRadius = 5.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -150,7 +149,7 @@ class MainVC: UIViewController {
         let centerLocation = CLLocation(latitude: centerCoordinate.latitude, longitude: centerCoordinate.longitude)
         circleQuery.center = centerLocation
         circleQuery.radius = queryRadius
-        
+        Debug.print("queryRadius = \(queryRadius)")
     }
     
     func setupObservers() {
@@ -166,10 +165,10 @@ class MainVC: UIViewController {
                     if let pokeId: Int = Int((value["pokemonId"] as! String)) {
                         an.pokeId = pokeId
                         
-                        self.clusteringManager.addAnnotations([an])
+                        //self.clusteringManager.addAnnotations([an])
                         self.clusteringDict[key] = an
-                        
-                        Debug.print("pokeid = \(pokeId) ,key = \(key)")
+                        self.mapView.addAnnotation(an)
+                        //Debug.print("pokeid = \(pokeId) ,key = \(key)")
                     }
                 }
             })
@@ -181,8 +180,8 @@ class MainVC: UIViewController {
             if let fbAnnotation = self.clusteringDict[key] {
                 self.mapView.removeAnnotation(fbAnnotation)
                 self.clusteringDict.removeValueForKey(key)
-                self.clusteringManager = FBClusteringManager()
-                self.clusteringManager.delegate = self;
+                //self.clusteringManager = FBClusteringManager()
+                //self.clusteringManager.delegate = self;
             }
         })
         
@@ -191,7 +190,7 @@ class MainVC: UIViewController {
         })
         
         circleQuery.observeReadyWithBlock({
-            Debug.print("observeReadyWithBlock")
+            //Debug.print("observeReadyWithBlock")
         })
         
     }
@@ -354,7 +353,9 @@ extension MainVC: FBClusteringManagerDelegate {
 extension MainVC: MKMapViewDelegate {
     
     func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool){
-        refreshClusteringAnnotations()
+        
+        queryRadius = mapView.region.distanceMax()
+        //refreshClusteringAnnotations()
         updateCircleQuery()
     }
     
@@ -422,5 +423,14 @@ extension MainVC: MKMapViewDelegate {
                 self.presentViewController(targetVC, animated: true, completion: nil)
             }
         }
+    }
+}
+
+extension MKCoordinateRegion {
+    func distanceMax() -> CLLocationDistance {
+        let furthest = CLLocation(latitude: center.latitude + (span.latitudeDelta/2),
+                                  longitude: center.longitude + (span.longitudeDelta/2))
+        let centerLoc = CLLocation(latitude: center.latitude, longitude: center.longitude)
+        return centerLoc.distanceFromLocation(furthest) / 1000.0
     }
 }

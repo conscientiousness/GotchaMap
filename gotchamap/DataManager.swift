@@ -6,10 +6,13 @@
 //  Copyright © 2016年 JesseLin. All rights reserved.
 //
 
-import Foundation
+import Alamofire
 import SwiftyJSON
 
-struct DataManager {
+class DataManager {
+    
+    static let shared = FirebaseManager()
+    private let radarBaseUrl = "https://www.pokeradar.io/api/v1/submissions"
     
     static func getPokeBaseInfoFromFile(withSuccess success: (data: JSON) -> Void) {
         if let filePath = NSBundle.mainBundle().pathForResource("pokemon", ofType:"json") {
@@ -23,6 +26,12 @@ struct DataManager {
             }
         } else {
             //Debug.print("The local JSON file could not be found")
+        }
+    }
+    
+    func getRadarAPI(withRequest request: RadarRequest, success: (model: Radar) -> Void) {
+        Alamofire.request(.GET, radarBaseUrl, parameters: ["": ""]).responseJSON { reponse in
+            
         }
     }
 }
