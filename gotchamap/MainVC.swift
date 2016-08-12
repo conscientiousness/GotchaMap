@@ -156,6 +156,7 @@ class MainVC: UIViewController {
         
         circleQuery.observeEventType(.KeyEntered, withBlock: { (key: String!, location: CLLocation!) in
             Debug.print("KeyEntered")
+            
             let an: FBAnnotation = FBAnnotation()
             an.coordinate = location.coordinate
             an.objectId = key
@@ -163,12 +164,15 @@ class MainVC: UIViewController {
             FirebaseManager.shared.postsRef.child(key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 if let value = snapshot.value {
                     if let pokeId: Int = Int((value["pokemonId"] as! String)) {
-                        an.pokeId = pokeId
                         
-                        //self.clusteringManager.addAnnotations([an])
-                        self.clusteringDict[key] = an
-                        self.mapView.addAnnotation(an)
-                        //Debug.print("pokeid = \(pokeId) ,key = \(key)")
+                        if pokeId > 0 {
+                            an.pokeId = pokeId
+                            //Debug.print("pokeid = \(pokeId) ,key = \(key)")
+                            //self.clusteringManager.addAnnotations([an])
+                            self.clusteringDict[key] = an
+                            self.mapView.addAnnotation(an)
+                        }
+                        
                     }
                 }
             })
