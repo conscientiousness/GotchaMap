@@ -66,4 +66,8 @@ extension UIFont {
     class func pokedexReportTrustTitle() -> UIFont {
         return UIFont.appBoldFontOfSize(22)
     }
+    
+    class func mapLoadingTitle() -> UIFont {
+        return UIFont.appBoldFontOfSize(15)
+    }
 }

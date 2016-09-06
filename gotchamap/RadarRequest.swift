@@ -9,9 +9,10 @@ import ObjectMapper
 
 class RadarRequest: Mappable {
     var pokemonId: Int?
-    var latitude: Double?
-    var longitude: Double?
-    var zoomLevel: Float?
+    var minLatitude: Double?
+    var maxLatitude: Double?
+    var minLongitude: Double?
+    var maxLongitude: Double?
     
     init?() {
         // Empty Constructor
@@ -24,8 +25,9 @@ class RadarRequest: Mappable {
     
     func mapping(map: Map) {
         pokemonId   <- map["pokemonId"]
-        latitude    <- map["latitude"]
-        longitude   <- map["longitude"]
-        zoomLevel   <- map["zoomLevel"]
+        minLatitude    <- map["minLatitude"]
+        maxLatitude   <- map["maxLatitude"]
+        minLongitude   <- map["minLongitude"]
+        maxLongitude   <- map["maxLongitude"]
     }
 }

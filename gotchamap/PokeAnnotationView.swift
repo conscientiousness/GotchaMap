@@ -52,7 +52,7 @@ class PokeAnnotationView: MKAnnotationView {
         let infoBtn = UIButton(frame: CGRectMake(0, 0, 22, 22))
         infoBtn.setImage(UIImage(named: "btn_map_poke_info"), forState: .Normal)
         infoBtn.autoresizingMask = [.FlexibleBottomMargin, .FlexibleTopMargin, .FlexibleRightMargin]
-        rightCalloutAccessoryView = infoBtn
+        //rightCalloutAccessoryView = infoBtn
     }
     
     private func setUpSubViews() {

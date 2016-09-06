@@ -10,13 +10,13 @@ import SwiftyJSON
 
 struct Radar {
     
-    let pokemonId: Int?
-    let latitude: Double?
-    let longitude: Double?
+    let pokemonId: Int
+    let latitude: Double
+    let longitude: Double
     let trainerName: String
-    let upvotes: Int?
-    let downvotes: Int?
-    let created: Int?
+    let upvotes: Int
+    let downvotes: Int
+    let created: Int
     
     init(json value: JSON) {
         pokemonId = value["pokemonId"].int ?? 0
