@@ -11,36 +11,36 @@ import Kingfisher
 
 class PokedexCell: UICollectionViewCell {
 
-    private(set) lazy var imageView: UIImageView = {
+    fileprivate(set) lazy var imageView: UIImageView = {
         let _imageView = UIImageView()
-        _imageView.contentMode = .ScaleAspectFit
+        _imageView.contentMode = .scaleAspectFit
         return _imageView
     }()
     
-    private(set) lazy var indexLabel: UILabel = {
+    fileprivate(set) lazy var indexLabel: UILabel = {
         let _indexLabel = UILabel()
         _indexLabel.font = UIFont.pokedexCellText()
-        _indexLabel.textColor = UIColor.whiteColor()
-        _indexLabel.textAlignment = .Center
+        _indexLabel.textColor = UIColor.white
+        _indexLabel.textAlignment = .center
         return _indexLabel
     }()
     
-    private(set) lazy var nameLabel: UILabel = {
+    fileprivate(set) lazy var nameLabel: UILabel = {
         let _nameLabel = UILabel()
         _nameLabel.font = UIFont.pokedexCellText()
-        _nameLabel.textColor = UIColor.whiteColor()
-        _nameLabel.textAlignment = .Center
+        _nameLabel.textColor = UIColor.white
+        _nameLabel.textAlignment = .center
         return _nameLabel
     }()
     
-    private lazy var bgImageView: UIImageView = {
+    fileprivate lazy var bgImageView: UIImageView = {
         let _imageView = UIImageView()
-        _imageView.contentMode = .ScaleAspectFill
+        _imageView.contentMode = .scaleAspectFill
         return _imageView
     }()
     
-    private lazy var blurView: UIVisualEffectView = {
-        let _blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
+    fileprivate lazy var blurView: UIVisualEffectView = {
+        let _blurView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
         return _blurView
     }()
     
@@ -60,16 +60,16 @@ class PokedexCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        imageView.kf_cancelDownloadTask()
+        imageView.kf.cancelDownloadTask()
         nameLabel.text = nil
     }
     
     // MARK: - Private Methods
     
-    private func setUpAppearance() {
+    fileprivate func setUpAppearance() {
         clipsToBounds = true
         layer.borderWidth = 1.0
-        layer.borderColor = UIColor.whiteColor().CGColor
+        layer.borderColor = UIColor.white.cgColor
         
         contentView.addSubview(bgImageView)
         contentView.addSubview(blurView)
@@ -78,27 +78,27 @@ class PokedexCell: UICollectionViewCell {
         blurView.addSubview(imageView)
         
         bgImageView.frame = contentView.bounds
-        bgImageView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+        bgImageView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         blurView.frame = contentView.bounds
-        blurView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+        blurView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         indexLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        let views = ["imageView": imageView, "index": indexLabel, "name": nameLabel]
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-3-[index(22)][imageView][name(22)]-3-|", options: [], metrics: nil, views: views))
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[imageView]|", options: [], metrics: nil, views: views))
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[index]|", options: [], metrics: nil, views: views))
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[name]|", options: [], metrics: nil, views: views))
+        let views = ["imageView": imageView, "index": indexLabel, "name": nameLabel] as [String : Any]
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-3-[index(22)][imageView][name(22)]-3-|", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|[imageView]|", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|[index]|", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|[name]|", options: [], metrics: nil, views: views))
     }
     
     // MARK: - Public Methods
     
     func configure(withPokemon pokemon: Pokemon) {
         if let url = pokemon.imgURL {
-            bgImageView.kf_setImageWithURL(url, placeholderImage: nil)
-            imageView.kf_setImageWithURL(url, placeholderImage: nil)
+            bgImageView.kf.setImage(with: url)
+            imageView.kf.setImage(with: url)
         }
         nameLabel.text = pokemon.name
         indexLabel.text = String(format: "#%03d", pokemon.pokeId)

@@ -20,6 +20,7 @@
 		F41FCB1A1D464D7A00FC446E /* PokeInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = F41FCB181D464D7A00FC446E /* PokeInfoVC.xib */; };
 		F43EED971D570FAB00DF2D91 /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43EED961D570FAB00DF2D91 /* Debug.swift */; };
 		F446DEAC1D41DF3B007BDEA0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F446DEAB1D41DF3B007BDEA0 /* CoreLocation.framework */; };
+		F45655E31D998A1C00E7DD08 /* UIColor+Hue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45655E21D998A1C00E7DD08 /* UIColor+Hue.swift */; };
 		F47464CB1D4494250003F4C4 /* PokemonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47464CA1D4494250003F4C4 /* PokemonHelper.swift */; };
 		F47464CD1D44959D0003F4C4 /* PokedexVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47464CC1D44959D0003F4C4 /* PokedexVC.swift */; };
 		F47464CF1D44BDD00003F4C4 /* PokedexSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47464CE1D44BDD00003F4C4 /* PokedexSearchController.swift */; };
@@ -46,7 +47,6 @@
 		F4CA4A421D412F3600669B1F /* NotoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4CA4A411D412F3600669B1F /* NotoSans-Bold.ttf */; };
 		F4CA4A451D4130FC00669B1F /* UIColor+Gotcha.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A441D4130FC00669B1F /* UIColor+Gotcha.swift */; };
 		F4CA4A471D41311900669B1F /* UIFont+Gotcha.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A461D41311900669B1F /* UIFont+Gotcha.swift */; };
-		F4CA4A491D41351D00669B1F /* UIColor+Hue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A481D41351D00669B1F /* UIColor+Hue.swift */; };
 		F4CA4A531D4137A400669B1F /* FBAnnotationClusterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A4C1D4137A400669B1F /* FBAnnotationClusterView.swift */; };
 		F4CA4A541D4137A400669B1F /* FBAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A4D1D4137A400669B1F /* FBAnnotation.swift */; };
 		F4CA4A551D4137A400669B1F /* FBAnnotationCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CA4A4E1D4137A400669B1F /* FBAnnotationCluster.swift */; };
@@ -102,6 +102,7 @@
 		F41FCB181D464D7A00FC446E /* PokeInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PokeInfoVC.xib; sourceTree = "<group>"; };
 		F43EED961D570FAB00DF2D91 /* Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
 		F446DEAB1D41DF3B007BDEA0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		F45655E21D998A1C00E7DD08 /* UIColor+Hue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hue.swift"; sourceTree = "<group>"; };
 		F47464CA1D4494250003F4C4 /* PokemonHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokemonHelper.swift; sourceTree = "<group>"; };
 		F47464CC1D44959D0003F4C4 /* PokedexVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokedexVC.swift; sourceTree = "<group>"; };
 		F47464CE1D44BDD00003F4C4 /* PokedexSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokedexSearchController.swift; sourceTree = "<group>"; };
@@ -135,7 +136,6 @@
 		F4CA4A411D412F3600669B1F /* NotoSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Bold.ttf"; sourceTree = "<group>"; };
 		F4CA4A441D4130FC00669B1F /* UIColor+Gotcha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Gotcha.swift"; sourceTree = "<group>"; };
 		F4CA4A461D41311900669B1F /* UIFont+Gotcha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Gotcha.swift"; sourceTree = "<group>"; };
-		F4CA4A481D41351D00669B1F /* UIColor+Hue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hue.swift"; sourceTree = "<group>"; };
 		F4CA4A4C1D4137A400669B1F /* FBAnnotationClusterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBAnnotationClusterView.swift; path = Lib/FBAnnotationClusteringSwift/FBAnnotationClusterView.swift; sourceTree = "<group>"; };
 		F4CA4A4D1D4137A400669B1F /* FBAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBAnnotation.swift; path = Lib/FBAnnotationClusteringSwift/FBAnnotation.swift; sourceTree = "<group>"; };
 		F4CA4A4E1D4137A400669B1F /* FBAnnotationCluster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FBAnnotationCluster.swift; path = Lib/FBAnnotationClusteringSwift/FBAnnotationCluster.swift; sourceTree = "<group>"; };
@@ -361,10 +361,10 @@
 			children = (
 				F4CA4A441D4130FC00669B1F /* UIColor+Gotcha.swift */,
 				F4CA4A461D41311900669B1F /* UIFont+Gotcha.swift */,
-				F4CA4A481D41351D00669B1F /* UIColor+Hue.swift */,
 				F4CA4A3D1D408B4800669B1F /* UIView+Radius.swift */,
 				F490A7B21D7F364C00D53098 /* MKMapView+ZoomLevel.h */,
 				F490A7B31D7F364C00D53098 /* MKMapView+ZoomLevel.m */,
+				F45655E21D998A1C00E7DD08 /* UIColor+Hue.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -504,12 +504,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = JesseLin;
 				TargetAttributes = {
 					F4CA4A071D408A1100669B1F = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = X69W8ZBR5M;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.Maps.iOS = {
 								enabled = 1;
@@ -521,10 +522,12 @@
 					};
 					F4CA4A1B1D408A1100669B1F = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 						TestTargetID = F4CA4A071D408A1100669B1F;
 					};
 					F4CA4A261D408A1100669B1F = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 						TestTargetID = F4CA4A071D408A1100669B1F;
 					};
 				};
@@ -636,7 +639,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -652,6 +655,7 @@
 				F490A7B41D7F364C00D53098 /* MKMapView+ZoomLevel.m in Sources */,
 				F47464D31D44C0320003F4C4 /* PokedexCell.swift in Sources */,
 				F48F862E1D5B87B0001351DB /* Radar.swift in Sources */,
+				F45655E31D998A1C00E7DD08 /* UIColor+Hue.swift in Sources */,
 				F41FCB191D464D7A00FC446E /* PokeInfoVC.swift in Sources */,
 				F4CCA7F71D56511A0002A6F2 /* FIRPokemon.swift in Sources */,
 				F4CA4A551D4137A400669B1F /* FBAnnotationCluster.swift in Sources */,
@@ -665,7 +669,6 @@
 				F43EED971D570FAB00DF2D91 /* Debug.swift in Sources */,
 				F47464CF1D44BDD00003F4C4 /* PokedexSearchController.swift in Sources */,
 				F4038D541D51113400445DA4 /* GFBase32Utils.m in Sources */,
-				F4CA4A491D41351D00669B1F /* UIColor+Hue.swift in Sources */,
 				F47464CB1D4494250003F4C4 /* PokemonHelper.swift in Sources */,
 				F4038D361D50D6C500445DA4 /* FirebaseManager.swift in Sources */,
 				F4CA4A3E1D408B4800669B1F /* UIView+Radius.swift in Sources */,
@@ -733,8 +736,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -756,7 +761,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -779,8 +784,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -796,9 +803,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -808,16 +816,18 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C3DF02E75B2DCCD905BB66DD /* Pods-gotchamap.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = gotchamap/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jesselin.gotchamap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "./gotchamap/gotchamap-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -825,16 +835,18 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8C68677082A00B2ABAAD2799 /* Pods-gotchamap.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = gotchamap/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jesselin.gotchamap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "./gotchamap/gotchamap-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -846,6 +858,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jesse.gotchamapTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/gotchamap.app/gotchamap";
 			};
 			name = Debug;
@@ -858,6 +871,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jesse.gotchamapTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/gotchamap.app/gotchamap";
 			};
 			name = Release;
@@ -869,6 +883,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jesse.gotchamapUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = gotchamap;
 			};
 			name = Debug;
@@ -880,6 +895,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jesse.gotchamapUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = gotchamap;
 			};
 			name = Release;

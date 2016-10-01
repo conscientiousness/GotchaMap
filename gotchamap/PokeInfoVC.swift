@@ -31,8 +31,8 @@ class PokeInfoVC: UIViewController {
     @IBOutlet weak var reportShitBtn: UIButton!
     @IBOutlet weak var reportLoadingView: UIActivityIndicatorView!
     
-    private lazy var blurView: UIVisualEffectView = {
-        let _blurView = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight))
+    fileprivate lazy var blurView: UIVisualEffectView = {
+        let _blurView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
         return _blurView
     }()
     
@@ -61,22 +61,22 @@ class PokeInfoVC: UIViewController {
         setUpData()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
     // MARK - Set Up
     
-    private func setUpSubViews() {
+    fileprivate func setUpSubViews() {
         // VC
         view.backgroundColor = Palette.PokeInfo.Background
         container.backgroundColor = Palette.PokeInfo.Background
@@ -88,7 +88,7 @@ class PokeInfoVC: UIViewController {
         navigationController?.navigationBar.barTintColor = Palette.PokeInfo.Background
         navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName : UIFont.pokeInfoVCTitle()]*/
         
-        pokeNameTitleLabel.textColor = UIColor.whiteColor()
+        pokeNameTitleLabel.textColor = UIColor.white
         pokeNameTitleLabel.font = UIFont.pokeInfoVCTitle()
         
         // infoLabel
@@ -102,47 +102,47 @@ class PokeInfoVC: UIViewController {
         weaknessDescLabel.infoDescStyle()
         
         // infoView
-        infoContainerView.backgroundColor = UIColor.clearColor()
-        infoContainerView.borderColor = UIColor.whiteColor()
+        infoContainerView.backgroundColor = UIColor.clear
+        infoContainerView.borderColor = UIColor.white
         infoContainerView.borderWidth = 1.0
         
         // imageView
-        pokeImg.contentMode = .ScaleAspectFit
+        pokeImg.contentMode = .scaleAspectFit
         pokeImg.clipsToBounds = true
-        pokeBgImg.contentMode = .ScaleAspectFill
+        pokeBgImg.contentMode = .scaleAspectFill
         
         // Report View
-        reportInfoView.hidden = true
-        reportInfoView.backgroundColor = UIColor.clearColor()
+        reportInfoView.isHidden = true
+        reportInfoView.backgroundColor = UIColor.clear
         reportInfoView.cornerRadius = 10
 
         reportInfoView.insertSubview(blurView, belowSubview: reportTrustDegreeLabel)
         blurView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[blurView]|", options: [], metrics: nil, views: ["blurView": blurView]))
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[blurView]|", options: [], metrics: nil, views: ["blurView": blurView]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|[blurView]|", options: [], metrics: nil, views: ["blurView": blurView]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|[blurView]|", options: [], metrics: nil, views: ["blurView": blurView]))
         
         reportTrustDegreeLabel.font = UIFont.pokedexReportTrustTitle()
-        reportTrustDegreeLabel.textColor = UIColor.whiteColor()
+        reportTrustDegreeLabel.textColor = UIColor.white
         reportTrustDegreeLabel.text = "正確度：??%"
         
-        let goodBtnImage = UIImage(named: "btn_good")?.imageWithRenderingMode(.AlwaysTemplate)
-        let shitBtnImage = UIImage(named: "btn_shit")?.imageWithRenderingMode(.AlwaysTemplate)
+        let goodBtnImage = UIImage(named: "btn_good")?.withRenderingMode(.alwaysTemplate)
+        let shitBtnImage = UIImage(named: "btn_shit")?.withRenderingMode(.alwaysTemplate)
         
-        reportGoodBtn.setImage(goodBtnImage, forState: .Normal)
-        reportGoodBtn.tintColor = UIColor.blackColor()
-        reportGoodBtn.backgroundColor = UIColor.clearColor()
-        reportGoodBtn.addTarget(self, action: .goodBtnSelector, forControlEvents: .TouchUpInside)
+        reportGoodBtn.setImage(goodBtnImage, for: UIControlState())
+        reportGoodBtn.tintColor = UIColor.black
+        reportGoodBtn.backgroundColor = UIColor.clear
+        reportGoodBtn.addTarget(self, action: .goodBtnSelector, for: .touchUpInside)
         
-        reportShitBtn.setImage(shitBtnImage, forState: .Normal)
-        reportShitBtn.tintColor = UIColor.blackColor()
-        reportShitBtn.backgroundColor = UIColor.clearColor()
-        reportShitBtn.addTarget(self, action: .shitBtnSelector, forControlEvents: .TouchUpInside)
+        reportShitBtn.setImage(shitBtnImage, for: UIControlState())
+        reportShitBtn.tintColor = UIColor.black
+        reportShitBtn.backgroundColor = UIColor.clear
+        reportShitBtn.addTarget(self, action: .shitBtnSelector, for: .touchUpInside)
     }
     
-    private func setUpData() {
+    fileprivate func setUpData() {
         title = pokeModel.name
         pokeNameTitleLabel.text = pokeModel.name
-        pokeImg.kf_setImageWithURL(pokeModel.imgURL, placeholderImage: nil)
+        pokeImg.kf.setImage(with: pokeModel.imgURL)
         heightDescLabel.text = pokeModel.height
         weightDescLabel.text = pokeModel.weight
         typeDescLabel.text =  pokeModel.typeDesc
@@ -152,8 +152,8 @@ class PokeInfoVC: UIViewController {
     }
     
     // for Navigation Bar
-    private func findHairLineInImageViewUnder(view view: UIView) -> UIImageView? {
-        if let hairLineView = view as? UIImageView where hairLineView.bounds.size.height <= 1.0 {
+    fileprivate func findHairLineInImageViewUnder(view: UIView) -> UIImageView? {
+        if let hairLineView = view as? UIImageView , hairLineView.bounds.size.height <= 1.0 {
             return hairLineView
         }
         
@@ -166,14 +166,14 @@ class PokeInfoVC: UIViewController {
     
     // MARK: - NetWorking
     
-    private func fetchReportData() {
+    fileprivate func fetchReportData() {
         
-        if let objectId = pokeModel.objectId where pokeDetailType == .Map {
-            reportInfoView.hidden = false
+        if let objectId = pokeModel.objectId , pokeDetailType == .map {
+            reportInfoView.isHidden = false
             reportLoadingView.startAnimating()
             
             // Fetch Pokemon
-            FirebaseManager.shared.postsRef.child(objectId).observeEventType(.Value, withBlock: { [weak self] (snapshot) in
+            FirebaseManager.shared.postsRef.child(objectId).observe(.value, with: { [weak self] (snapshot) in
                 guard let strongSelf = self else { return }
                 strongSelf.reportLoadingView.stopAnimating()
                 
@@ -189,14 +189,14 @@ class PokeInfoVC: UIViewController {
             
             
             // Fetch User Vote
-            if let userId = NSUserDefaults.standardUserDefaults().stringForKey(UserDefaultsKey.uid) {
+            if let userId = UserDefaults.standard.string(forKey: UserDefaultsKey.uid) {
                 Debug.print("\(objectId) , \(userId)")
-                FirebaseManager.shared.usersRef.child(userId).child(FirebaseRefKey.Users.votes).child(objectId).observeSingleEventOfType(.Value, withBlock: { [weak self] (snapshot) in
+                FirebaseManager.shared.usersRef.child(userId).child(FirebaseRefKey.Users.votes).child(objectId).observeSingleEvent(of: .value, with: { [weak self] (snapshot) in
                     guard let strongSelf = self else { return }
                     strongSelf.reportLoadingView.stopAnimating()
                     Debug.print(snapshot.value)
                     guard (snapshot.value as? NSNull) != nil else {
-                        if let value = snapshot.value as? NSNumber, type = PokeDetailReportBtnType(rawValue: value.integerValue) {
+                        if let value = snapshot.value as? NSNumber, let type = PokeDetailReportBtnType(rawValue: value.intValue) {
                             strongSelf.activeBtn(withType: type)
                         }
                         return
@@ -209,10 +209,10 @@ class PokeInfoVC: UIViewController {
         }
     }
     
-    private func reportTrustDegree(withType type: PokeDetailReportBtnType) {
-        let isGood = (type == .Good ? true : false)
+    fileprivate func reportTrustDegree(withType type: PokeDetailReportBtnType) {
+        let isGood = (type == .good ? true : false)
         
-        if let objectid = pokeModel.objectId, model = FIRPokeModel {
+        if let objectid = pokeModel.objectId, let model = FIRPokeModel {
             // update user vote status
             FirebaseManager.shared.currentUsersRef.child(FirebaseRefKey.Users.votes).child(objectid).setValue(isGood)
             
@@ -224,9 +224,9 @@ class PokeInfoVC: UIViewController {
     
     // MARK: - Button Action
     
-    private func activeBtn(withType type: PokeDetailReportBtnType) {
+    fileprivate func activeBtn(withType type: PokeDetailReportBtnType) {
         switch type {
-        case .Good:
+        case .good:
             reportGoodBtn.tintColor = Palette.PokeInfo.goodBtn
         default:
             reportShitBtn.tintColor = Palette.PokeInfo.shitBtn
@@ -234,37 +234,37 @@ class PokeInfoVC: UIViewController {
         }
     }
     
-    @IBAction func backBtnPressed(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func backBtnPressed(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @objc private func goodBtnPressed(sender: UIButton) {
+    @objc fileprivate func goodBtnPressed(_ sender: UIButton) {
         
         guard sender.tintColor == Palette.PokeInfo.goodBtn else {
             sender.tintColor = Palette.PokeInfo.goodBtn
 
             if let model = FIRPokeModel {
-                model.adjustTrustCount(goodVal: 1, shitVal: reportShitBtn.tintColor == UIColor.blackColor() ? 0 : -1)
-                reportTrustDegree(withType: .Good)
+                model.adjustTrustCount(goodVal: 1, shitVal: reportShitBtn.tintColor == UIColor.black ? 0 : -1)
+                reportTrustDegree(withType: .good)
             }
             
-            reportShitBtn.tintColor = UIColor.blackColor()
+            reportShitBtn.tintColor = UIColor.black
             
             return
         }
     }
     
-    @objc private func shitBtnPressed(sender: UIButton) {
+    @objc fileprivate func shitBtnPressed(_ sender: UIButton) {
         guard sender.tintColor == Palette.PokeInfo.shitBtn else {
             
             sender.tintColor = Palette.PokeInfo.shitBtn
             
             if let model = FIRPokeModel {
-                model.adjustTrustCount(goodVal: reportGoodBtn.tintColor == UIColor.blackColor() ? 0 : -1, shitVal: 1)
-                reportTrustDegree(withType: .Shit)
+                model.adjustTrustCount(goodVal: reportGoodBtn.tintColor == UIColor.black ? 0 : -1, shitVal: 1)
+                reportTrustDegree(withType: .shit)
             }
             
-            reportGoodBtn.tintColor = UIColor.blackColor()
+            reportGoodBtn.tintColor = UIColor.black
             
             return
         }

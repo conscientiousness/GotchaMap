@@ -11,7 +11,7 @@ import UIKit
 protocol PokedexSearchDelegate {
     func didStartSearching()
     func didTapOnSearchButton()
-    func didChangeSearchText(searchText: String)
+    func didChangeSearchText(_ searchText: String)
 }
 
 // Optional Protocol
@@ -39,7 +39,7 @@ class PokedexSearchController: UISearchController, UISearchBarDelegate {
     }
     
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -50,7 +50,7 @@ class PokedexSearchController: UISearchController, UISearchBarDelegate {
     
     // MARK: Custom functions
     
-    func configureSearchBar(frame: CGRect, font: UIFont, textColor: UIColor, bgColor: UIColor) {
+    func configureSearchBar(_ frame: CGRect, font: UIFont, textColor: UIColor, bgColor: UIColor) {
         pokedexSearchBar = PokedexSearchBar(frame: frame, font: font , textColor: textColor)
         
         pokedexSearchBar.barTintColor = bgColor
@@ -62,11 +62,11 @@ class PokedexSearchController: UISearchController, UISearchBarDelegate {
     
     // MARK: UISearchBarDelegate functions
     
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         pokedexSearchDelegate.didChangeSearchText(searchText)
     }
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         pokedexSearchBar.endEditing(true)
     }
 }

@@ -19,8 +19,8 @@ class RadarRequest: Mappable {
     }
     
     // To support mapping, a class or struct just needs to implement the Mappable protocol
-    required init?(_ map: Map) {
-        mapping(map)
+    required init?(map: Map) {
+        mapping(map: map)
     }
     
     func mapping(map: Map) {

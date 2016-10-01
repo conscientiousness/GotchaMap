@@ -14,21 +14,21 @@ import Firebase
 
 class MainVC: UIViewController {
     
-    private lazy var mapView: MKMapView = {
+    fileprivate lazy var mapView: MKMapView = {
         let _mapView = MKMapView()
         _mapView.cornerRadius = 10
         _mapView.delegate = self
-        _mapView.setUserTrackingMode(.Follow, animated: true)
+        _mapView.setUserTrackingMode(.follow, animated: true)
         return _mapView
     }()
     
-    private lazy var clusteringManager: FBClusteringManager = {
+    fileprivate lazy var clusteringManager: FBClusteringManager = {
         let _clusteringManager = FBClusteringManager()
         _clusteringManager.delegate = self;
         return _clusteringManager
     }()
     
-    private lazy var locationMananger: CLLocationManager = {
+    fileprivate lazy var locationMananger: CLLocationManager = {
         let _locationMananger = CLLocationManager()
         _locationMananger.delegate = self;
         _locationMananger.requestWhenInUseAuthorization()
@@ -36,42 +36,42 @@ class MainVC: UIViewController {
         return _locationMananger
     }()
 
-    private lazy var backHomeBtn: UIButton = {
+    fileprivate lazy var backHomeBtn: UIButton = {
         let _backHomeBtn = UIButton()
-        _backHomeBtn.setImage(UIImage(named: "btn_backHome"), forState: .Normal)
-        _backHomeBtn.imageView?.contentMode = .ScaleAspectFit
-        _backHomeBtn.backgroundColor = UIColor.clearColor()
-        _backHomeBtn.addTarget(self, action: .backHomeBtnSelector, forControlEvents: .TouchUpInside)
+        _backHomeBtn.setImage(UIImage(named: "btn_backHome"), for: UIControlState())
+        _backHomeBtn.imageView?.contentMode = .scaleAspectFit
+        _backHomeBtn.backgroundColor = UIColor.clear
+        _backHomeBtn.addTarget(self, action: .backHomeBtnSelector, for: .touchUpInside)
         return _backHomeBtn
     }()
     
-    private lazy var pokedexBtn: UIButton = {
+    fileprivate lazy var pokedexBtn: UIButton = {
         let _pokedexBtn = UIButton()
-        _pokedexBtn.setImage(UIImage(named: "btn_pokedex"), forState: .Normal)
-        _pokedexBtn.imageView?.contentMode = .ScaleAspectFit
-        _pokedexBtn.backgroundColor = UIColor.clearColor()
-        _pokedexBtn.addTarget(self, action: .pokedexBtnSelector, forControlEvents: .TouchUpInside)
+        _pokedexBtn.setImage(UIImage(named: "btn_pokedex"), for: UIControlState())
+        _pokedexBtn.imageView?.contentMode = .scaleAspectFit
+        _pokedexBtn.backgroundColor = UIColor.clear
+        _pokedexBtn.addTarget(self, action: .pokedexBtnSelector, for: .touchUpInside)
         return _pokedexBtn
     }()
     
-    private lazy var repotPokeBtn: UIButton = {
+    fileprivate lazy var repotPokeBtn: UIButton = {
         let _pokedexBtn = UIButton()
-        _pokedexBtn.setImage(UIImage(named: "btn_add_pokemon_location"), forState: .Normal)
-        _pokedexBtn.imageView?.contentMode = .ScaleAspectFit
-        _pokedexBtn.backgroundColor = UIColor.clearColor()
-        _pokedexBtn.addTarget(self, action: .reportBtnSelector, forControlEvents: .TouchUpInside)
+        _pokedexBtn.setImage(UIImage(named: "btn_add_pokemon_location"), for: UIControlState())
+        _pokedexBtn.imageView?.contentMode = .scaleAspectFit
+        _pokedexBtn.backgroundColor = UIColor.clear
+        _pokedexBtn.addTarget(self, action: .reportBtnSelector, for: .touchUpInside)
         return _pokedexBtn
     }()
     
-    private lazy var transition: BubbleTransition = {
+    fileprivate lazy var transition: BubbleTransition = {
         let _transition = BubbleTransition()
-        _transition.bubbleColor = Palette.Pokedex.Background
+        _transition.bubbleColor = Palette.Pokedex.Background!
         return _transition
     }()
     
-    private lazy var circleQuery :GFCircleQuery = {
+    fileprivate lazy var circleQuery :GFCircleQuery = {
         let center = CLLocation(latitude: 0, longitude: 0)
-        return FirebaseManager.shared.geoFire.queryAtLocation(center, withRadius: 5.0)
+        return FirebaseManager.shared.geoFire.query(at: center, withRadius: 5.0)
     }()
     
     let loadingView = MapLoadingView()
@@ -90,25 +90,25 @@ class MainVC: UIViewController {
         setupPokeBaseData()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBarHidden = true
+        navigationController?.isNavigationBarHidden = true
         locationMananger.startUpdatingLocation()
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         locationMananger.stopUpdatingLocation()
     }
     
-    private func setupSubviews() {
+    fileprivate func setupSubviews() {
         view.addSubview(mapView)
         view.addSubview(backHomeBtn)
         view.addSubview(pokedexBtn)
         view.addSubview(repotPokeBtn)
         view.addSubview(loadingView)
         
-        self.view.backgroundColor = UIColor.blackColor()
+        self.view.backgroundColor = UIColor.black
         
         mapView.translatesAutoresizingMaskIntoConstraints = false
         backHomeBtn.translatesAutoresizingMaskIntoConstraints = false
@@ -116,31 +116,31 @@ class MainVC: UIViewController {
         repotPokeBtn.translatesAutoresizingMaskIntoConstraints = false
         loadingView.translatesAutoresizingMaskIntoConstraints = false
         
-        let views = ["mapView": mapView, "backHomeBtn": backHomeBtn, "pokedexBtn": pokedexBtn, "reportPokeBtn": repotPokeBtn, "loading": loadingView]
+        let views = ["mapView": mapView, "backHomeBtn": backHomeBtn, "pokedexBtn": pokedexBtn, "reportPokeBtn": repotPokeBtn, "loading": loadingView] as [String : Any]
         let metrics = ["btnSize": 60, "btnMargin": 15]
         
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[mapView]|", options: [], metrics: nil, views: views))
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[mapView]|", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|[mapView]|", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|[mapView]|", options: [], metrics: nil, views: views))
         
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-25-[loading(40)]", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-25-[loading(40)]", options: [], metrics: nil, views: views))
         //NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[loading(100)]", options: [], metrics: nil, views: views))
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint(item: loadingView, attribute: .CenterX, relatedBy: .Equal, toItem: view, attribute: .CenterX, multiplier: 1, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint(item: loadingView, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0)])
         
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[backHomeBtn(btnSize)]-btnMargin-|", options: [], metrics: metrics, views: views))
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-btnMargin-[backHomeBtn(btnSize)]", options: [], metrics: metrics, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:[backHomeBtn(btnSize)]-btnMargin-|", options: [], metrics: metrics, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-btnMargin-[backHomeBtn(btnSize)]", options: [], metrics: metrics, views: views))
         
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[pokedexBtn(btnSize)]-btnMargin-|", options: [], metrics: metrics, views: views))
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[pokedexBtn(btnSize)]-btnMargin-|", options: [], metrics: metrics, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:[pokedexBtn(btnSize)]-btnMargin-|", options: [], metrics: metrics, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:[pokedexBtn(btnSize)]-btnMargin-|", options: [], metrics: metrics, views: views))
         
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[reportPokeBtn(btnSize)]-btnMargin-|", options: [], metrics: metrics, views: views))
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[reportPokeBtn(btnSize)]", options: [], metrics: metrics, views: views))
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint(item: repotPokeBtn, attribute: .CenterX, relatedBy: .Equal, toItem: view, attribute: .CenterX, multiplier: 1, constant: 0)])
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:[reportPokeBtn(btnSize)]-btnMargin-|", options: [], metrics: metrics, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:[reportPokeBtn(btnSize)]", options: [], metrics: metrics, views: views))
+        NSLayoutConstraint.activate([NSLayoutConstraint(item: repotPokeBtn, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0)])
     }
     
-    private func setupPokeBaseData() {
+    fileprivate func setupPokeBaseData() {
         DataManager.getPokeBaseInfoFromFile { (data) in
             
-            if data.type == .Array {
+            if data.type == .array {
                 for json in data.arrayValue {
                     let pokemon = Pokemon(json: json)
                     PokemonHelper.shared.infos.append(pokemon)
@@ -158,7 +158,7 @@ class MainVC: UIViewController {
     
     func updateCircleQuery() {
 
-        let centerCoordinate = mapView.convertPoint(mapView.center, toCoordinateFromView: view)
+        let centerCoordinate = mapView.convert(mapView.center, toCoordinateFrom: view)
         let centerLocation = CLLocation(latitude: centerCoordinate.latitude, longitude: centerCoordinate.longitude)
         circleQuery.center = centerLocation
         circleQuery.radius = queryRadius
@@ -167,36 +167,39 @@ class MainVC: UIViewController {
     
     func setupObservers() {
         
-        circleQuery.observeEventType(.KeyEntered, withBlock: { (key: String!, location: CLLocation!) in
-            //Debug.print("KeyEntered")
-            
-            let an: FBAnnotation = FBAnnotation()
-            an.coordinate = location.coordinate
-            an.objectId = key
-            
-            FirebaseManager.shared.postsRef.child(key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-                if let value = snapshot.value {
-                    if let pokeId: Int = Int((value["pokemonId"] as! String)) {
-                        if pokeId > 0 {
-                            an.pokeId = pokeId
-                            //Debug.print("pokeid = \(pokeId) ,key = \(key)")
-                            //self.clusteringManager.addAnnotations([an])
-                            self.clusteringDict[key] = an
-                            self.mapView.addAnnotation(an)
+        circleQuery.observe(.keyEntered, with: { (key: String?, location: CLLocation?) in
+
+            if let key = key, let location = location {
+                let an: FBAnnotation = FBAnnotation()
+                an.coordinate = location.coordinate
+                an.objectId = key
+                
+                FirebaseManager.shared.postsRef.child(key).observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let value = snapshot.value as? [String: AnyObject] {
+                        if let pokeId = Int(value["pokemonId"] as! String) {
+                            if pokeId > 0 {
+                                an.pokeId = pokeId
+                                //Debug.print("pokeid = \(pokeId) ,key = \(key)")
+                                //self.clusteringManager.addAnnotations([an])
+                                self.clusteringDict[key] = an
+                                self.mapView.addAnnotation(an)
+                            }
                         }
                     }
-                }
-            })
+                })
+            }
         })
         
-        circleQuery.observeEventType(.KeyExited, withBlock: { (key: String!, location: CLLocation!) in
+        circleQuery.observe(.keyExited, with: { (key: String?, location: CLLocation?) in
             //Debug.print("KeyExited")
             
-            if let fbAnnotation = self.clusteringDict[key] {
-                self.mapView.removeAnnotation(fbAnnotation)
-                self.clusteringDict.removeValueForKey(key)
-                //self.clusteringManager = FBClusteringManager()
-                //self.clusteringManager.delegate = self;
+            if let key = key {
+                if let fbAnnotation = self.clusteringDict[key] {
+                    self.mapView.removeAnnotation(fbAnnotation)
+                    self.clusteringDict.removeValue(forKey: key)
+                    //self.clusteringManager = FBClusteringManager()
+                    //self.clusteringManager.delegate = self;
+                }
             }
         })
     }
@@ -206,10 +209,10 @@ class MainVC: UIViewController {
     func updateLocationRange() {
         
         // left top : max lat, min long
-        let leftTopCoordinate = mapView.convertPoint(CGPoint(x: 0, y: 0), toCoordinateFromView: mapView)
+        let leftTopCoordinate = mapView.convert(CGPoint(x: 0, y: 0), toCoordinateFrom: mapView)
         
         // right bottom : min lat, max long
-        let rightBottomCoordinate = mapView.convertPoint(CGPoint(x: view.frame.width, y: view.frame.height), toCoordinateFromView: mapView)
+        let rightBottomCoordinate = mapView.convert(CGPoint(x: view.frame.width, y: view.frame.height), toCoordinateFrom: mapView)
         
         request.pokemonId = 0
         request.minLatitude = rightBottomCoordinate.latitude
@@ -226,26 +229,24 @@ class MainVC: UIViewController {
         loadingView.show()
         
         RadarAPIManager.shared.getRadarAPI(withRequest: request) { datas in
-            //Debug.print("model = \(model)")
+            //Debug.print("datas = \(datas)")
             
             self.mapView.removeAnnotations(self.mapView.annotations)
             
-            for (index, model) in datas.enumerate(){
+            for (_, model) in datas.enumerated() {
                 let an: FBAnnotation = FBAnnotation()
                 an.coordinate = CLLocationCoordinate2D(latitude: model.latitude, longitude: model.longitude)
                 an.pokeId = model.pokemonId
                 self.mapView.addAnnotation(an)
-                
-                if index == datas.count - 1 {
-                    self.loadingView.hide()
-                }
             }
+            
+            self.loadingView.hide()
         }
     }
     
     // MARK: - Utility
     
-    private func zoomInToCurrentLocation(coordinate: CLLocationCoordinate2D?, level: Double) {
+    fileprivate func zoomInToCurrentLocation(_ coordinate: CLLocationCoordinate2D?, level: Double) {
         
         if let coordinate = coordinate {
             var region = mapView.region;
@@ -270,62 +271,62 @@ class MainVC: UIViewController {
     func checkLocationPermission() -> Bool {
         
         switch CLLocationManager.authorizationStatus() {
-        case .AuthorizedAlways, .AuthorizedWhenInUse:
+        case .authorizedAlways, .authorizedWhenInUse:
             return true
-        case .NotDetermined:
+        case .notDetermined:
             locationMananger.requestWhenInUseAuthorization()
             return false
-        case .Restricted, .Denied:
+        case .restricted, .denied:
             let alertController = UIAlertController(
                 title: "沒有開啟定位資訊", // Background Location Access Disabled
                 message: "位置權限請選擇 '使用App期間' 或 '永遠', 才能搜尋或回報目前位置資訊",
-                preferredStyle: .Alert)
+                preferredStyle: .alert)
             
-            let cancelAction = UIAlertAction(title: "取消", style: .Cancel, handler: nil) //Cancel
+            let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil) //Cancel
             alertController.addAction(cancelAction)
             
-            let openAction = UIAlertAction(title: "打開設定", style: .Default) { (action) in // Open Settings
-                if let url = NSURL(string: UIApplicationOpenSettingsURLString) {
-                    UIApplication.sharedApplication().openURL(url)
+            let openAction = UIAlertAction(title: "打開設定", style: .default) { (action) in // Open Settings
+                if let url = URL(string: UIApplicationOpenSettingsURLString) {
+                    UIApplication.shared.openURL(url)
                 }
             }
             alertController.addAction(openAction)
             
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
             return false
         }
     }
     
     // MARK: - Button Action Method
     
-    @objc private func backHomeBtnPressed(sender: UIButton) {
+    @objc fileprivate func backHomeBtnPressed(_ sender: UIButton) {
         if checkLocationPermission() {
             zoomInToCurrentLocation(mapView.userLocation.coordinate, level: 0.01)
         }
     }
     
-    @objc private func pokedexBtnPressed(sender: UIButton) {
-        let targetVC = PokedexVC(pokedexType: .Normal)
+    @objc fileprivate func pokedexBtnPressed(_ sender: UIButton) {
+        let targetVC = PokedexVC(pokedexType: .normal)
         targetVC.transitioningDelegate = self
-        targetVC.modalPresentationStyle = .Custom
+        targetVC.modalPresentationStyle = .custom
         transition.startingPoint = self.pokedexBtn.center
-        self.presentViewController(targetVC, animated: true, completion: nil)
+        self.present(targetVC, animated: true, completion: nil)
     }
     
-    @objc private func reportBtnPressed(sender: UIButton) {
+    @objc fileprivate func reportBtnPressed(_ sender: UIButton) {
         if checkLocationPermission() {
-            let targetVC = PokedexVC(pokedexType: .Report)
+            let targetVC = PokedexVC(pokedexType: .report)
             targetVC.transitioningDelegate = self
-            targetVC.modalPresentationStyle = .Custom
+            targetVC.modalPresentationStyle = .custom
             transition.startingPoint = self.repotPokeBtn.center
-            self.presentViewController(targetVC, animated: true, completion: nil)
+            self.present(targetVC, animated: true, completion: nil)
         }
     }
     
     // MARK: - FBClusteringMap
     
-    private func refreshClusteringAnnotations() {
-        NSOperationQueue().addOperationWithBlock({
+    fileprivate func refreshClusteringAnnotations() {
+        OperationQueue().addOperation({
             let mapBoundsWidth = Double(self.mapView.bounds.size.width)
             
             let mapRectWidth:Double = self.mapView.visibleMapRect.size.width
@@ -334,7 +335,7 @@ class MainVC: UIViewController {
             
             let annotationArray = self.clusteringManager.clusteredAnnotationsWithinMapRect(self.mapView.visibleMapRect, withZoomScale:scale)
             
-            NSOperationQueue.mainQueue().addOperationWithBlock({
+            OperationQueue.main.addOperation({
                 self.clusteringManager.displayAnnotations(annotationArray, onMapView:self.mapView)
             })
         })
@@ -351,13 +352,13 @@ private extension Selector {
 
 extension MainVC: UIViewControllerTransitioningDelegate {
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transition.transitionMode = .Present
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transition.transitionMode = .present
         return transition
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transition.transitionMode = .Dismiss
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transition.transitionMode = .dismiss
         return transition
     }
 }
@@ -366,11 +367,11 @@ extension MainVC: UIViewControllerTransitioningDelegate {
 
 extension MainVC: CLLocationManagerDelegate {
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         PokemonHelper.shared.currentLocation = locations.last
         
         // get user location and zoom in to current location
-        if let currentLocation = PokemonHelper.shared.currentLocation where !isFirstLocationReceived {
+        if let currentLocation = PokemonHelper.shared.currentLocation , !isFirstLocationReceived {
             var region = mapView.region;
             region.center = currentLocation.coordinate;
             region.span.latitudeDelta = 0.05;
@@ -388,7 +389,7 @@ extension MainVC: CLLocationManagerDelegate {
 
 extension MainVC: FBClusteringManagerDelegate {
     
-    func cellSizeFactorForCoordinator(coordinator:FBClusteringManager) -> CGFloat{
+    func cellSizeFactorForCoordinator(_ coordinator:FBClusteringManager) -> CGFloat{
         return 1.5
     }
     
@@ -401,7 +402,7 @@ extension MainVC: FBClusteringManagerDelegate {
 
 extension MainVC: MKMapViewDelegate {
     
-    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool){
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool){
         
         queryRadius = mapView.region.distanceMax()
         ////refreshClusteringAnnotations()
@@ -410,26 +411,27 @@ extension MainVC: MKMapViewDelegate {
         //Debug.print("zoomLevel = " + String(mapView.zoomLevel()))
     }
     
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-        if annotation.isKindOfClass(MKUserLocation) {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        guard !(annotation is MKUserLocation) else {
             return nil
         }
         
-        if annotation.isKindOfClass(FBAnnotationCluster) {
-            var clusterView = mapView.dequeueReusableAnnotationViewWithIdentifier(kFBAnnotationClusterViewId)
+        if annotation is FBAnnotationCluster {
+            var clusterView = mapView.dequeueReusableAnnotationView(withIdentifier: kFBAnnotationClusterViewId)
             
             clusterView = FBAnnotationClusterView(annotation: annotation, reuseIdentifier: kFBAnnotationClusterViewId, options: nil)
 
             return clusterView
             
         } else {
-            var pokeView = mapView.dequeueReusableAnnotationViewWithIdentifier(kPokeAnnotationViewId) as? PokeAnnotationView
+            var pokeView = mapView.dequeueReusableAnnotationView(withIdentifier: kPokeAnnotationViewId) as? PokeAnnotationView
             
             if pokeView == nil {
                 pokeView  = PokeAnnotationView(annotation: annotation, reuseIdentifier: kPokeAnnotationViewId)
             }
             
-            if let fbAnnotation = annotation as? FBAnnotation, pokeId = fbAnnotation.pokeId {
+            if let fbAnnotation = annotation as? FBAnnotation, let pokeId = fbAnnotation.pokeId {
                 var pokeModel: Pokemon = PokemonHelper.shared.infos[pokeId - 1]
                 pokeModel.objectId = fbAnnotation.objectId ?? ""
                 fbAnnotation.title = pokeModel.name
@@ -439,7 +441,7 @@ extension MainVC: MKMapViewDelegate {
         }
     }
     
-    func mapView(mapView: MKMapView, didAddAnnotationViews views: [MKAnnotationView]) {
+    func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
         for view in views {
             if view.annotation is MKUserLocation {
                 continue;
@@ -451,27 +453,27 @@ extension MainVC: MKMapViewDelegate {
                 continue;
             }
             
-            view.transform = CGAffineTransformMakeScale(0.85, 0.85)
-            UIView.animateWithDuration(0.7, delay: 0.0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0.4, options: .CurveEaseInOut, animations:{() in
-                view.transform = CGAffineTransformMakeScale(1, 1)
+            view.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
+            UIView.animate(withDuration: 0.7, delay: 0.0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0.4, options: UIViewAnimationOptions(), animations:{() in
+                view.transform = CGAffineTransform(scaleX: 1, y: 1)
                 }, completion: {(Bool) in
             })
         }
     }
     
-    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if let annotation = view.annotation {
-            if annotation.isKindOfClass(MKUserLocation) {
+            if annotation.isKind(of: MKUserLocation.self) {
                 return
             }
         }
     }
     
-    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        if view.isKindOfClass(PokeAnnotationView) {
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        if view.isKind(of: PokeAnnotationView.self) {
             if let pokeModel = (view as? PokeAnnotationView)?.pokeModel {
-                let targetVC = PokeInfoVC(withPokeModel: pokeModel, pokeDetailType: .Map)
-                self.presentViewController(targetVC, animated: true, completion: nil)
+                let targetVC = PokeInfoVC(withPokeModel: pokeModel, pokeDetailType: .map)
+                self.present(targetVC, animated: true, completion: nil)
             }
         }
     }
@@ -482,6 +484,6 @@ extension MKCoordinateRegion {
         let furthest = CLLocation(latitude: center.latitude + (span.latitudeDelta/2),
                                   longitude: center.longitude + (span.longitudeDelta/2))
         let centerLoc = CLLocation(latitude: center.latitude, longitude: center.longitude)
-        return centerLoc.distanceFromLocation(furthest) / 1000.0
+        return centerLoc.distance(from: furthest) / 1000.0
     }
 }

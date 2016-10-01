@@ -9,11 +9,11 @@
 import UIKit
 
 enum Palette {
-    private static let GreyishBlack = UIColor.hex("#5E5E5E")
-    private static let DarkBlue = UIColor.hex("#00103B")
-    private static let YellowishGreen = UIColor.hex("#DDFF00")
-    private static let ButterYellow = UIColor.hex("#FFD846")
-    private static let AzureBule = UIColor.hex("#46F3FF")
+    fileprivate static let GreyishBlack = UIColor(hexString: "#5E5E5E")
+    fileprivate static let DarkBlue = UIColor(hexString: "#00103B")
+    fileprivate static let YellowishGreen = UIColor(hexString: "#DDFF00")
+    fileprivate static let ButterYellow = UIColor(hexString: "#FFD846")
+    fileprivate static let AzureBule = UIColor(hexString: "#46F3FF")
     
     enum Map {
         static let Ball = GreyishBlack
@@ -25,7 +25,7 @@ enum Palette {
     
     enum PokeInfo {
         static let Background = DarkBlue
-        static let infoTitleText = UIColor.whiteColor()
+        static let infoTitleText = UIColor.white
         static let infoDescText = YellowishGreen
         static let goodBtn = ButterYellow
         static let shitBtn = AzureBule

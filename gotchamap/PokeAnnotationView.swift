@@ -14,28 +14,28 @@ let kPokeAnnotationViewId = "pokeAnnotationView"
 
 class PokeAnnotationView: MKAnnotationView {
     
-    let viewFrame = CGRectMake(0, 0, 44, 44)
+    let viewFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
     var pokeModel: Pokemon?
     
-    private lazy var imageView: UIImageView = {
+    fileprivate lazy var imageView: UIImageView = {
         let _imageView = UIImageView()
-        _imageView.contentMode = .ScaleAspectFit
-        _imageView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        _imageView.contentMode = .scaleAspectFit
+        _imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         return _imageView
     }()
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        imageView.kf_cancelDownloadTask()
+        imageView.kf.cancelDownloadTask()
     }
     
-    override init(annotation: MKAnnotation?, reuseIdentifier: String?){
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        
+        frame = viewFrame
+        layoutIfNeeded()
+        
         addSubview(imageView)
-    }
-    
-    required override init(frame: CGRect) {
-        super.init(frame: viewFrame)
         setUpCalloutView()
         setUpSubViews()
     }
@@ -46,26 +46,26 @@ class PokeAnnotationView: MKAnnotationView {
     
     // MARK - Private Method
     
-    private func setUpCalloutView() {
+    fileprivate func setUpCalloutView() {
         canShowCallout = true
         
-        let infoBtn = UIButton(frame: CGRectMake(0, 0, 22, 22))
-        infoBtn.setImage(UIImage(named: "btn_map_poke_info"), forState: .Normal)
-        infoBtn.autoresizingMask = [.FlexibleBottomMargin, .FlexibleTopMargin, .FlexibleRightMargin]
+        let infoBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 22, height: 22))
+        infoBtn.setImage(UIImage(named: "btn_map_poke_info"), for: UIControlState())
+        infoBtn.autoresizingMask = [.flexibleBottomMargin, .flexibleTopMargin, .flexibleRightMargin]
         //rightCalloutAccessoryView = infoBtn
     }
     
-    private func setUpSubViews() {
+    fileprivate func setUpSubViews() {
         imageView.frame = bounds
     }
     
     // MARK - Public Method
     
-    func setUpAnView(poke: Pokemon) {
+    func setUpAnView(_ poke: Pokemon) {
         pokeModel = poke
         
         if let imgURL = poke.imgURL {
-            imageView.kf_setImageWithURL(imgURL)
+            imageView.kf.setImage(with: imgURL)
         }
     }
 }

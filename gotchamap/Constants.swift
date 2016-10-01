@@ -40,16 +40,16 @@ enum UserDefaultsKey {
 // MARK: - Pokedex View Controller
 
 enum PokedexType {
-    case Normal, Report
+    case normal, report
 }
 
 // MARK: - PokeInfo View Controller
 
 enum PokeDetailType {
-    case Normal, Map
+    case normal, map
 }
 
 enum PokeDetailReportBtnType: Int {
-    case Shit = 0
-    case Good = 1
+    case shit = 0
+    case good = 1
 }

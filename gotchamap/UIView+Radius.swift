@@ -40,11 +40,11 @@ extension UIView {
     @IBInspectable
     var borderColor: UIColor? {
         get {
-            let color = UIColor.init(CGColor: layer.borderColor!)
+            let color = UIColor.init(cgColor: layer.borderColor!)
             return color
         }
         set {
-            layer.borderColor = newValue?.CGColor
+            layer.borderColor = newValue?.cgColor
         }
     }
     
@@ -54,7 +54,7 @@ extension UIView {
             return layer.shadowRadius
         }
         set {
-            layer.shadowColor = UIColor.blackColor().CGColor
+            layer.shadowColor = UIColor.black.cgColor
             layer.shadowOffset = CGSize(width: 0, height: 2)
             layer.shadowOpacity = 0.4
             layer.shadowRadius = shadowRadius

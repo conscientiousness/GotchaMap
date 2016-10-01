@@ -1,120 +1,103 @@
-import UIKit
+//
+//  UIColor+Hue.swift
+//  gotchamap
+//
+//  Created by Jesselin on 2016/9/27.
+//  Copyright © 2016年 JesseLin. All rights reserved.
+//
 
-// MARK: - Color Builders
+#if os(iOS) || os(tvOS)
+    import UIKit
+    typealias SWColor = UIColor
+#else
+    import Cocoa
+    typealias SWColor = NSColor
+#endif
 
-public extension UIColor {
-    
-    public static func hex(string: String) -> UIColor {
-        var hex = string.hasPrefix("#")
-            ? String(string.characters.dropFirst())
-            : string
-        
-        guard hex.characters.count == 3 || hex.characters.count == 6
-            else { return UIColor.whiteColor().colorWithAlphaComponent(0.0) }
-        
-        if hex.characters.count == 3 {
-            for (index, char) in hex.characters.enumerate() {
-                hex.insert(char, atIndex: hex.startIndex.advancedBy(index * 2))
-            }
-        }
-        
-        return UIColor(
-            red:   CGFloat((Int(hex, radix: 16)! >> 16) & 0xFF) / 255.0,
-            green: CGFloat((Int(hex, radix: 16)! >> 8) & 0xFF) / 255.0,
-            blue:  CGFloat((Int(hex, radix: 16)!) & 0xFF) / 255.0, alpha: 1.0)
-    }
-    
-    public func colorWithMinimumSaturation(minSaturation: CGFloat) -> UIColor {
-        var (hue, saturation, brightness, alpha): (CGFloat, CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0, 0.0)
-        getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
-        
-        return saturation < minSaturation
-            ? UIColor(hue: hue, saturation: minSaturation, brightness: brightness, alpha: alpha)
-            : self
-    }
-    
-    public func alpha(value: CGFloat) -> UIColor {
-        return colorWithAlphaComponent(value)
+private extension Int {
+    func duplicate4bits() -> Int {
+        return (self << 4) + self
     }
 }
 
-// MARK: - Helpers
-
-public extension UIColor {
+/// An extension of UIColor (on iOS) or NSColor (on OSX) providing HEX color handling.
+public extension SWColor {
+    /**
+     Create non-autoreleased color with in the given hex string. Alpha will be set as 1 by default.
+     - parameter hexString: The hex string, with or without the hash character.
+     - returns: A color with the given hex string.
+     */
+    public convenience init?(hexString: String) {
+        self.init(hexString: hexString, alpha: 1.0)
+    }
     
-    public func hex(withPrefix withPrefix: Bool = true) -> String {
-        var (r, g, b, a): (CGFloat, CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0, 0.0)
-        getRed(&r, green: &g, blue: &b, alpha: &a)
+    fileprivate convenience init?(hex3: Int, alpha: Float) {
+        self.init(red:   CGFloat( ((hex3 & 0xF00) >> 8).duplicate4bits() ) / 255.0,
+                  green: CGFloat( ((hex3 & 0x0F0) >> 4).duplicate4bits() ) / 255.0,
+                  blue:  CGFloat( ((hex3 & 0x00F) >> 0).duplicate4bits() ) / 255.0, alpha: CGFloat(alpha))
+    }
+    
+    fileprivate convenience init?(hex6: Int, alpha: Float) {
+        self.init(red:   CGFloat( (hex6 & 0xFF0000) >> 16 ) / 255.0,
+                  green: CGFloat( (hex6 & 0x00FF00) >> 8 ) / 255.0,
+                  blue:  CGFloat( (hex6 & 0x0000FF) >> 0 ) / 255.0, alpha: CGFloat(alpha))
+    }
+    
+    /**
+     Create non-autoreleased color with in the given hex string and alpha.
+     - parameter hexString: The hex string, with or without the hash character.
+     - parameter alpha: The alpha value, a floating value between 0 and 1.
+     - returns: A color with the given hex string and alpha.
+     */
+    public convenience init?(hexString: String, alpha: Float) {
+        var hex = hexString
         
-        let prefix = withPrefix ? "#" : ""
-        
-        return String(format: "\(prefix)%02X%02X%02X", Int(r * 255), Int(g * 255), Int(b * 255))
-    }
-    
-    public var isDark: Bool {
-        let RGB = CGColorGetComponents(CGColor)
-        return (0.2126 * RGB[0] + 0.7152 * RGB[1] + 0.0722 * RGB[2]) < 0.5
-    }
-    
-    public var isBlackOrWhite: Bool {
-        let RGB = CGColorGetComponents(CGColor)
-        return (RGB[0] > 0.91 && RGB[1] > 0.91 && RGB[2] > 0.91) || (RGB[0] < 0.09 && RGB[1] < 0.09 && RGB[2] < 0.09)
-    }
-    
-    public var isBlack: Bool {
-        let RGB = CGColorGetComponents(CGColor)
-        return (RGB[0] < 0.09 && RGB[1] < 0.09 && RGB[2] < 0.09)
-    }
-    
-    public var isWhite: Bool {
-        let RGB = CGColorGetComponents(CGColor)
-        return (RGB[0] > 0.91 && RGB[1] > 0.91 && RGB[2] > 0.91)
-    }
-    
-    public func isDistinctFrom(color: UIColor) -> Bool {
-        let bg = CGColorGetComponents(CGColor)
-        let fg = CGColorGetComponents(color.CGColor)
-        let threshold: CGFloat = 0.25
-        var result = false
-        
-        if fabs(bg[0] - fg[0]) > threshold || fabs(bg[1] - fg[1]) > threshold || fabs(bg[2] - fg[2]) > threshold {
-            if fabs(bg[0] - bg[1]) < 0.03 && fabs(bg[0] - bg[2]) < 0.03 {
-                if fabs(fg[0] - fg[1]) < 0.03 && fabs(fg[0] - fg[2]) < 0.03 {
-                    result = false
-                }
-            }
-            result = true
+        // Check for hash and remove the hash
+        if hex.hasPrefix("#") {
+            hex = hex.substring(from: hex.index(hex.startIndex, offsetBy: 1))
         }
         
-        return result
-    }
-    
-    public func isContrastingWith(color: UIColor) -> Bool {
-        let bg = CGColorGetComponents(CGColor)
-        let fg = CGColorGetComponents(color.CGColor)
-        
-        let bgLum = 0.2126 * bg[0] + 0.7152 * bg[1] + 0.0722 * bg[2]
-        let fgLum = 0.2126 * fg[0] + 0.7152 * fg[1] + 0.0722 * fg[2]
-        let contrast = bgLum > fgLum
-            ? (bgLum + 0.05) / (fgLum + 0.05)
-            : (fgLum + 0.05) / (bgLum + 0.05)
-        
-        return 1.6 < contrast
-    }
-}
-
-// MARK: - Gradient
-
-public extension Array where Element : UIColor {
-    
-    public func gradient(transform: ((inout gradient: CAGradientLayer) -> CAGradientLayer)? = nil) -> CAGradientLayer {
-        var gradient = CAGradientLayer()
-        gradient.colors = self.map { $0.CGColor }
-        
-        if let transform = transform {
-            transform(gradient: &gradient)
+        guard let hexVal = Int(hex, radix: 16) else {
+            self.init()
+            return nil
         }
         
-        return gradient
+        switch hex.characters.count {
+        case 3:
+            self.init(hex3: hexVal, alpha: alpha)
+        case 6:
+            self.init(hex6: hexVal, alpha: alpha)
+        default:
+            // Note:
+            // The swift 1.1 compiler is currently unable to destroy partially initialized classes in all cases,
+            // so it disallows formation of a situation where it would have to.  We consider this a bug to be fixed
+            // in future releases, not a feature. -- Apple Forum
+            self.init()
+            return nil
+        }
+    }
+    
+    /**
+     Create non-autoreleased color with in the given hex value. Alpha will be set as 1 by default.
+     - parameter hex: The hex value. For example: 0xff8942 (no quotation).
+     - returns: A color with the given hex value
+     */
+    public convenience init?(hex: Int) {
+        self.init(hex: hex, alpha: 1.0)
+    }
+    
+    /**
+     Create non-autoreleased color with in the given hex value and alpha
+     - parameter hex: The hex value. For example: 0xff8942 (no quotation).
+     - parameter alpha: The alpha value, a floating value between 0 and 1.
+     - returns: color with the given hex value and alpha
+     */
+    public convenience init?(hex: Int, alpha: Float) {
+        if (0x000000 ... 0xFFFFFF) ~= hex {
+            self.init(hex6: hex , alpha: alpha)
+        } else {
+            self.init()
+            return nil
+        }
     }
 }

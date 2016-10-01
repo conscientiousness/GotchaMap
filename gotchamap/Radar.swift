@@ -19,6 +19,7 @@ struct Radar {
     let created: Int
     
     init(json value: JSON) {
+
         pokemonId = value["pokemonId"].int ?? 0
         latitude = value["latitude"].double ?? 0.0
         longitude = value["longitude"].double ?? 0.0

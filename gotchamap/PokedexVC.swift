@@ -10,16 +10,16 @@ import UIKit
 
 class PokedexVC: UIViewController {
     
-    private lazy var backBtn: UIButton = {
+    fileprivate lazy var backBtn: UIButton = {
         let _backBtn = UIButton()
-        _backBtn.setImage(UIImage(named: "btn_back"), forState: .Normal)
-        _backBtn.addTarget(self, action: .backBtnSelector, forControlEvents: .TouchUpInside)
+        _backBtn.setImage(UIImage(named: "btn_back"), for: UIControlState())
+        _backBtn.addTarget(self, action: .backBtnSelector, for: .touchUpInside)
         return _backBtn
     }()
     
-    private var gridFlowLayout: UICollectionViewFlowLayout {
+    fileprivate var gridFlowLayout: UICollectionViewFlowLayout {
         let _grid = UICollectionViewFlowLayout()
-        _grid.scrollDirection = .Vertical
+        _grid.scrollDirection = .vertical
         _grid.sectionInset = UIEdgeInsets(top: 0, left: 15, bottom: 8, right: 15)
         _grid.minimumInteritemSpacing = 0
         _grid.minimumLineSpacing = 20
@@ -27,7 +27,7 @@ class PokedexVC: UIViewController {
         let numberOfItemsPerRow = 3
         let paddings: CGFloat = (_grid.sectionInset.left + _grid.sectionInset.right) * 2
         let spaces = _grid.minimumInteritemSpacing * CGFloat(numberOfItemsPerRow - 1)
-        let contentWidth = UIScreen.mainScreen().bounds.width - paddings - spaces
+        let contentWidth = UIScreen.main.bounds.width - paddings - spaces
         let itemWidth = contentWidth / CGFloat(numberOfItemsPerRow)
         let itemHeight = itemWidth + 50
         _grid.itemSize = CGSize(width: itemWidth, height: itemHeight)
@@ -35,26 +35,26 @@ class PokedexVC: UIViewController {
         return _grid
     }
     
-    private lazy var collectionView: UICollectionView = {
+    fileprivate lazy var collectionView: UICollectionView = {
         let _collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: self.gridFlowLayout)
-        _collectionView.registerClass(PokedexCell.self, forCellWithReuseIdentifier: NSStringFromClass(PokedexCell.self))
-        _collectionView.backgroundColor = UIColor.clearColor()
+        _collectionView.register(PokedexCell.self, forCellWithReuseIdentifier: NSStringFromClass(PokedexCell.self))
+        _collectionView.backgroundColor = UIColor.clear
         _collectionView.dataSource = self
         _collectionView.delegate = self
         return _collectionView
     }()
     
-    private lazy var searchController: PokedexSearchController = {
-        let _searchController = PokedexSearchController(searchResultsController: self, searchBarFrame: CGRectZero, searchBarFont: UIFont.pokedexSearchText(), searchBarTextColor: UIColor.whiteColor(), searchBarTintColor: Palette.Pokedex.Background)
+    fileprivate lazy var searchController: PokedexSearchController = {
+        let _searchController = PokedexSearchController(searchResultsController: self, searchBarFrame: CGRect.zero, searchBarFont: UIFont.pokedexSearchText(), searchBarTextColor: UIColor.white, searchBarTintColor: Palette.Pokedex.Background!)
         _searchController.pokedexSearchBar.placeholder = "Search"
         _searchController.pokedexSearchDelegate = self
         self.addToolBar(_searchController.pokedexSearchBar)
         return _searchController
     }()
     
-    private lazy var reportTipLabel: UILabel = {
+    fileprivate lazy var reportTipLabel: UILabel = {
         let _reportTipLabel = UILabel()
-        _reportTipLabel.textAlignment = .Center
+        _reportTipLabel.textAlignment = .center
         _reportTipLabel.font = UIFont.pokedexReportTipTitle()
         _reportTipLabel.textColor = Palette.Pokedex.Background
         _reportTipLabel.text = "點選回報附近的Pokémon吧！"
@@ -64,15 +64,15 @@ class PokedexVC: UIViewController {
         return _reportTipLabel
     }()
     
-    private lazy var blurView: UIVisualEffectView = {
-        let _blurView = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight))
+    fileprivate lazy var blurView: UIVisualEffectView = {
+        let _blurView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
         return _blurView
     }()
     
-    private var alertTextField: UITextField?
-    private var actionToEnable : UIAlertAction?
-    private var filteredData: [Pokemon] = PokemonHelper.shared.infos
-    private let pokedexType: PokedexType
+    fileprivate var alertTextField: UITextField?
+    fileprivate var actionToEnable : UIAlertAction?
+    fileprivate var filteredData: [Pokemon] = PokemonHelper.shared.infos
+    fileprivate let pokedexType: PokedexType
     
     init(pokedexType: PokedexType) {
         self.pokedexType = pokedexType
@@ -89,16 +89,16 @@ class PokedexVC: UIViewController {
         collectionView.reloadData()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let userName = NSUserDefaults.standardUserDefaults().stringForKey(UserDefaultsKey.trainerName)
-        if userName == nil && pokedexType == .Report {
+        let userName = UserDefaults.standard.string(forKey: UserDefaultsKey.trainerName)
+        if userName == nil && pokedexType == .report {
             showNameAlert()
         }
     }
     
-    private func setUpSubviews() {
+    fileprivate func setUpSubviews() {
         view.backgroundColor = Palette.Pokedex.Background
         
         view.addSubview(collectionView)
@@ -114,111 +114,111 @@ class PokedexVC: UIViewController {
         reportTipLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let views = ["collection": collectionView, "search": searchController.pokedexSearchBar,
-                     "backBtn": backBtn, "blurView": blurView, "tip": reportTipLabel]
+                     "backBtn": backBtn, "blurView": blurView, "tip": reportTipLabel] as [String : Any]
         
-        if pokedexType == .Report {
-            NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[blurView]|", options: [], metrics: nil, views: views))
-            NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[blurView(44)]|", options: [], metrics: nil, views: views))
-            NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[tip]|", options: [], metrics: nil, views: views))
-            NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[tip]|", options: [], metrics: nil, views: views))
+        if pokedexType == .report {
+            NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|[blurView]|", options: [], metrics: nil, views: views))
+            NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:[blurView(44)]|", options: [], metrics: nil, views: views))
+            NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|[tip]|", options: [], metrics: nil, views: views))
+            NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|[tip]|", options: [], metrics: nil, views: views))
         }
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-25-[search(46)]-5-[collection]|", options: [], metrics: nil, views: views))
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collection]|", options: [], metrics: nil, views: views))
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-8-[backBtn(44)]-10-[search]-35-|", options: [], metrics: nil, views: views))
-        view.addConstraint(NSLayoutConstraint(item: backBtn, attribute: .CenterY, relatedBy: .Equal, toItem: searchController.pokedexSearchBar, attribute: .CenterY, multiplier: 1.0, constant: 1.0))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-25-[search(46)]-5-[collection]|", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|[collection]|", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[backBtn(44)]-10-[search]-35-|", options: [], metrics: nil, views: views))
+        view.addConstraint(NSLayoutConstraint(item: backBtn, attribute: .centerY, relatedBy: .equal, toItem: searchController.pokedexSearchBar, attribute: .centerY, multiplier: 1.0, constant: 1.0))
     }
     
-    private func addToolBar(searchBar: UISearchBar){
+    fileprivate func addToolBar(_ searchBar: UISearchBar){
         let toolBar = UIToolbar()
-        toolBar.barStyle = UIBarStyle.Default
-        toolBar.translucent = true
+        toolBar.barStyle = UIBarStyle.default
+        toolBar.isTranslucent = true
         toolBar.tintColor = Palette.Pokedex.Background
-        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: .doneSelector)
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: .cancelSelector)
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: self, action: .doneSelector)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: .cancelSelector)
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
         toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
-        toolBar.userInteractionEnabled = true
+        toolBar.isUserInteractionEnabled = true
         toolBar.sizeToFit()
         searchBar.inputAccessoryView = toolBar
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
     // MARK: - Alert Method
     
-    private func showNameAlert() {
-        let alertController = UIAlertController(title: "您好", message: "請輸入您的訓練師名稱", preferredStyle: .Alert)
+    fileprivate func showNameAlert() {
+        let alertController = UIAlertController(title: "您好", message: "請輸入您的訓練師名稱", preferredStyle: .alert)
         
-        let doneAction = UIAlertAction (title: "確認", style: UIAlertActionStyle.Default) {
+        let doneAction = UIAlertAction (title: "確認", style: UIAlertActionStyle.default) {
             (action) -> Void in
             
             if let username = self.alertTextField?.text {
-                NSUserDefaults.standardUserDefaults().setObject(username, forKey: UserDefaultsKey.trainerName)
-                NSUserDefaults.standardUserDefaults().synchronize()
+                UserDefaults.standard.set(username, forKey: UserDefaultsKey.trainerName)
+                UserDefaults.standard.synchronize()
             }
         }
         
-        alertController.addTextFieldWithConfigurationHandler { (textField) -> Void in
+        alertController.addTextField { (textField) -> Void in
             self.alertTextField = textField
-            textField.addTarget(self, action: .textChangeSelector, forControlEvents: .EditingChanged)
+            textField.addTarget(self, action: .textChangeSelector, for: .editingChanged)
         }
         
         alertController.addAction(doneAction)
         self.actionToEnable = doneAction
-        doneAction.enabled = false
-        self.presentViewController(alertController, animated: true, completion: nil)
+        doneAction.isEnabled = false
+        self.present(alertController, animated: true, completion: nil)
     }
     
-    func textChanged(sender:UITextField) {
-        self.actionToEnable?.enabled = !(sender.text ?? "").isEmpty
+    func textChanged(_ sender:UITextField) {
+        self.actionToEnable?.isEnabled = !(sender.text ?? "").isEmpty
     }
     
-    private func showReportAlert(indexPath: NSIndexPath) {
-        let pokemon = filteredData[indexPath.row]
+    fileprivate func showReportAlert(_ indexPath: IndexPath) {
+        let pokemon = filteredData[(indexPath as NSIndexPath).row]
         
-        let alertController = UIAlertController(title: pokemon.name, message: NSUserDefaults.standardUserDefaults().stringForKey(UserDefaultsKey.trainerName), preferredStyle: .Alert)
+        let alertController = UIAlertController(title: pokemon.name, message: UserDefaults.standard.string(forKey: UserDefaultsKey.trainerName), preferredStyle: .alert)
         
-        let doneAction = UIAlertAction (title: "回報", style: .Default) { (action) -> Void in
+        let doneAction = UIAlertAction (title: "回報", style: .default) { (action) -> Void in
             
             if let request = PokeRequest() {
                 request.pokemonId = String(pokemon.pokeId)
-                request.trainer = NSUserDefaults.standardUserDefaults().stringForKey(UserDefaultsKey.trainerName) ?? "Trainer"
+                request.trainer = UserDefaults.standard.string(forKey: UserDefaultsKey.trainerName) ?? "Trainer"
                 request.memo = self.alertTextField?.text ?? ""
                 
-                let formatter = NSDateFormatter();
+                let formatter = DateFormatter();
                 formatter.dateFormat = "yyyy-MM-dd HH:mm:ss z";
-                request.timestemp = formatter.stringFromDate(NSDate())
+                request.timestemp = formatter.string(from: Date())
                 
                 FirebaseManager.shared.reportLocation(withRequestModel: request)
                 
-                self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
             }
         }
         
-        alertController.addTextFieldWithConfigurationHandler { (textField) -> Void in
+        alertController.addTextField { (textField) -> Void in
             textField.placeholder = "備註"
             self.alertTextField = textField
         }
         
         alertController.addAction(doneAction)
-        alertController.addAction(UIAlertAction(title: "取消", style: .Cancel, handler: nil))
-        self.presentViewController(alertController, animated: true, completion: nil)
+        alertController.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     // MARK: - Button Action Method
     
-    @objc private func backBtnPressed(sender: UIButton) {
+    @objc fileprivate func backBtnPressed(_ sender: UIButton) {
         //navigationController?.popViewControllerAnimated(true)
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @objc private func donePressed(){
+    @objc fileprivate func donePressed(){
         view.endEditing(true)
     }
     
-    @objc private func cancelPressed(){
+    @objc fileprivate func cancelPressed(){
         view.endEditing(true)
     }
 }
@@ -234,13 +234,13 @@ private extension Selector {
 
 extension PokedexVC: UICollectionViewDataSource {
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return filteredData.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(PokedexCell.self), forIndexPath: indexPath)
-        (cell as? PokedexCell)?.configure(withPokemon: filteredData[indexPath.row])
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(PokedexCell.self), for: indexPath)
+        (cell as? PokedexCell)?.configure(withPokemon: filteredData[(indexPath as NSIndexPath).row])
         return cell
     }
 }
@@ -249,15 +249,15 @@ extension PokedexVC: UICollectionViewDataSource {
 
 extension PokedexVC: UICollectionViewDelegate {
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         switch pokedexType {
-        case .Report:
+        case .report:
             showReportAlert(indexPath)
             break
         default:
-            let vc = PokeInfoVC(withPokeModel: filteredData[indexPath.row], pokeDetailType: .Normal)
-            self.presentViewController(vc, animated: true, completion: nil)
+            let vc = PokeInfoVC(withPokeModel: filteredData[(indexPath as NSIndexPath).row], pokeDetailType: .normal)
+            self.present(vc, animated: true, completion: nil)
         }
     }
 }
@@ -266,10 +266,10 @@ extension PokedexVC: UICollectionViewDelegate {
 
 extension PokedexVC: PokedexSearchDelegate {
     
-    func didChangeSearchText(searchText: String) {
+    func didChangeSearchText(_ searchText: String) {
         filteredData = PokemonHelper.shared.infos.filter({ (Pokemon) -> Bool in
-            let pokeName: NSString = Pokemon.name
-            return (pokeName.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch).location) != NSNotFound
+            let pokeName: NSString = Pokemon.name as NSString
+            return (pokeName.range(of: searchText, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
         })
         
         if searchText.isEmpty {

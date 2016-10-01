@@ -19,8 +19,8 @@ struct Pokemon {
     let type: [String]
     let weakness: [String]
 
-    var imgURL: NSURL? {
-        return NSURL(string: img)
+    var imgURL: URL? {
+        return URL(string: img)
     }
     
     var typeDesc: String {
@@ -41,9 +41,9 @@ struct Pokemon {
         weakness = (value["weaknesses"].arrayObject as? [String]) ?? [""]
     }
     
-    private func combineString(arr: [String]) -> String {
+    fileprivate func combineString(_ arr: [String]) -> String {
         var desc: String = ""
-        for (index, element) in arr.enumerate() {
+        for (index, element) in arr.enumerated() {
             desc += index == 0 ? element : " \\ \(element)"
         }
         return desc

@@ -25,15 +25,13 @@ class FIRPokemon {
         timestemp = value["timestemp"].string ?? ""
         trainer  = value["trainer"].string ?? ""
         
-        if let voteDict: [String: JSON] = value["vote"].dictionaryValue {
-            goodCount = voteDict["good"]?.int ?? 0
-            shitCount = voteDict["shit"]?.int ?? 0
-        } else {
-            goodCount = 0
-            shitCount = 0
-        }
+        let voteDict: [String: JSON] = value["vote"].dictionaryValue
+        goodCount = voteDict["good"]?.int ?? 0
+        shitCount = voteDict["shit"]?.int ?? 0
         
-        if let coordinateDict: [String: JSON] = value["coordinate"].dictionaryValue, locationArray: [JSON] = coordinateDict["l"]?.arrayValue where locationArray.count >= 2 {
+        
+        let coordinateDict: [String: JSON] = value["coordinate"].dictionaryValue
+        if let locationArray: [JSON] = coordinateDict["l"]?.arrayValue, locationArray.count >= 2 {
             lat = FirebaseManager.shared.format(withLocation: locationArray[0].doubleValue)
             long = FirebaseManager.shared.format(withLocation: locationArray[1].doubleValue)
         } else {
@@ -42,7 +40,7 @@ class FIRPokemon {
         }
     }
     
-    func adjustTrustCount(goodVal goodVal: Int, shitVal: Int) {
+    func adjustTrustCount(goodVal: Int, shitVal: Int) {
         goodCount = (goodCount + goodVal) < 0 ? 0 : goodCount + goodVal
         shitCount = (shitCount + shitVal) < 0 ? 0 : shitCount + shitVal
     }

@@ -11,7 +11,7 @@ import UIKit
 class MapLoadingView: UIView {
     
     lazy var indicator: UIActivityIndicatorView = {
-        let _indicator = UIActivityIndicatorView(activityIndicatorStyle: .White)
+        let _indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         _indicator.startAnimating()
         return _indicator
     }()
@@ -20,13 +20,13 @@ class MapLoadingView: UIView {
         let _title = UILabel()
         _title.numberOfLines = 1
         _title.font = UIFont.mapLoadingTitle()
-        _title.textColor = UIColor.whiteColor()
+        _title.textColor = UIColor.white
         _title.text = "讀取中"
         return _title
     }()
     
     init() {
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
         setupSubViews()
     }
     
@@ -34,9 +34,9 @@ class MapLoadingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupSubViews() {
+    fileprivate func setupSubViews() {
         self.cornerRadius = 3.0
-        self.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.55)
+        self.backgroundColor = UIColor.black.withAlphaComponent(0.55)
         
         addSubview(indicator)
         addSubview(title)
@@ -44,28 +44,28 @@ class MapLoadingView: UIView {
         indicator.translatesAutoresizingMaskIntoConstraints = false
         title.translatesAutoresizingMaskIntoConstraints = false
         
-        let views = ["indicator": indicator, "title": title]
+        let views = ["indicator": indicator, "title": title] as [String : Any]
         
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-15-[indicator]-8-[title]-15-|", options: [], metrics: nil, views: views))
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-5-[indicator]-5-|", options: [], metrics: nil, views: views))
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-5-[title]-5-|", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[indicator]-8-[title]-15-|", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[indicator]-5-|", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[title]-5-|", options: [], metrics: nil, views: views))
     }
     
     func hide() {
-        UIView.animateWithDuration(0.6, animations: {
+        UIView.animate(withDuration: 0.6, animations: {
             self.alpha = 0
             }, completion: { finished in
                 if finished {
-                    self.hidden = true
+                    self.isHidden = true
                     self.indicator.stopAnimating()
                 }
         })
     }
     
     func show() {
-        UIView.animateWithDuration(0.6, animations: {
+        UIView.animate(withDuration: 0.6, animations: {
             self.indicator.startAnimating()
-            self.hidden = false
+            self.isHidden = false
             self.alpha = 1
         })
     }

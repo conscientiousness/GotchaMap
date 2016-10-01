@@ -16,7 +16,7 @@ class PokedexSearchBar: UISearchBar {
     
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         
         // Find the index of the search field in the search bar subviews.
         if let index = indexOfSearchFieldInSubviews() {
@@ -24,23 +24,23 @@ class PokedexSearchBar: UISearchBar {
             let searchField: UITextField = (subviews[0] ).subviews[index] as! UITextField
             
             // Set its frame.
-            searchField.frame = CGRectMake(5.0, 5.0, frame.size.width - 10.0, frame.size.height - 10.0)
+            searchField.frame = CGRect(x: 5.0, y: 5.0, width: frame.size.width - 10.0, height: frame.size.height - 10.0)
             
             // Set the font and text color of the search field.
             searchField.font = preferredFont
             searchField.textColor = preferredTextColor
             
             // Set the background color of the search field.
-            searchField.backgroundColor = UIColor.hex("#333F62")
+            searchField.backgroundColor = UIColor(hexString: "#333F62")
         }
         
-        let startPoint = CGPointMake(0.0, frame.size.height)
-        let endPoint = CGPointMake(frame.size.width, frame.size.height)
+        let startPoint = CGPoint(x: 0.0, y: frame.size.height)
+        let endPoint = CGPoint(x: frame.size.width, y: frame.size.height)
         let path = UIBezierPath()
-        path.moveToPoint(startPoint)
-        path.addLineToPoint(endPoint)
+        path.move(to: startPoint)
+        path.addLine(to: endPoint)
         
-        super.drawRect(rect)
+        super.draw(rect)
     }
     
     init(frame: CGRect, font: UIFont, textColor: UIColor) {
@@ -50,8 +50,8 @@ class PokedexSearchBar: UISearchBar {
         preferredFont = font
         preferredTextColor = textColor
         
-        searchBarStyle = UISearchBarStyle.Prominent
-        translucent = false
+        searchBarStyle = UISearchBarStyle.prominent
+        isTranslucent = false
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -64,7 +64,7 @@ class PokedexSearchBar: UISearchBar {
         let searchBarView = subviews[0]
         
         for i in 0 ..< searchBarView.subviews.count {
-            if searchBarView.subviews[i].isKindOfClass(UITextField) {
+            if searchBarView.subviews[i].isKind(of: UITextField.self) {
                 index = i
                 break
             }

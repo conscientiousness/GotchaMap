@@ -11,7 +11,7 @@ class PokemonHelper {
     var infos: [Pokemon] = []
     var currentLocation: CLLocation?
     
-    static func trustPercent(good good: Int, shit: Int) -> Int {
+    static func trustPercent(good: Int, shit: Int) -> Int {
         guard good + shit > 50 else {
             return 50
         }

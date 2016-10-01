@@ -10,19 +10,19 @@ import UIKit
 
 extension UIFont {
     
-    private enum FontFamily {
+    fileprivate enum FontFamily {
         static let Regular = "NotoSans-Regular"
         static let Bold = "NotoSans-Bold"
     }
     
     // MARK: - Private Methods
     
-    private class func appRegularFontOfSize(fontSize: CGFloat) -> UIFont {
-        return UIFont(name: FontFamily.Regular, size: fontSize) ?? UIFont.systemFontOfSize(fontSize)
+    fileprivate class func appRegularFontOfSize(_ fontSize: CGFloat) -> UIFont {
+        return UIFont(name: FontFamily.Regular, size: fontSize) ?? UIFont.systemFont(ofSize: fontSize)
     }
     
-    private class func appBoldFontOfSize(fontSize: CGFloat) -> UIFont {
-        return UIFont(name: FontFamily.Bold, size: fontSize) ?? UIFont.boldSystemFontOfSize(fontSize)
+    fileprivate class func appBoldFontOfSize(_ fontSize: CGFloat) -> UIFont {
+        return UIFont(name: FontFamily.Bold, size: fontSize) ?? UIFont.boldSystemFont(ofSize: fontSize)
     }
     
     // MARK: - Public Methods

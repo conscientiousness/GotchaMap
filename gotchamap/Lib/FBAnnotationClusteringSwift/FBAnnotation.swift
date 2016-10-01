@@ -12,7 +12,7 @@ import MapKit
 
 class FBAnnotation : NSObject {
 
-    var coordinate = CLLocationCoordinate2D(latitude: 25.024739, longitude: 121.468240)
+    var coordinate = CLLocationCoordinate2D(latitude: 25.024739, longitude: 121.468239)
     var title: String?
     var pokeId: Int?
     var objectId: String?

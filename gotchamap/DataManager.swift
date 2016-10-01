@@ -12,13 +12,13 @@ class DataManager {
     
     static let shared = FirebaseManager()
     
-    static func getPokeBaseInfoFromFile(withSuccess success: (data: JSON) -> Void) {
-        if let filePath = NSBundle.mainBundle().pathForResource("pokemon", ofType:"json") {
+    static func getPokeBaseInfoFromFile(withSuccess success: (_ data: JSON) -> Void) {
+        if let filePath = Bundle.main.path(forResource: "pokemon", ofType:"json") {
             do {
-                let data = try NSData(contentsOfFile:filePath,
-                                      options: NSDataReadingOptions.DataReadingUncached)
-                let json = JSON(data:data)
-                success(data: json)
+                let data = try Data(contentsOf: URL(fileURLWithPath: filePath),
+                                      options: NSData.ReadingOptions.uncached)
+                let json = JSON(data: data)
+                success(json)
             } catch {
                 fatalError()
             }
