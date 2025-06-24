@@ -35,6 +35,7 @@ enum FirebaseRefKey {
 enum UserDefaultsKey {
     static let uid = "uid"
     static let trainerName = "trainerName"
+    static let hello1 = "hello1"
 }
 
 // MARK: - Pokedex View Controller
